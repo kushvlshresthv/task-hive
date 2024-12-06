@@ -1,0 +1,138 @@
+<div class="signup-form">
+  <div class="welcome">WELCOME</div>
+  <form class="form" [formGroup]="formData" (ngSubmit)="onSubmit()">
+    <div class="register">
+      <h1>Register</h1>
+    </div>
+
+    <div class="register-now-message">
+      <p>Signup now and get full access to our app.</p>
+    </div>
+    <!-- name control -->
+    <ul class="form-elements">
+      <div class="name" formGroupName="name">
+        <li class="firstName">
+          <input
+            type="text"
+            formControlName="firstName"
+            placeholder="First Name"
+            [class.errorInput]="checkIfFirstNameNotValid()"
+          />
+
+          <!-- name control error messages -->
+          <div class="fieldError">
+            @if (checkIfFirstNameNotValid()) {
+              @for (errorMessage of errorMessages.firstName; track $index) {
+                <p>{{ errorMessage }}</p>
+              }
+            }
+          </div>
+        </li>
+
+        <li class="lastName">
+          <input
+            type="text"
+            formControlName="lastName"
+            placeholder="Last Name"
+            [class.errorInput]="checkIfLastNameNotValid()"
+          />
+          <div class="fieldError">
+            @if (checkIfLastNameNotValid()) {
+              @for (errorMessage of errorMessages.lastName; track $index) {
+                <p>{{ errorMessage }}</p>
+              }
+            }
+          </div>
+        </li>
+      </div>
+
+      <!-- username control -->
+      <li class="username">
+        <input
+          id="control-username"
+          type="text"
+          formControlName="username"
+          placeholder="Username"
+          [class.errorInput]="checkIfUsernameNotValid()"
+        />
+      </li>
+
+      <!-- username control error messages -->
+      <div class="fieldError">
+        @if (checkIfUsernameNotValid()) {
+          @for (errorMessage of errorMessages.username; track $index) {
+            <p>{{ errorMessage }}</p>
+          }
+        }
+      </div>
+
+      <!-- email control -->
+      <li class="email">
+        <input
+          type="text"
+          [formControl]="formData.controls.email"
+          placeholder="Email"
+          [class.errorInput]="checkIfEmailNotValid()"
+        />
+      </li>
+
+      <!-- email control error messages -->
+      <div class="fieldError">
+        @if (checkIfEmailNotValid()) {
+          @for (errorMessage of errorMessages.email; track $index) {
+            <p>{{ errorMessage }}</p>
+          }
+        }
+      </div>
+
+      <!-- password control -->
+      <li class="password">
+        <input
+          id="control-password"
+          type="password"
+          [formControl]="formData.controls.pass.controls.password"
+          placeholder="Password"
+          [class.errorInput]="checkIfPasswordNotValid()"
+        />
+      </li>
+
+      <!-- password control error messages -->
+
+      <div class="fieldError">
+        @if (checkIfPasswordNotValid()) {
+          @for (errorMessage of errorMessages.password; track $index) {
+            <p>{{ errorMessage }}</p>
+          }
+        }
+      </div>
+
+      <!-- confirm password control -->
+      <li class="confirmPassword">
+        <input
+          id="control-confirmPassword"
+          type="password"
+          [formControl]="formData.controls.pass.controls.confirmPassword"
+          placeholder="Confirm Password"
+          [class.errorInput]="checkIfConfirmPasswordNotValid()"
+        />
+      </li>
+
+      <!-- confirm password control error messages -->
+      <div class="fieldError">
+        @if (checkIfConfirmPasswordNotValid()) {
+          @for (errorMessage of errorMessages.confirmPassword; track $index) {
+            <p>{{ errorMessage }}</p>
+          }
+        }
+      </div>
+
+      <li class="submitButton">
+        <button type="submit" [disabled]="formData.invalid">Submit</button>
+      </li>
+    </ul>
+
+    <div class="sign-in">
+      <p>Already have an account? Signin</p>
+    </div>
+  </form>
+</div>

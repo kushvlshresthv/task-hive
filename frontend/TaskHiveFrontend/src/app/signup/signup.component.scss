@@ -1,0 +1,132 @@
+:host {
+  display: block;
+  display: flex;
+  justify-content: center;
+  max-height: 700px;
+}
+
+.signup-form {
+  margin-top: 70px;
+  width: 800px;
+  display: inline-flex;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  border-radius: 15px;
+}
+
+.welcome {
+  display: inline-flex;
+  flex-grow: 1;
+  justify-content: center;
+  align-items: center;
+  width: 49%;
+  background-color: rgb(47, 167, 227);
+  font-size: 3rem;
+  font-family: "Edu AU VIC WA NT Arrows", cursive;
+  font-optical-sizing: auto;
+  font-weight: 700;
+  font-style: normal;
+  color: white;
+  border-top-left-radius: 15px;
+  border-bottom-left-radius: 15px;
+}
+
+.form {
+  display: inline-flex;
+  border-radius: 15px;
+  flex-grow: 1;
+  flex-direction: column;
+  height: auto;
+  justify-content: flex-start;
+  width: 51%;
+}
+
+.register {
+  font-size: 2rem;
+  margin-top: 20px;
+  margin-left: 20px;
+  font-weight: 600;
+}
+
+.register-now-message {
+  font-size: 1rem;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  margin-left: 20px;
+}
+
+.form-elements {
+  flex-grow: 1;
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 10px;
+  margin: 0 20px;
+}
+.sign-in {
+  margin-bottom: 20px;
+  text-align: center;
+}
+li {
+  margin: 0;
+}
+
+.name {
+  width: 100%;
+  display: inline-flex;
+  justify-content: space-between;
+}
+
+.firstName {
+  flex-grow: 1;
+  margin-right: 10px;
+}
+
+.lastName {
+  flex-grow: 1;
+}
+
+input {
+  height: 45px;
+  box-sizing: border-box;
+  border-radius: 11px;
+  width: 100%;
+  border: 1px solid rgb(84, 84, 84);
+  padding-left: 10px;
+  font-size: 1rem;
+  letter-spacing: 1px;
+}
+
+input::placeholder {
+  font-size: 1rem;
+  letter-spacing: 0.5px;
+}
+
+button {
+  width: 100%;
+  height: 40px;
+  border-radius: 11px;
+  margin-bottom: 20px;
+  font-size: 1.3rem;
+  background-color: #00bfff;
+  color: white;
+  border: none;
+  letter-spacing: 2px;
+  letter-spacing: 1px;
+}
+
+button:disabled {
+  background-color: #55d0f9;
+}
+
+.fieldError {
+  color: rgb(181, 54, 54);
+}
+
+.name .fieldError {
+  margin: 8px 0;
+}
+
+.errorInput {
+  outline: 2px solid rgb(181, 54, 54);
+  border: none;
+}
