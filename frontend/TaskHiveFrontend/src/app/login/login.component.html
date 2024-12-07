@@ -1,0 +1,43 @@
+<div class="login-form">
+  <div class="welcome">WELCOME</div>
+
+  <form class="form" [formGroup]="formData" (ngSubmit)="onSubmit()">
+    <div class="login">
+      <h1>Login</h1>
+    </div>
+
+    <div class="login-now-message">
+      <p>Login now and get full access to our app.</p>
+    </div>
+
+    <ul class="form-elements">
+      <!-- username control -->
+      <li class="username">
+        <input
+          id="control-username"
+          type="text"
+          formControlName="username"
+          placeholder="Username"
+        />
+      </li>
+
+      <!-- password control -->
+      <li class="password">
+        <input
+          id="control-password"
+          type="password"
+          [formControl]="formData.controls.password"
+          placeholder="Password"
+        />
+      </li>
+
+      <li class="submitButton">
+        <button type="submit" [disabled]="formData.invalid">Submit</button>
+      </li>
+    </ul>
+
+    <div class="sign-up">
+      <p>New User? Sign up</p>
+    </div>
+  </form>
+</div>
