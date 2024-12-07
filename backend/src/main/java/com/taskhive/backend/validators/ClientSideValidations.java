@@ -1,4 +1,4 @@
-package com.taskhive.backend.controller;
+package com.taskhive.backend.validators;
 
 import com.taskhive.backend.service.RegisterUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,6 @@ public class ClientSideValidations {
     public ResponseEntity<String> checkUsernameAvailability(@RequestBody String username) {
         System.out.println(username);
         if (registerUserService.loadUserByUsername(username) != null) {
-
             return new ResponseEntity<String>("{\"availability\":false}", HttpStatus.OK);
         } else {
             return new ResponseEntity<String>("{\"availability\":true}", HttpStatus.OK);

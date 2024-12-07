@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -6,6 +6,9 @@ import {
   Validators,
 } from '@angular/forms';
 import { checkUsernameFormat } from '../validators';
+import { RouterLink } from '@angular/router';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { BACKEND_URL } from '../global.constants';
 
 interface Error {
   username: string[];
@@ -14,12 +17,13 @@ interface Error {
 
 @Component({
   selector: 'app-login',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, RouterLink],
   standalone: true,
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })
 export class LoginComponent implements OnInit {
+  http = inject(HttpClient);
   errors: Error = {
     username: [],
     password: [],
@@ -72,5 +76,20 @@ export class LoginComponent implements OnInit {
     return flag;
   }
 
-  onSubmit() {}
+  onSubmit() {
+    const authenticationDetails = `${this.username.value}:${this.password.value}`;
+
+    const encodedAuthenticationDetails = btoa(authenticationDetails);
+
+    const headers = new HttpHeaders({
+      Authorization: `Basic ${encodedAuthenticationDetails}`,
+    });
+
+    console.log('submitting request to: ' + BACKEND_URL + '/login');
+    this.http
+      .get<{ message: string }>(BACKEND_URL + '/login', {
+        headers: headers,
+      })
+      .subscribe({});
+  }
 }
