@@ -18,8 +18,17 @@
           type="text"
           formControlName="username"
           placeholder="Username"
+          [class.errorInput]="checkIfUsernameNotValid()"
         />
       </li>
+
+      <div class="fieldError">
+        @if (checkIfUsernameNotValid()) {
+          @for (error of errors.username; track $index) {
+            <p>{{ error }}</p>
+          }
+        }
+      </div>
 
       <!-- password control -->
       <li class="password">
@@ -30,6 +39,14 @@
           placeholder="Password"
         />
       </li>
+
+      <div class="fieldError">
+        @if (checkIfPasswordNotValid()) {
+          @for (error of errors.password; track $index) {
+            <p>{{ error }}</p>
+          }
+        }
+      </div>
 
       <li class="submitButton">
         <button type="submit" [disabled]="formData.invalid">Submit</button>

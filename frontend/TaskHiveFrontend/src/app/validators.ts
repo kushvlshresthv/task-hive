@@ -21,6 +21,19 @@ export function checkIfSameValue(field1: string, field2: string) {
   };
 }
 
+export function checkUsernameFormat(control: AbstractControl) {
+  const specialSymbolRegex = /[!@#$%^&*(),.?":{}|<>\\\/\[\];'`~\-=+ ]/;
+  const enteredUsername = control.value;
+  const result = specialSymbolRegex.test(enteredUsername);
+  if (result) {
+    return {
+      usernameImproperFormat: 'username is not in proper format',
+    };
+  } else {
+    return null;
+  }
+}
+
 @Injectable({
   providedIn: 'root',
 })
