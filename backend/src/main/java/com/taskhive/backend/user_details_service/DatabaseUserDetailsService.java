@@ -15,6 +15,7 @@ public class DatabaseUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         RegisterUser registeredUser = registerUserService.loadUserByUsername(username);
+        System.out.println("UserDetailsService invoked");
         if (registeredUser != null) {
             UserDetails user = User.withUsername(username).password(registeredUser.getPassword()).build();
             return user;

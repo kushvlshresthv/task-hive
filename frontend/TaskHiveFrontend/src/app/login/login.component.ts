@@ -88,8 +88,14 @@ export class LoginComponent implements OnInit {
     console.log('submitting request to: ' + BACKEND_URL + '/login');
     this.http
       .get<{ message: string }>(BACKEND_URL + '/login', {
+        observe: 'response',
         headers: headers,
+        withCredentials: true,
       })
-      .subscribe({});
+      .subscribe({
+        next: (response) => {
+          console.log(response.headers.get('Cookie'));
+        },
+      });
   }
 }

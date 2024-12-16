@@ -10,11 +10,12 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@CrossOrigin(origins = "http://localhost:4200", allowedHeaders = "*", exposedHeaders = "Authorization")
+@CrossOrigin(origins = "http://localhost:4200", allowedHeaders = "*", exposedHeaders = "*", allowCredentials = "true")
 @RestController
 public class LoginController {
     @GetMapping("/login")
     public ResponseEntity<Response> tryLogin(HttpSession session) {
+        //session.setAttribute("SPRING_SECURITY_CONTEXT", SecurityContextHolder.getContext());
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         System.out.println(authentication.isAuthenticated());
         System.out.println(session.getId());
