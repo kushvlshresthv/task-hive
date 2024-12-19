@@ -2,6 +2,7 @@ package com.taskhive.backend.validators;
 
 import com.taskhive.backend.model.RegisterUser;
 import com.taskhive.backend.service.RegisterUserService;
+import com.taskhive.backend.validators.annotations.CheckUsernameAvailability;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import org.springframework.beans.factory.annotation.Autowired;

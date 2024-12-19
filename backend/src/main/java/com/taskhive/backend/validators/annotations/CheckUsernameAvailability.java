@@ -1,5 +1,6 @@
-package com.taskhive.backend.validators;
+package com.taskhive.backend.validators.annotations;
 
+import com.taskhive.backend.validators.CheckUsernameAvailabilityValidator;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 

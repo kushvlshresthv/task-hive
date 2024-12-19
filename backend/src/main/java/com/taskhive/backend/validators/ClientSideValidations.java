@@ -1,5 +1,6 @@
 package com.taskhive.backend.validators;
 
+import com.taskhive.backend.response.Response;
 import com.taskhive.backend.service.RegisterUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,12 +17,12 @@ public class ClientSideValidations {
     RegisterUserService registerUserService;
 
     @PostMapping(value = "checkUsernameAvailability")
-    public ResponseEntity<String> checkUsernameAvailability(@RequestBody String username) {
+    public ResponseEntity<Response> checkUsernameAvailability(@RequestBody String username) {
         System.out.println(username);
         if (registerUserService.loadUserByUsername(username) != null) {
-            return new ResponseEntity<String>("{\"availability\":false}", HttpStatus.OK);
+            return new ResponseEntity<Response>(new Response("false"), HttpStatus.OK);
         } else {
-            return new ResponseEntity<String>("{\"availability\":true}", HttpStatus.OK);
+            return new ResponseEntity<Response>(new Response("true"), HttpStatus.OK);
         }
     }
 }

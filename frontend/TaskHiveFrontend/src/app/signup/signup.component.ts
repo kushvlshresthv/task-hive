@@ -14,6 +14,7 @@ import { FormControlErrorMessages } from './signup.model';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { catchError, of } from 'rxjs';
 import { RouterLink } from '@angular/router';
+import { Response } from '../model/response';
 
 @Component({
   selector: 'app-signup',
@@ -205,7 +206,7 @@ export class SignupComponent implements OnInit {
     };
     this.formData.reset();
     this.http
-      .post<{ message: string }>('http://localhost:8080/register', requestBody)
+      .post<Response>('http://localhost:8080/register', requestBody)
       .pipe(
         catchError((error: HttpErrorResponse) => {
           console.log('error message: ' + error.error.message);
@@ -213,9 +214,9 @@ export class SignupComponent implements OnInit {
         }),
       )
       .subscribe({
-        next: (value) => {
-          if (value != null) {
-            console.log(value.message);
+        next: (response) => {
+          if (response != null) {
+            console.log(response.message);
           }
         },
       });

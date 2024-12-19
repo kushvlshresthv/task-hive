@@ -1,6 +1,6 @@
 package com.taskhive.backend.model;
 
-import com.taskhive.backend.validators.CheckUsernameAvailability;
+import com.taskhive.backend.validators.annotations.CheckUsernameAvailability;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;

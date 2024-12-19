@@ -9,6 +9,7 @@ import { checkUsernameFormat } from '../validators';
 import { RouterLink } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BACKEND_URL } from '../global.constants';
+import { Response } from '../model/response';
 
 interface Error {
   username: string[];
@@ -87,14 +88,12 @@ export class LoginComponent implements OnInit {
 
     console.log('submitting request to: ' + BACKEND_URL + '/login');
     this.http
-      .get<{ message: string }>(BACKEND_URL + '/login', {
-        observe: 'response',
+      .get<Response>(BACKEND_URL + '/login', {
         headers: headers,
-        withCredentials: true,
       })
       .subscribe({
         next: (response) => {
-          console.log(response.headers.get('Cookie'));
+          console.log(response['message']);
         },
       });
   }

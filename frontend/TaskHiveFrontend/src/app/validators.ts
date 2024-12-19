@@ -6,7 +6,9 @@ import {
   ValidationErrors,
 } from '@angular/forms';
 import { debounceTime, delay, map, Observable, of } from 'rxjs';
+import { Response } from './model/response';
 
+//being used in signup component
 export function checkIfSameValue(field1: string, field2: string) {
   return (control: AbstractControl): Observable<ValidationErrors | null> => {
     const field1value = control.get(field1)?.value;
@@ -21,6 +23,7 @@ export function checkIfSameValue(field1: string, field2: string) {
   };
 }
 
+//being used in login component
 export function checkUsernameFormat(control: AbstractControl) {
   const specialSymbolRegex = /[!@#$%^&*(),.?":{}|<>\\\/\[\];'`~\-=+ ]/;
   const enteredUsername = control.value;
@@ -33,6 +36,8 @@ export function checkUsernameFormat(control: AbstractControl) {
     return null;
   }
 }
+
+//being used in sign up component
 
 @Injectable({
   providedIn: 'root',
@@ -56,13 +61,14 @@ export class checkUsernameAvailability implements AsyncValidator {
     //then check if the username is available
     if (valid) {
       return this.http
-        .post<{
-          availability: boolean;
-        }>('http://localhost:8080/checkUsernameAvailability', control.value)
+        .post<Response>(
+          'http://localhost:8080/checkUsernameAvailability',
+          control.value,
+        )
         .pipe(
           debounceTime(1000),
           map((response) => {
-            if (response.availability) {
+            if (response.message == 'true') {
               return null;
             } else {
               return { usernameNotAvailable: 'username is not available' };

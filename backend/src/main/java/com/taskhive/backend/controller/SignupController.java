@@ -1,7 +1,7 @@
 package com.taskhive.backend.controller;
 
 import com.taskhive.backend.model.RegisterUser;
-import com.taskhive.backend.model.Response;
+import com.taskhive.backend.response.Response;
 import com.taskhive.backend.service.RegisterUserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
-public class RegisterController {
+public class SignupController {
     @Autowired
     RegisterUserService registerUserService;
 
