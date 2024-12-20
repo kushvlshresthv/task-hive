@@ -24,7 +24,7 @@ public class SecurityConfiguration {
     public SecurityFilterChain getSecurityFilterChain(HttpSecurity http) throws Exception {
 
         http.authorizeHttpRequests((config) -> {
-            config.requestMatchers("/register", "/checkUsernameAvailability").permitAll();
+            config.requestMatchers("/register", "/checkUsernameAvailability", "/isAuthenticated").permitAll();
             config.requestMatchers("/login", "/test").authenticated();
         });
 

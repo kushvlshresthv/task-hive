@@ -6,10 +6,15 @@ import {
   Validators,
 } from '@angular/forms';
 import { checkUsernameFormat } from '../validators';
-import { RouterLink } from '@angular/router';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Router, RouterLink } from '@angular/router';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpHeaders,
+} from '@angular/common/http';
 import { BACKEND_URL } from '../global.constants';
 import { Response } from '../model/response';
+import { catchError, of } from 'rxjs';
 
 interface Error {
   username: string[];
@@ -24,6 +29,7 @@ interface Error {
   styleUrl: './login.component.scss',
 })
 export class LoginComponent implements OnInit {
+  router = inject(Router);
   http = inject(HttpClient);
   errors: Error = {
     username: [],
@@ -90,10 +96,18 @@ export class LoginComponent implements OnInit {
     this.http
       .get<Response>(BACKEND_URL + '/login', {
         headers: headers,
+        withCredentials: true,
       })
+      .pipe(
+        catchError((error: HttpErrorResponse) => {
+          return of(null);
+        }),
+      )
       .subscribe({
         next: (response) => {
-          console.log(response['message']);
+          if (response != null) {
+            this.router.navigateByUrl('/hive');
+          }
         },
       });
   }

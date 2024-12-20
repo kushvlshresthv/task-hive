@@ -76,7 +76,6 @@ export class checkUsernameAvailability implements AsyncValidator {
           }),
         );
     }
-
     return of(null);
   }
 }

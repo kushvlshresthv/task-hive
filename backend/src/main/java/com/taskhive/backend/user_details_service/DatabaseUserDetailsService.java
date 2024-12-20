@@ -20,6 +20,6 @@ public class DatabaseUserDetailsService implements UserDetailsService {
             UserDetails user = User.withUsername(username).password(registeredUser.getPassword()).build();
             return user;
         }
-        return null;
+        throw new UsernameNotFoundException("username not found");
     }
 }
