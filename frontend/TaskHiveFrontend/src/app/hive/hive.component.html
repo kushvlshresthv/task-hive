@@ -1,1 +1,6 @@
-<p>hive works!</p>
+<app-menu></app-menu>
+
+@if (newProject) {
+  <app-new-project (dialogClicked)="onDialogClicked()"></app-new-project>
+}
+<button (click)="onNewProject()">New Project</button>

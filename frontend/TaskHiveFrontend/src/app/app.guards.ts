@@ -6,10 +6,9 @@ import { BACKEND_URL } from './global.constants';
 import { catchError, map, Observable, of } from 'rxjs';
 
 export function isAuthenticated(route: Route, segment: UrlSegment[]) {
-  let result: Observable<boolean> = of(false);
   const http = inject(HttpClient);
   const router = inject(Router);
-  http
+  return http
     .get<Response>(BACKEND_URL + '/isAuthenticated', {
       withCredentials: true,
     })
@@ -17,7 +16,7 @@ export function isAuthenticated(route: Route, segment: UrlSegment[]) {
       map((response) => {
         if (response?.message == 'true') {
           return of(true);
-        } else return router.parseUrl('/error');
+        } else return router.parseUrl('/login');
       }),
       catchError((error: HttpErrorResponse) => {
         return of(null);
