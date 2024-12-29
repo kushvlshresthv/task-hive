@@ -1,26 +1,26 @@
 package com.taskhive.backend.service;
 
 import com.taskhive.backend.model.RegisterUser;
-import com.taskhive.backend.repository.RegisterUserRepository;
+import com.taskhive.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 
-public class RegisterUserService {
+public class UserService {
     @Autowired
-    RegisterUserRepository registerUserRepository;
+    UserRepository userRepository;
 
     @Autowired
     PasswordEncoder passwordEncoder;
 
     public RegisterUser saveNewUser(RegisterUser user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return registerUserRepository.save(user);
+        return userRepository.save(user);
     }
 
     public RegisterUser loadUserByUsername(String username) {
-        return registerUserRepository.findByUsername(username);
+        return userRepository.findByUsername(username);
     }
 }

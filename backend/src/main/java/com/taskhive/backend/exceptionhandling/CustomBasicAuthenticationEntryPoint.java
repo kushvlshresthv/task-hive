@@ -9,7 +9,6 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import java.io.IOException;
 
 public class CustomBasicAuthenticationEntryPoint implements AuthenticationEntryPoint {
-
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
         response.setHeader("my-custom-header", "Authentication Failed");

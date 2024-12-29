@@ -16,13 +16,11 @@ public class GenericController {
     @GetMapping("/isAuthenticated")
     public ResponseEntity<Response> isAuthenticated(HttpSession session) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        System.out.println(authentication.getName());
-        System.out.println(session.getId());
-        if (!authentication.getName().equals("anonymousUser")) {
+        if (!authentication.getName().equals("anonymous")) {
             if (authentication.isAuthenticated()) {
-                return new ResponseEntity<Response>(new Response("true"), HttpStatus.OK);
+                return new ResponseEntity<Response>(new Response("true"), HttpStatus.ACCEPTED);
             }
         }
-        return new ResponseEntity<Response>(new Response("false"), HttpStatus.OK);
+        return new ResponseEntity<Response>(new Response("false"), HttpStatus.NOT_ACCEPTABLE);
     }
 }

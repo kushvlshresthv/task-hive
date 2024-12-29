@@ -1,7 +1,7 @@
 package com.taskhive.backend.validators;
 
 import com.taskhive.backend.model.RegisterUser;
-import com.taskhive.backend.service.RegisterUserService;
+import com.taskhive.backend.service.UserService;
 import com.taskhive.backend.validators.annotations.CheckUsernameAvailability;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
@@ -15,7 +15,7 @@ import java.util.regex.Pattern;
 public class CheckUsernameAvailabilityValidator implements ConstraintValidator<CheckUsernameAvailability, String> {
 
     @Autowired
-    RegisterUserService registerUserService;
+    UserService userService;
 
 
     @Override
@@ -29,7 +29,7 @@ public class CheckUsernameAvailabilityValidator implements ConstraintValidator<C
         if (matcher.find()) {
             return false;
         } else {
-            RegisterUser user = registerUserService.loadUserByUsername(username);
+            RegisterUser user = userService.loadUserByUsername(username);
             if (user == null) {
                 return true;
             }
