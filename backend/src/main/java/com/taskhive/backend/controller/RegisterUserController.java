@@ -1,8 +1,8 @@
 package com.taskhive.backend.controller;
 
-import com.taskhive.backend.model.RegisterUser;
+import com.taskhive.backend.entity.AppUser;
 import com.taskhive.backend.response.Response;
-import com.taskhive.backend.service.UserService;
+import com.taskhive.backend.service.AppUserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,10 +18,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class RegisterUserController {
     @Autowired
-    UserService userService;
+    AppUserService appUserService;
 
     @PostMapping("/register")
-    public ResponseEntity<Response> register(@Valid @RequestBody RegisterUser user, Errors errors) {
+    public ResponseEntity<Response> register(@Valid @RequestBody AppUser user, Errors errors) {
         System.out.println(user);
 
         if (errors.hasErrors()) {
@@ -32,7 +32,7 @@ public class RegisterUserController {
             return new ResponseEntity<Response>(new Response("server side validation failed"), HttpStatus.UNPROCESSABLE_ENTITY);
         }
 
-        RegisterUser registeredUser = userService.saveNewUser(user);
+        AppUser registeredUser = appUserService.saveNewUser(user);
 
         if (registeredUser.getUid() > 0) {
             System.out.println("registered successfully");

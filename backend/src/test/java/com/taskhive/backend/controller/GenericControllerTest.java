@@ -1,7 +1,7 @@
 package com.taskhive.backend.controller;
 
 import com.taskhive.backend.config.SecurityConfiguration;
-import com.taskhive.backend.service.UserService;
+import com.taskhive.backend.service.AppUserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -22,7 +22,7 @@ public class GenericControllerTest {
 
     //SecurityConfiguration has UserDetailsService that requires RegisterUserService dependency.
     @MockBean
-    UserService userService;
+    AppUserService appUserService;
 
 
     @Test

@@ -1,5 +1,3 @@
-<p>new-project works fine!</p>
-
 <!-- new project will is created with the following information: 
     i. project title
     ii. description (optional)
@@ -12,6 +10,8 @@
 
 <!-- later add features to invite, and create section for managers and workers. roles, responsibility selection option while assigning the project -->
 
-<dialog #new_project_dialogue (click)="onDiaglogClick()">
-  <p>create a new project here</p>
+<dialog #new_project_dialogue (click)="onDiaglogClick($event)">
+  <form>
+    <input type="text" placeholder="Project Name" />
+  </form>
 </dialog>

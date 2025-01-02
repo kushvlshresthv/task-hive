@@ -1,4 +1,4 @@
-package com.taskhive.backend.model;
+package com.taskhive.backend.entity;
 
 import com.taskhive.backend.validators.annotations.CheckUsernameAvailability;
 import jakarta.persistence.*;
@@ -9,13 +9,15 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @Entity
 @Table(name = "registered_users")
 @AllArgsConstructor
 @Builder
 @NoArgsConstructor
-public class RegisterUser {
+public class AppUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int uid;
@@ -46,4 +48,7 @@ public class RegisterUser {
     @NotEmpty
     @Transient
     String confirmPassword;
+
+    @OneToMany(mappedBy = "user")
+    List<Project> projects;
 }

@@ -1,6 +1,6 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { MenuComponent } from './menu/menu.component';
-import { NewProjectComponent } from '../new-project/new-project.component';
+import { NewProjectComponent } from './new-project/new-project.component';
 
 @Component({
   selector: 'app-hive',
@@ -11,15 +11,12 @@ import { NewProjectComponent } from '../new-project/new-project.component';
 })
 export class HiveComponent {
   newProject = false;
-  @ViewChild('diag') diagloue?: ElementRef<HTMLDialogElement>;
 
   onNewProject() {
     this.newProject = !this.newProject;
-    this.diagloue?.nativeElement.show();
-    console.log('button clicked' + this.diagloue);
   }
 
   onDialogClicked() {
-    this.newProject = false;
+    this.newProject = !this.newProject;
   }
 }

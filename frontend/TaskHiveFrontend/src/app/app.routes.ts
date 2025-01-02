@@ -7,6 +7,11 @@ import { ErrorComponent } from './error/error.component';
 
 export const routes: Routes = [
   {
+    path: '',
+    redirectTo: 'hive',
+    pathMatch: 'full',
+  },
+  {
     path: 'login',
     component: LoginComponent,
   },

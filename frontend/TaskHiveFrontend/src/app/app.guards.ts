@@ -15,11 +15,12 @@ export function isAuthenticated(route: Route, segment: UrlSegment[]) {
     .pipe(
       map((response) => {
         if (response?.message == 'true') {
-          return of(true);
+          console.log('returning true');
+          return true;
         } else return router.parseUrl('/login');
       }),
       catchError((error: HttpErrorResponse) => {
-        return of(null);
+        return of(router.parseUrl('/login'));
       }),
     );
 }

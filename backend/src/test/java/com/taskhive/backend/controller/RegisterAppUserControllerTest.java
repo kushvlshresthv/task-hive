@@ -2,8 +2,8 @@ package com.taskhive.backend.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.taskhive.backend.config.SecurityConfiguration;
-import com.taskhive.backend.model.RegisterUser;
-import com.taskhive.backend.service.UserService;
+import com.taskhive.backend.entity.AppUser;
+import com.taskhive.backend.service.AppUserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,23 +18,23 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(RegisterUserController.class)
 @Import(SecurityConfiguration.class)
-public class RegisterUserControllerTest {
+public class RegisterAppUserControllerTest {
     @MockBean
-    UserService userService;
+    AppUserService appUserService;
 
     @Autowired
     MockMvc mvc;
 
-    RegisterUser user;
+    AppUser user;
 
     @BeforeEach
     public void init() {
-        this.user = RegisterUser.builder().email("ikushalstha@gmail.com").password("password").confirmPassword("password").firstName("firstName").lastName("lastName").username("newuser").uid(100).build();
+        this.user = AppUser.builder().email("ikushalstha@gmail.com").password("password").confirmPassword("password").firstName("firstName").lastName("lastName").username("newuser").uid(100).build();
     }
 
     @Test
     public void RegisterUserController_Register_ReturnsResponseEntity() throws Exception {
-        when(userService.saveNewUser(user)).thenReturn(user);
+        when(appUserService.saveNewUser(user)).thenReturn(user);
         mvc.perform(post("/register").contentType("application/json").content(jsonToString(user))).andExpect(status().isCreated());
     }
 
@@ -48,11 +48,11 @@ public class RegisterUserControllerTest {
     @Test
     public void RegisterUserController_Register_Returns_INERNAL_SERVERERROR() throws Exception {
         user.setUid(-1);
-        when(userService.saveNewUser(user)).thenReturn(user);
+        when(appUserService.saveNewUser(user)).thenReturn(user);
         mvc.perform(post("/register").contentType("application/json").content(jsonToString(user))).andExpect(status().isInternalServerError());
     }
 
-    public static String jsonToString(RegisterUser user) throws Exception {
+    public static String jsonToString(AppUser user) throws Exception {
         ObjectMapper mapper = new ObjectMapper();
         return mapper.writeValueAsString(user);
     }
