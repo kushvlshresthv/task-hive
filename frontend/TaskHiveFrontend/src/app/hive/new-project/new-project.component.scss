@@ -1,3 +1,10 @@
-dialog {
-  border: 1px solid red;
+:host {
+  border: 1px solid black;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  width: 50vw;
+  max-height: 50vh;
 }

@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, viewChild, ViewChild } from '@angular/core';
 import { MenuComponent } from './menu/menu.component';
 import { NewProjectComponent } from './new-project/new-project.component';
 
@@ -9,14 +9,4 @@ import { NewProjectComponent } from './new-project/new-project.component';
   templateUrl: './hive.component.html',
   styleUrl: './hive.component.scss',
 })
-export class HiveComponent {
-  newProject = false;
-
-  onNewProject() {
-    this.newProject = !this.newProject;
-  }
-
-  onDialogClicked() {
-    this.newProject = !this.newProject;
-  }
-}
+export class HiveComponent {}

@@ -1,17 +1,40 @@
 <!-- new project will is created with the following information: 
-    i. project title
+    i.  project title
     ii. description (optional)
     iii. project type like: marketing, development, maintainence, etc
     iv. priority
     v. status(not begin by default)
-    vi. project deadline
-    vii.start date
+    vi. due date 
+    vii. finish date
 -->
 
 <!-- later add features to invite, and create section for managers and workers. roles, responsibility selection option while assigning the project -->
 
+<button (click)="onNewProject()">New Project</button>
+
 <dialog #new_project_dialogue (click)="onDiaglogClick($event)">
+  <div class="title">
+    <h1>Add A Project</h1>
+  </div>
   <form>
     <input type="text" placeholder="Project Name" />
+    <input type="text" placeholder="Project Descritpion" />
+    <select name="projectType">
+      <option value="">Choose a project type</option>
+      <option value="marketing">Marketing</option>
+      <option value="development">Development</option>
+      <option value="maintainence">Maintainence</option>
+      <option value="others">Others</option>
+    </select>
+
+    <select name="priority">
+      <option value="">Choose a priority</option>
+      <option value="Low Priority">Low Priority</option>
+      <option value="Medim Priority">Medium Priority</option>
+      <option value="High Priority">High Priority</option>
+    </select>
+
+    <input type="date" name="startDate" />
+    <input type="date" name="finishDate" />
   </form>
 </dialog>

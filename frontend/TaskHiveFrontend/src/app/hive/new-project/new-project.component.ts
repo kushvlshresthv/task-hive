@@ -17,11 +17,12 @@ import {
 })
 export class NewProjectComponent {
   diag = viewChild<ElementRef<HTMLDialogElement>>('new_project_dialogue');
-  @Output() dialogClicked = new EventEmitter<undefined>();
-  constructor() {
-    effect(() => {
+  diagOpen = false;
+
+  onNewProject() {
+    if (!this.diagOpen) {
       this.diag()!.nativeElement.showModal();
-    });
+    }
   }
 
   onDiaglogClick($event: MouseEvent) {
@@ -40,8 +41,8 @@ export class NewProjectComponent {
 
       console.log($event.clientX);
       console.log($event.clientY);
-      this.diag()?.nativeElement.close();
-      this.dialogClicked.emit();
+      this.diagOpen = false;
+      this.diag()!.nativeElement.close();
     }
   }
 }
