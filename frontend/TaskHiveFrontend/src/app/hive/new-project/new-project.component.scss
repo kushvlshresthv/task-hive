@@ -1,10 +1,30 @@
 :host {
   border: 1px solid black;
 }
-
+// dialog {
+//   display: flex;
+//   flex-direction: column;
+//   gap: 30px;
+// }
+.dialog-container {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
 form {
   display: flex;
   flex-direction: column;
-  width: 50vw;
-  max-height: 50vh;
+  width: 25vw;
+  min-height: 30;
+  gap: 20px;
+}
+
+.date-container,
+.select-container,
+.button-container {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  width: 100%;
+  justify-content: space-between;
 }

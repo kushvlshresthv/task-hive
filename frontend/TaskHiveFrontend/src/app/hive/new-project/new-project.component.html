@@ -12,29 +12,46 @@
 
 <button (click)="onNewProject()">New Project</button>
 
-<dialog #new_project_dialogue (click)="onDiaglogClick($event)">
-  <div class="title">
-    <h1>Add A Project</h1>
+<dialog (click)="onDiaglogClick($event)" #new_project_dialogue>
+  <div class="dialog-container">
+    <div class="title">
+      <h1>Add A Project</h1>
+    </div>
+    <form [formGroup]="formData">
+      <input
+        type="text"
+        placeholder="Project Name"
+        formControlName="projectName"
+      />
+      <textarea
+        placeholder="Project Description"
+        formControlName="projectDescription"
+      ></textarea>
+      <div class="select-container">
+        <select name="projectType" formControlName="projectType">
+          <option value="">Project Type</option>
+          <option value="marketing">Marketing</option>
+          <option value="development">Development</option>
+          <option value="maintainence">Maintainence</option>
+          <option value="others">Others</option>
+        </select>
+
+        <select name="priority" formControlName="priority">
+          <option value="">Priority</option>
+          <option value="low priority">Low Priority</option>
+          <option value="medium priority">Medium Priority</option>
+          <option value="high priority">High Priority</option>
+        </select>
+      </div>
+
+      <div class="date-container">
+        <input type="date" name="startDate" formControlName="startDate" />
+        <input type="date" name="finishDate" formControlName="dueDate" />
+      </div>
+      <div class="button-container">
+        <button type="submit" (click)="onSubmit()">Submit</button>
+        <button type="cancel">Cancel</button>
+      </div>
+    </form>
   </div>
-  <form>
-    <input type="text" placeholder="Project Name" />
-    <input type="text" placeholder="Project Descritpion" />
-    <select name="projectType">
-      <option value="">Choose a project type</option>
-      <option value="marketing">Marketing</option>
-      <option value="development">Development</option>
-      <option value="maintainence">Maintainence</option>
-      <option value="others">Others</option>
-    </select>
-
-    <select name="priority">
-      <option value="">Choose a priority</option>
-      <option value="Low Priority">Low Priority</option>
-      <option value="Medim Priority">Medium Priority</option>
-      <option value="High Priority">High Priority</option>
-    </select>
-
-    <input type="date" name="startDate" />
-    <input type="date" name="finishDate" />
-  </form>
 </dialog>
