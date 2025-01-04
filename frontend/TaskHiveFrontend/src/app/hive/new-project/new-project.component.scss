@@ -1,11 +1,7 @@
 :host {
   border: 1px solid black;
 }
-// dialog {
-//   display: flex;
-//   flex-direction: column;
-//   gap: 30px;
-// }
+
 .dialog-container {
   display: flex;
   flex-direction: column;
@@ -21,10 +17,16 @@ form {
 
 .date-container,
 .select-container,
-.button-container {
+.button-container,
+.error-container {
   display: flex;
   flex-direction: row;
-  gap: 10px;
   width: 100%;
   justify-content: space-between;
+}
+
+.label {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }

@@ -15,7 +15,6 @@ export function isAuthenticated(route: Route, segment: UrlSegment[]) {
     .pipe(
       map((response) => {
         if (response?.message == 'true') {
-          console.log('returning true');
           return true;
         } else return router.parseUrl('/login');
       }),

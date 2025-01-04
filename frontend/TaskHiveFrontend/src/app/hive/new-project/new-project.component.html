@@ -23,21 +23,25 @@
         placeholder="Project Name"
         formControlName="projectName"
       />
+      @if (checkIfProjectNameIsNotValid()) {
+        <div class="field-error">
+          <p>Project name is required</p>
+        </div>
+      }
       <textarea
         placeholder="Project Description"
         formControlName="projectDescription"
       ></textarea>
       <div class="select-container">
         <select name="projectType" formControlName="projectType">
-          <option value="">Project Type</option>
+          <option value="">Select Project Type</option>
           <option value="marketing">Marketing</option>
           <option value="development">Development</option>
           <option value="maintainence">Maintainence</option>
           <option value="others">Others</option>
         </select>
-
         <select name="priority" formControlName="priority">
-          <option value="">Priority</option>
+          <option value="">Select Priority</option>
           <option value="low priority">Low Priority</option>
           <option value="medium priority">Medium Priority</option>
           <option value="high priority">High Priority</option>
@@ -45,11 +49,61 @@
       </div>
 
       <div class="date-container">
-        <input type="date" name="startDate" formControlName="startDate" />
-        <input type="date" name="finishDate" formControlName="finishDate" />
+        <div class="label">
+          <label for="startDate">Start Date: </label>
+          <input
+            id="startDate"
+            type="date"
+            name="startDate"
+            [formControl]="formData.controls.dates.controls.startDate"
+          />
+        </div>
+
+        <div class="label">
+          <label for="finishDate">Finish Date: </label>
+          <input
+            id="fisnishDate"
+            type="date"
+            name="finishDate"
+            [formControl]="formData.controls.dates.controls.finishDate"
+          />
+        </div>
       </div>
+
+      <!-- 
+           check if finish date or start date has any error
+           if has any error, load the two divs for style purposes 
+           and then display the error message 
+      -->
+      @if (checkIfFinishDateIsNotValid() || checkIfStartDateIsNotValid()) {
+        <div class="error-container">
+          <div class="field-error">
+            @if (checkIfStartDateIsNotValid()) {
+              <p>{{ checkIfStartDateIsNotValid() }}</p>
+            }
+          </div>
+          <div class="field-error">
+            @if (checkIfFinishDateIsNotValid()) {
+              <p>{{ checkIfFinishDateIsNotValid() }}</p>
+            }
+          </div>
+        </div>
+      }
+
+      @if (checkIfDatesAreNotValid()) {
+        <div class="field-error">
+          <p>Start date is later than finish date</p>
+        </div>
+      }
+
       <div class="button-container">
-        <button type="submit" (click)="onSubmit()">Submit</button>
+        <button
+          type="submit"
+          [disabled]="formData.invalid"
+          (click)="onSubmit()"
+        >
+          Submit
+        </button>
         <button type="cancel">Cancel</button>
       </div>
     </form>
