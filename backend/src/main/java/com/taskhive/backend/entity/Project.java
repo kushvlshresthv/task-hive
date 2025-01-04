@@ -1,10 +1,12 @@
 package com.taskhive.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.ToString;
 
 import java.time.LocalDate;
 
@@ -12,6 +14,7 @@ import java.time.LocalDate;
 @Builder
 @AllArgsConstructor
 @Entity(name = "projects")
+@ToString()
 public class Project {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,5 +44,6 @@ public class Project {
 
     @ManyToOne(targetEntity = AppUser.class, fetch = FetchType.EAGER)
     @JoinColumn(name = "uid", referencedColumnName = "uid", nullable = false)
+    @JsonIgnore
     AppUser user;
 }

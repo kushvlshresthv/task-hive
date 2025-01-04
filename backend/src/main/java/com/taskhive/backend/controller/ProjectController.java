@@ -1,13 +1,15 @@
 package com.taskhive.backend.controller;
 
 import com.taskhive.backend.constants.GlobalConstants;
+import com.taskhive.backend.entity.AppUser;
 import com.taskhive.backend.entity.Project;
 import com.taskhive.backend.response.Response;
+import com.taskhive.backend.service.AppUserService;
 import com.taskhive.backend.service.ProjectService;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,9 +23,14 @@ public class ProjectController {
     @Autowired
     ProjectService projectService;
 
+    @Autowired
+    AppUserService appUserService;
+
     @PostMapping("/createProject")
-    public ResponseEntity<Response> createProject(@Valid @RequestBody Project project, Errors errors) {
+    public ResponseEntity<Response> createProject(@RequestBody Project project, Errors errors) {
         ResponseEntity<Response> responseEntity;
+        AppUser user = appUserService.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+        project.setUser(user);
         if (errors.hasErrors()) {
             return new ResponseEntity<Response>(new Response("server side validation failed"), HttpStatus.INTERNAL_SERVER_ERROR);
         }

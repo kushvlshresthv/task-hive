@@ -2,18 +2,20 @@ import {
   Component,
   effect,
   ElementRef,
-  EventEmitter,
-  Output,
+  inject,
   viewChild,
-  ViewChild,
 } from '@angular/core';
 import {
   FormControl,
   FormGroup,
   Validators,
-  FormsModule,
   ReactiveFormsModule,
 } from '@angular/forms';
+import { Project } from './new-project.module';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { catchError, of } from 'rxjs';
+import { BACKEND_URL } from '../../global.constants';
+import { Response } from '../../model/response';
 
 @Component({
   selector: 'app-new-project',
@@ -25,6 +27,7 @@ import {
 export class NewProjectComponent {
   diag = viewChild<ElementRef<HTMLDialogElement>>('new_project_dialogue');
   diagOpen = false;
+  http = inject(HttpClient);
 
   formData = new FormGroup({
     projectName: new FormControl('', {
@@ -34,7 +37,7 @@ export class NewProjectComponent {
     startDate: new FormControl('', {
       validators: [Validators.required],
     }),
-    dueDate: new FormControl('', {
+    finishDate: new FormControl('', {
       validators: [Validators.required],
     }),
     priority: new FormControl('', {
@@ -79,11 +82,32 @@ export class NewProjectComponent {
   }
 
   onSubmit() {
-    console.log(this.formData.controls.projectName.value);
-    console.log(this.formData.controls.projectDescription.value);
-    console.log(this.formData.controls.startDate.value);
-    console.log(this.formData.controls.dueDate.value);
-    console.log(this.formData.controls.priority.value);
-    console.log(this.formData.controls.projectType.value);
+    const newProject: Project = {
+      projectName: this.formData.controls.projectName.value,
+      projectDescription: this.formData.controls.projectDescription.value,
+      startDate: this.formData.controls.startDate.value,
+      finishDate: this.formData.controls.finishDate.value,
+      priority: this.formData.controls.priority.value,
+      projectType: this.formData.controls.projectType.value,
+    };
+
+    this.formData.reset();
+    this.http
+      .post<Response>(BACKEND_URL + '/createProject', newProject, {
+        withCredentials: true,
+      })
+      .pipe(
+        catchError((error: HttpErrorResponse) => {
+          console.log('error message: ' + error.error.message);
+          return of(null);
+        }),
+      )
+      .subscribe({
+        next: (response) => {
+          if (response != null) {
+            console.log(response.message);
+          }
+        },
+      });
   }
 }
