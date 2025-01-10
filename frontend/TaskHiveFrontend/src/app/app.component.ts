@@ -1,7 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { HeaderComponent } from './header/header.component';
-import { SignupComponent } from './signup/signup.component';
 
 @Component({
   selector: 'app-root',
@@ -11,5 +10,5 @@ import { SignupComponent } from './signup/signup.component';
   styleUrl: './app.component.scss',
 })
 export class AppComponent {
-  title = 'SajiloCollabFrontEnd';
+  title = 'Task Hive';
 }

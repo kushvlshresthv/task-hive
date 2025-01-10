@@ -24,7 +24,7 @@ export function checkIfSameValue(field1: string, field2: string) {
   };
 }
 
-//being used in new-proejct component
+//being used in new-project component
 
 export function isFinishDateLaterThanStartDate(control: AbstractControl) {
   const startDate = control.get('startDate')?.value;
@@ -47,11 +47,12 @@ export function isFuture(control: AbstractControl) {
     Date.now() > selectedDate.getTime() &&
     Date.now() - selectedDate.getTime() > 86400000 //greater than 1 day
   ) {
+    console.log('returning not future date');
     return {
       notFutureDate: 'select a future date',
     };
   }
-
+  console.log('returning null');
   return null;
 }
 

@@ -17,11 +17,17 @@ form {
 
 .date-container,
 .select-container,
-.button-container,
-.error-container {
+.button-container {
   display: flex;
   flex-direction: row;
   width: 100%;
+  justify-content: space-between;
+}
+
+.error-container {
+  display: flex;
+  flex-direction: row;
+  max-width: 100%;
   justify-content: space-between;
 }
 

@@ -26,48 +26,62 @@ import { isFuture, isFinishDateLaterThanStartDate } from '../../validators';
   styleUrl: './new-project.component.scss',
 })
 export class NewProjectComponent {
-  diag = viewChild<ElementRef<HTMLDialogElement>>('new_project_dialogue');
-  diagOpen = false;
   http = inject(HttpClient);
+  diag = viewChild<ElementRef<HTMLDialogElement>>('new_project_dialogue');
+
+  //form controls
+  projectName = new FormControl('', {
+    validators: [Validators.required],
+  });
+
+  projectDescription = new FormControl('', {});
+
+  startDate = new FormControl('', {
+    validators: [Validators.required, isFuture],
+  });
+  finishDate = new FormControl('', {
+    validators: [Validators.required, isFuture],
+  });
+
+  priority = new FormControl('', {
+    validators: [Validators.required],
+  });
+  projectType = new FormControl('', {
+    validators: [Validators.required],
+  });
 
   formData = new FormGroup({
-    projectName: new FormControl('', {
-      validators: [Validators.required],
-    }),
-    projectDescription: new FormControl('', {}),
+    projectName: this.projectName,
+    projectDescription: this.projectDescription,
     dates: new FormGroup(
       {
-        startDate: new FormControl('', {
-          validators: [Validators.required, isFuture],
-        }),
-        finishDate: new FormControl('', {
-          validators: [Validators.required, isFuture],
-        }),
+        startDate: this.startDate,
+        finishDate: this.finishDate,
       },
       {
         validators: [isFinishDateLaterThanStartDate],
       },
     ),
-    priority: new FormControl('', {
-      validators: [Validators.required],
-    }),
-    projectType: new FormControl('', {
-      validators: [Validators.required],
-    }),
+    priority: this.priority,
+    projectType: this.projectType,
   });
 
+  //remove this after new dialog completion
   constructor() {
     effect(() => {
       this.diag()!.nativeElement.showModal();
     });
   }
-  onNewProject() {
-    if (!this.diagOpen) {
-      this.diagOpen = !this.diagOpen;
+
+  //opens the dialog
+  openDialog() {
+    console.log('executed');
+    if (!this.diag()!.nativeElement.open) {
       this.diag()!.nativeElement.showModal();
     }
   }
 
+  //close the dialog when clicked outside of dialog's boundry
   onDiaglogClick($event: MouseEvent) {
     const rect = this.diag()!.nativeElement.getBoundingClientRect();
 
@@ -84,71 +98,20 @@ export class NewProjectComponent {
 
       console.log($event.clientX);
       console.log($event.clientY);
-      this.diagOpen = false;
       this.diag()!.nativeElement.close();
+
+      console.log('executed');
     }
   }
 
-  checkIfProjectNameIsNotValid(): boolean {
-    const projectName = this.formData.controls.projectName;
-    if (projectName.touched && projectName.dirty) {
-      if (projectName.errors?.['required']) {
-        return true;
-      }
-      return false;
-    }
-    return false;
-  }
-
-  checkIfStartDateIsNotValid(): string | undefined {
-    const startDate = this.formData.controls.dates.controls.startDate;
-    if (startDate.touched) {
-      if (startDate.errors?.['required']) {
-        return 'Select start date';
-      }
-    }
-
-    //kept outside of 'touched' check because if i select a date in the past, the error message is not displayed immediately.
-    if (startDate.errors?.['notFutureDate'] && !startDate.pristine) {
-      return 'Select a future date';
-    }
-    return undefined;
-  }
-
-  checkIfFinishDateIsNotValid(): string | undefined {
-    const finishDate = this.formData.controls.dates.controls.finishDate;
-    if (finishDate.touched) {
-      if (finishDate.errors?.['required']) {
-        return 'Select finish date';
-      }
-    }
-    if (finishDate.errors?.['notFutureDate'] && !finishDate.pristine) {
-      return 'Select a future date';
-    }
-    return undefined;
-  }
-
-  checkIfDatesAreNotValid() {
-    const dates = this.formData.controls.dates;
-    if (
-      dates.touched &&
-      !dates.controls.finishDate.errors?.['notFutureDate'] &&
-      !dates.controls.startDate.errors?.['notFutureDate']
-    ) {
-      if (dates.errors?.['improperDates']) {
-        return true;
-      }
-    }
-    return false;
-  }
   onSubmit() {
     const newProject: Project = {
-      projectName: this.formData.controls.projectName.value,
-      projectDescription: this.formData.controls.projectDescription.value,
-      startDate: this.formData.controls.dates.controls.startDate.value,
-      finishDate: this.formData.controls.dates.controls.finishDate.value,
-      priority: this.formData.controls.priority.value,
-      projectType: this.formData.controls.projectType.value,
+      projectName: this.projectName.value,
+      projectDescription: this.projectDescription.value,
+      startDate: this.startDate.value,
+      finishDate: this.finishDate.value,
+      priority: this.priority.value,
+      projectType: this.projectType.value,
     };
 
     this.formData.reset();

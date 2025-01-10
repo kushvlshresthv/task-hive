@@ -18,17 +18,22 @@
           type="text"
           formControlName="username"
           placeholder="Username"
-          [class.errorInput]="checkIfUsernameNotValid()"
+          [class.errorInput]="
+            username.touched && username.dirty && username.invalid
+          "
         />
       </li>
 
-      <div class="fieldError">
-        @if (checkIfUsernameNotValid()) {
-          @for (error of errors.username; track $index) {
-            <p>{{ error }}</p>
-          }
+      <!-- username validation fail message -->
+      @if (username.touched && username.dirty) {
+        @if (username.errors?.["required"]) {
+          <p class="fieldError">Username is required</p>
+        } @else if (username.errors?.["usernameImproperFormat"]) {
+          <p class="fieldError">
+            Username must not have any spaces or special symbols
+          </p>
         }
-      </div>
+      }
 
       <!-- password control -->
       <li class="password">
@@ -37,16 +42,18 @@
           type="password"
           [formControl]="formData.controls.password"
           placeholder="Password"
+          [class.errorInput]="
+            password.touched && password.dirty && password.invalid
+          "
         />
       </li>
 
-      <div class="fieldError">
-        @if (checkIfPasswordNotValid()) {
-          @for (error of errors.password; track $index) {
-            <p>{{ error }}</p>
-          }
+      <!-- password validation fail message -->
+      @if (password.touched && password.dirty) {
+        @if (password.errors?.["required"]) {
+          <p class="fieldError">Username is required</p>
         }
-      </div>
+      }
 
       <li class="submitButton">
         <button type="submit" [disabled]="formData.invalid">Submit</button>
