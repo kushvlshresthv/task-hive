@@ -19,7 +19,7 @@
   justify-content: center;
   align-items: center;
   width: 49%;
-  background-color: rgb(47, 167, 227);
+  background-color: rgb(111, 171, 201);
   font-size: 3rem;
   font-family: "Edu AU VIC WA NT Arrows", cursive;
   font-optical-sizing: auto;
@@ -107,7 +107,7 @@ button {
   border-radius: 11px;
   margin-bottom: 20px;
   font-size: 1.3rem;
-  background-color: #00bfff;
+  background-color: rgb(111, 171, 201);
   color: white;
   border: none;
   letter-spacing: 2px;
@@ -115,7 +115,7 @@ button {
 }
 
 button:disabled {
-  background-color: #55d0f9;
+  background-color: rgb(156, 210, 236);
 }
 
 .fieldError {
