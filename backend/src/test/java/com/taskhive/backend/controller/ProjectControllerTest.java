@@ -24,7 +24,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(ProjectController.class)
 @Import({SecurityConfiguration.class})
-//AppUserService is used by SecurityConfiguration
 public class ProjectControllerTest {
     @Autowired
     MockMvc mvc;
@@ -35,14 +34,15 @@ public class ProjectControllerTest {
     Project project;
     AppUser user;
 
+    //AppUserService is used by SecurityConfiguration
     @MockBean
     AppUserService appUserService;
 
     @BeforeEach
     public void init() {
-        user = AppUser.builder().email("ikusshalstha@gmail.com").password("nopass").confirmPassword("nopass").firstName("firstName").lastName("lastName").username("newuser").build();
+        user = AppUser.builder().email("ikusshalstha@gmail.com").password("nopass").confirmPassword("nopass").firstName("firstName").lastName("lastName").username("newuser").uid(1001).build();
 
-        project = Project.builder().projectName("new").projectDescription("description").startDate(LocalDate.now()).finishDate(LocalDate.of(2025, 2, 12)).priority("high").projectType("business").user(user).build();
+        project = Project.builder().projectName("new").projectDescription("description").startDate(LocalDate.now()).finishDate(LocalDate.of(2025, 2, 12)).priority("high").projectType("business").build();
 
         Mockito.when(projectService.createProject(project)).thenReturn(project);
     }
@@ -65,6 +65,7 @@ public class ProjectControllerTest {
     //Test when ProjectService returns an invalid saved Project object
     @Test
     @WithMockUser
+
     public void ProjectControllerTest_Create_Project_Return_HTTP_INTERNAL_SERVER_ERRORR() throws Exception {
         Project invalidProject = Project.builder().pid(-1).build();
         Mockito.when(projectService.createProject(project)).thenReturn(invalidProject);

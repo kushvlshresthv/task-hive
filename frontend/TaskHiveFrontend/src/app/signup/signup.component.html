@@ -16,17 +16,18 @@
             type="text"
             formControlName="firstName"
             placeholder="First Name"
-            [class.errorInput]="checkIfFirstNameNotValid()"
+            [class.errorInput]="
+              firstName.touched && firstName.dirty && firstName.invalid
+            "
           />
 
-          <!-- name control error messages -->
-          <div class="fieldError">
-            @if (checkIfFirstNameNotValid()) {
-              @for (errorMessage of errorMessages.firstName; track $index) {
-                <p>{{ errorMessage }}</p>
-              }
-            }
-          </div>
+          @if (
+            firstName.touched &&
+            firstName.dirty &&
+            firstName.errors?.["required"]
+          ) {
+            <p class="fieldError">First name is required</p>
+          }
         </li>
 
         <li class="lastName">
@@ -34,15 +35,15 @@
             type="text"
             formControlName="lastName"
             placeholder="Last Name"
-            [class.errorInput]="checkIfLastNameNotValid()"
+            [class.errorInput]="
+              lastName.touched && lastName.dirty && lastName.invalid
+            "
           />
-          <div class="fieldError">
-            @if (checkIfLastNameNotValid()) {
-              @for (errorMessage of errorMessages.lastName; track $index) {
-                <p>{{ errorMessage }}</p>
-              }
-            }
-          </div>
+          @if (
+            lastName.touched && lastName.dirty && lastName.errors?.["required"]
+          ) {
+            <p class="fieldError">Last name is required</p>
+          }
         </li>
       </div>
 
@@ -53,18 +54,24 @@
           type="text"
           formControlName="username"
           placeholder="Username"
-          [class.errorInput]="checkIfUsernameNotValid()"
+          [class.errorInput]="
+            username.touched && username.dirty && username.invalid
+          "
         />
       </li>
 
       <!-- username control error messages -->
-      <div class="fieldError">
-        @if (checkIfUsernameNotValid()) {
-          @for (errorMessage of errorMessages.username; track $index) {
-            <p>{{ errorMessage }}</p>
-          }
+      @if (username.touched && username.dirty) {
+        @if (this.username.errors?.["required"]) {
+          <p class="fieldError">Username is required</p>
+        } @else if (this.username.errors?.["usernameImproperFormat"]) {
+          <p class="fieldError">
+            Username must not have any spaces or special sumbols
+          </p>
+        } @else if (username.errors?.["usernameNotAvailable"]) {
+          <p class="fieldError">This username is already taken</p>
         }
-      </div>
+      }
 
       <!-- email control -->
       <li class="email">
@@ -72,18 +79,18 @@
           type="text"
           [formControl]="formData.controls.email"
           placeholder="Email"
-          [class.errorInput]="checkIfEmailNotValid()"
+          [class.errorInput]="email.touched && email.dirty && email.invalid"
         />
       </li>
 
       <!-- email control error messages -->
-      <div class="fieldError">
-        @if (checkIfEmailNotValid()) {
-          @for (errorMessage of errorMessages.email; track $index) {
-            <p>{{ errorMessage }}</p>
-          }
+      @if (email.touched && email.dirty) {
+        @if (email.errors?.["required"]) {
+          <p class="fieldError">Email is required</p>
+        } @else if (email.errors?.["email"]) {
+          <p class="fieldError">Enter a valid email</p>
         }
-      </div>
+      }
 
       <!-- password control -->
       <li class="password">
@@ -92,19 +99,25 @@
           type="password"
           [formControl]="formData.controls.pass.controls.password"
           placeholder="Password"
-          [class.errorInput]="checkIfPasswordNotValid()"
+          [class.errorInput]="
+            password.touched &&
+            password.dirty &&
+            (password.invalid ||
+              (pass.invalid &&
+                confirmPassword.touched &&
+                confirmPassword.dirty))
+          "
         />
       </li>
 
       <!-- password control error messages -->
-
-      <div class="fieldError">
-        @if (checkIfPasswordNotValid()) {
-          @for (errorMessage of errorMessages.password; track $index) {
-            <p>{{ errorMessage }}</p>
-          }
+      @if (password.touched && password.dirty) {
+        @if (password.errors?.["required"]) {
+          <p class="fieldError">Password is required</p>
+        } @else if (password.errors?.["minlength"]) {
+          <p class="fieldError">Password must be at least 5 letters long</p>
         }
-      </div>
+      }
 
       <!-- confirm password control -->
       <li class="confirmPassword">
@@ -113,18 +126,25 @@
           type="password"
           [formControl]="formData.controls.pass.controls.confirmPassword"
           placeholder="Confirm Password"
-          [class.errorInput]="checkIfConfirmPasswordNotValid()"
+          [class.errorInput]="
+            confirmPassword.touched &&
+            confirmPassword.dirty &&
+            (confirmPassword.invalid ||
+              (pass.invalid && password.touched && password.dirty))
+          "
         />
       </li>
 
       <!-- confirm password control error messages -->
-      <div class="fieldError">
-        @if (checkIfConfirmPasswordNotValid()) {
-          @for (errorMessage of errorMessages.confirmPassword; track $index) {
-            <p>{{ errorMessage }}</p>
-          }
+      @if (confirmPassword.touched && confirmPassword.dirty) {
+        @if (confirmPassword.errors?.["required"]) {
+          <p class="fieldError">Confirm Password is required</p>
+        } @else if (pass.errors?.["notSameValue"]) {
+          <p class="fieldError">
+            Password and Confirm Password fields do not match
+          </p>
         }
-      </div>
+      }
 
       <li class="submitButton">
         <button type="submit" [disabled]="formData.invalid">Submit</button>

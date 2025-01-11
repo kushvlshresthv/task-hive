@@ -1,14 +1,19 @@
+import { AfterViewInit, Component, inject, OnInit } from '@angular/core';
+import {
+  AbstractControl,
+  FormControl,
+  FormControlName,
+  FormGroup,
+  FormGroupName,
+  ReactiveFormsModule,
+  ValidationErrors,
+  Validators,
+} from '@angular/forms';
 import {
   checkIfSameValue,
   checkUsernameAvailability,
-} from './signup.validators';
-import { AfterViewInit, Component, inject, OnInit } from '@angular/core';
-import {
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+} from '../hive/new-project/new-project.validators';
+import { FormControlErrorMessages } from './signup.model';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { catchError, of } from 'rxjs';
 import { RouterLink } from '@angular/router';

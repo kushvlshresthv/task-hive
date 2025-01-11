@@ -14,7 +14,7 @@ import { Router, RouterLink } from '@angular/router';
 import { catchError, of } from 'rxjs';
 import { BACKEND_URL } from '../global.constants';
 import { Response } from '../model/response';
-import { checkUsernameFormat } from '../validators';
+import { checkUsernameFormat } from './login.validators';
 
 interface Error {
   username: string[];

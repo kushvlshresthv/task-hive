@@ -16,7 +16,10 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { catchError, of } from 'rxjs';
 import { BACKEND_URL } from '../../global.constants';
 import { Response } from '../../model/response';
-import { isFuture, isFinishDateLaterThanStartDate } from '../../validators';
+import {
+  isFuture,
+  isFinishDateLaterThanStartDate,
+} from './new-project.validators';
 
 @Component({
   selector: 'app-new-project',
@@ -86,10 +89,10 @@ export class NewProjectComponent {
     const rect = this.diag()!.nativeElement.getBoundingClientRect();
 
     if (
-      $event.clientX < rect.left ||
-      $event.clientX > rect.right ||
-      $event.clientY < rect.top ||
-      $event.clientY > rect.bottom
+      $event.clientX < rect.left - 175 ||
+      $event.clientX > rect.right + 175 ||
+      $event.clientY < rect.top - 175 ||
+      $event.clientY > rect.bottom + 175
     ) {
       console.log(rect.left);
       console.log(rect.right);
