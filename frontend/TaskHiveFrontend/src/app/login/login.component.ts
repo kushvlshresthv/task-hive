@@ -58,7 +58,6 @@ export class LoginComponent implements OnInit {
     });
 
     console.log('submitting request to: ' + BACKEND_URL + '/login');
-    console.log(this.router);
     this.http
       .get<Response>(BACKEND_URL + '/login', {
         headers: headers,

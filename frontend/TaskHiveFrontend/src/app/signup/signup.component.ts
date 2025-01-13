@@ -11,7 +11,7 @@ import {
 } from '@angular/forms';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { catchError, of } from 'rxjs';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { Response } from '../model/response';
 
 @Component({
@@ -32,6 +32,7 @@ export class SignupComponent implements OnInit {
   pass!: FormGroup;
 
   private http = inject(HttpClient);
+  private router = inject(Router);
   private checkUsernameAvailabilitInstance = inject(checkUsernameAvailability);
 
   formData = new FormGroup({
@@ -102,7 +103,7 @@ export class SignupComponent implements OnInit {
       .subscribe({
         next: (response) => {
           if (response != null) {
-            console.log(response.message);
+            this.router.navigateByUrl('hive');
           }
         },
       });
