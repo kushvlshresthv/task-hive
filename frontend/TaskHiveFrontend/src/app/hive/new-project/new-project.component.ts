@@ -11,7 +11,7 @@ import {
   Validators,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { Project } from './new-project.module';
+import { Project } from './new-project.model';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { catchError, of } from 'rxjs';
 import { BACKEND_URL } from '../../global.constants';
@@ -69,12 +69,14 @@ export class NewProjectComponent {
     projectType: this.projectType,
   });
 
-  //remove this after new dialog completion
-  constructor() {
-    effect(() => {
-      this.diag()!.nativeElement.showModal();
-    });
-  }
+  //enable during development of this component
+  //automatically renders the dialog box when component is initialized
+
+  // constructor() {
+  //   effect(() => {
+  //     this.diag()!.nativeElement.showModal();
+  //   });
+  // }
 
   //opens the dialog
   openDialog() {

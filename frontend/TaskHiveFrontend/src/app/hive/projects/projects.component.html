@@ -1,1 +1,5 @@
-<p>projects works!</p>
+@for (proj of projects; track $index) {
+  <app-project [project]="proj" class="project"></app-project>
+} @empty {
+  <p>You do not have any projects</p>
+}

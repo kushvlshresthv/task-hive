@@ -19,6 +19,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -72,6 +73,14 @@ public class ProjectControllerTest {
         mvc.perform(post("/createProject").contentType("application/json").content(jsonToString(project))).andExpect(status().isInternalServerError());
 
     }
+
+    @Test
+    @WithMockUser(username = "username")
+    public void ProjectControllerTest_GetProjects_Returns_HTTPOK() throws Exception {
+        Mockito.when(appUserService.loadUserByUsername("username")).thenReturn(user);
+        mvc.perform(get("/projects").contentType("application/json")).andExpect(status().isOk());
+    }
+
 
     public static String jsonToString(Project project) throws Exception {
         ObjectMapper mapper = new ObjectMapper();

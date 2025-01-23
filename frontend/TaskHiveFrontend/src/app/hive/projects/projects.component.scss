@@ -1,0 +1,12 @@
+:host {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  border: 5px solid black;
+  justify-content: flex-start;
+  align-items: flex-start;
+  align-content: flex-start;
+}
+.project {
+  border: 1px solid red;
+}

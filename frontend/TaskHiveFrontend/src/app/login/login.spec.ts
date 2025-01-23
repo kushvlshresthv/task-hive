@@ -47,7 +47,7 @@ describe('login component test', () => {
     expect(router.navigateByUrl.calls.count()).toEqual(1);
   });
 
-  it('[LoginComponent] onSubmit() should not do anything', () => {
+  it('[LoginComponent] onSubmit() should not do anything due to HttpError response', () => {
     login.onSubmit();
     const request = httpTestingController.expectOne(`${BACKEND_URL}/login`);
 

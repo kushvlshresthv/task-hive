@@ -12,13 +12,20 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @CrossOrigin(origins = GlobalConstants.FRONTEND_URL, allowCredentials = "true", allowedHeaders = "*", exposedHeaders = "*")
 
+
+
+/*
+/createProject gets the user from the SecurityContextHolder and saves the project in the database
+
+/projects gets the user from the SecurityContextHolder and gets the project from the database
+
+ */
 @RestController
 public class ProjectController {
     @Autowired
@@ -46,5 +53,18 @@ public class ProjectController {
         }
 
         return new ResponseEntity<Response>(new Response("project successfully saved"), HttpStatus.OK);
+    }
+
+    @GetMapping("/projects")
+    public ResponseEntity<Response> getProjects() {
+        AppUser user = appUserService.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+        
+        List<Project> projects = user.getProjects();
+
+        Response response = new Response();
+        response.setMainBody(projects);
+        response.setMessage("Projects:");
+
+        return new ResponseEntity<Response>(response, HttpStatus.OK);
     }
 }

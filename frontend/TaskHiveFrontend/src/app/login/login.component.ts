@@ -16,11 +16,6 @@ import { BACKEND_URL } from '../global.constants';
 import { Response } from '../model/response';
 import { checkUsernameFormat } from './login.validators';
 
-interface Error {
-  username: string[];
-  password: string[];
-}
-
 @Component({
   selector: 'app-login',
   imports: [ReactiveFormsModule, RouterLink],
