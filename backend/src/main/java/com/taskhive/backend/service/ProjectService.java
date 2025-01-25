@@ -13,4 +13,12 @@ public class ProjectService {
     public Project createProject(Project project) {
         return projectRepository.save(project);
     }
+
+    public Project loadProjectByPid(int pid) {
+        return projectRepository.findByPid(pid);
+    }
+
+    public Project saveProject(Project project) {
+        return projectRepository.save(project);
+    }
 }

@@ -21,11 +21,9 @@ export function isFuture(control: AbstractControl) {
     Date.now() > selectedDate.getTime() &&
     Date.now() - selectedDate.getTime() > 86400000 //greater than 1 day
   ) {
-    console.log('returning not future date');
     return {
       notFutureDate: 'select a future date',
     };
   }
-  console.log('returning null');
   return null;
 }

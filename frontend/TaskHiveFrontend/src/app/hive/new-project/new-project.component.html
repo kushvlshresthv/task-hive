@@ -98,7 +98,7 @@
             }
           }
 
-          @if (finishDate.errors?.["notFutureDate"] != undefined) {
+          @if (finishDate.errors?.["notFutureDate"] && finishDate.dirty) {
             <p class="fieldError">Select A Future Date</p>
           }
         </div>

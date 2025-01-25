@@ -111,6 +111,7 @@ export class NewProjectComponent {
 
   onSubmit() {
     const newProject: Project = {
+      pid: null,
       projectName: this.projectName.value,
       projectDescription: this.projectDescription.value,
       startDate: this.startDate.value,

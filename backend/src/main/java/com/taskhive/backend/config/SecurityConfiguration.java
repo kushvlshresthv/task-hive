@@ -24,8 +24,8 @@ public class SecurityConfiguration {
     public SecurityFilterChain getSecurityFilterChain(HttpSecurity http) throws Exception {
 
         http.authorizeHttpRequests((config) -> {
-            config.requestMatchers("/register", "/checkUsernameAvailability", "/isAuthenticated").permitAll();
-            config.requestMatchers("/login", "/test", "/createProject", "/projects").authenticated();
+            config.requestMatchers("/register", "/checkUsernameAvailability", "/isAuthenticated", "/favicon.ico").permitAll();
+            config.requestMatchers("/login", "/test", "/createProject", "/projects", "/addUserToProject").authenticated();
         });
 
         http.httpBasic(config -> {

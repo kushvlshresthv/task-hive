@@ -1,0 +1,16 @@
+<form [formGroup]="this.form" (submit)="onSubmit()">
+  <input
+    placeholder="Enter Username"
+    type="text"
+    [formControl]="this.form.controls.username"
+  />
+
+  @if (
+    this.form.controls.username.dirty && this.form.controls.username.touched
+  ) {
+    @if (this.form.controls.username.invalid) {
+      <p>{{ this.form.controls.username.errors?.["userDoesNotExist"] }}</p>
+    }
+  }
+  <button type="submit" [disabled]="this.form.invalid">Add</button>
+</form>

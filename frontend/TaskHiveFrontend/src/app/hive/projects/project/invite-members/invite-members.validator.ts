@@ -1,33 +1,18 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { debounceTime, map, Observable, of } from 'rxjs';
+import { BACKEND_URL } from '../../../../global.constants';
 import {
   AbstractControl,
   AsyncValidator,
   ValidationErrors,
 } from '@angular/forms';
-import { debounceTime, map, Observable, of } from 'rxjs';
-import { Response } from '../model/response';
-import { BACKEND_URL } from '../global.constants';
+import { HttpClient } from '@angular/common/http';
+import { Response } from '../../../../model/response';
+import { Injectable } from '@angular/core';
 
-export function checkIfSameValue(field1: string, field2: string) {
-  return (control: AbstractControl): Observable<ValidationErrors | null> => {
-    const field1value = control.get(field1)?.value;
-    const field2value = control.get(field2)?.value;
-    if (field1value === field2value) {
-      return of(null);
-    } else {
-      return of({
-        notSameValue: `${field1} and ${field2} are not same`,
-      });
-    }
-  };
-}
-
+//validate() returns a null if the user with the given username exists
 @Injectable({
   providedIn: 'root',
 })
-
-//async validator which returns a null observable if the username is available
 export class checkUsernameAvailability implements AsyncValidator {
   constructor(private http: HttpClient) {}
 
@@ -54,10 +39,12 @@ export class checkUsernameAvailability implements AsyncValidator {
         .pipe(
           debounceTime(1000),
           map((response) => {
-            if (response.message == 'true') {
+            if (response.message == 'false') {
               return null;
             } else {
-              return { usernameNotAvailable: 'username is not available' };
+              return {
+                userDoesNotExist: 'user with the given username does not exist',
+              };
             }
           }),
         );

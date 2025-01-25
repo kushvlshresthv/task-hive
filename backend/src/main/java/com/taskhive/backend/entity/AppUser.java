@@ -49,6 +49,11 @@ public class AppUser {
     @Transient
     String confirmPassword;
 
+    //OneToMany relationship with Project.class>user property
     @OneToMany(mappedBy = "user")
-    List<Project> projects;
+    List<Project> ownedProjects;
+
+
+    @ManyToMany(mappedBy = "joinedUsers", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST, targetEntity = Project.class)
+    List<Project> joinedProjects;
 }
