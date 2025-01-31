@@ -6,7 +6,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { checkUsernameAvailability } from './invite-members.validator';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BACKEND_URL } from '../../../../global.constants';
 import { Response } from '../../../../model/response';
 @Component({
@@ -34,18 +34,18 @@ export class InviteMembersComponent {
   onSubmit() {
     console.log(this.pid);
     console.log(this.form.controls.username.value);
+    let httpHeader = new HttpHeaders();
+    httpHeader = httpHeader.append('pid', `${this.pid}`);
+    httpHeader = httpHeader.append(
+      'username',
+      `${this.form.controls.username.value}`,
+    );
 
     this.http
-      .post<Response>(
-        `${BACKEND_URL}/addUserToProject`,
-        {
-          username: this.form.controls.username.value,
-          pid: this.pid,
-        },
-        {
-          withCredentials: true,
-        },
-      )
+      .get<Response>(`${BACKEND_URL}/createProjectInvite`, {
+        headers: httpHeader,
+        withCredentials: true,
+      })
       .subscribe({
         next: (response) => {
           console.log(response.message);

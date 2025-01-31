@@ -1,5 +1,6 @@
 package com.taskhive.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.taskhive.backend.validators.annotations.CheckUsernameAvailability;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -51,9 +52,15 @@ public class AppUser {
 
     //OneToMany relationship with Project.class>user property
     @OneToMany(mappedBy = "user")
+    @JsonIgnore
     List<Project> ownedProjects;
 
-
     @ManyToMany(mappedBy = "joinedUsers", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST, targetEntity = Project.class)
+    @JsonIgnore
     List<Project> joinedProjects;
+
+    //Inbox is associated with a particular 'AppUser' which is tracked by the 'user' property of Inbox.class
+    @OneToMany(mappedBy = "user")
+    @JsonIgnore
+    List<Inbox> inboxes;
 }

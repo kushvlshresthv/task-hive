@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 //this is just for manual testing, not other use
@@ -24,4 +25,14 @@ public class TestController {
         System.out.println(appUser.getJoinedProjects().get(0).getPid());
         return "Hello from secured web page";
     }
+
+    @PostMapping("/test")
+    public String getTest2(HttpSession session) {
+        AppUser appUser = appUserService.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+        System.out.println("/test is executed");
+        System.out.println(appUser.getJoinedProjects().get(0).getPid());
+        return "Hello from secured web page";
+    }
+
+
 }

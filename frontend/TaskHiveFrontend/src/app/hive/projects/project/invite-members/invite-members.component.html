@@ -9,6 +9,11 @@
     this.form.controls.username.dirty && this.form.controls.username.touched
   ) {
     @if (this.form.controls.username.invalid) {
+      @if (this.form.controls.username.errors?.["usernameImproperFormat"]) {
+        <p>
+          {{ this.form.controls.username.errors?.["usernameImproperFormat"] }}
+        </p>
+      }
       <p>{{ this.form.controls.username.errors?.["userDoesNotExist"] }}</p>
     }
   }
