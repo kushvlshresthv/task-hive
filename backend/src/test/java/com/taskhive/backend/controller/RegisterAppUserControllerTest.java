@@ -16,8 +16,12 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+//configures spring security and mockito
 @WebMvcTest(RegisterUserController.class)
+
+//SecurityConfiguration.class contains various beans which configure the spring security to desired behavior such as disabling csrf
 @Import(SecurityConfiguration.class)
+
 public class RegisterAppUserControllerTest {
     @MockBean
     AppUserService appUserService;

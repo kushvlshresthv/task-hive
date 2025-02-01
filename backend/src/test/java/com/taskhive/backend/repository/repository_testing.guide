@@ -1,0 +1,19 @@
+1) @DataJpaTest(properties = {
+        "spring.jpa.properties.jakarta.persistence.validation.mode=none",
+})
+@DataJpaTest
+
+It configures tha Application Context with the beans that are necessary for testing persistence layer
+
+It does not load the entire ApplicationContext
+
+We can add additional configuration for the Connection object. The above configuration disables the validation from hibernate.
+
+------------------------------------------------------------------------------------------
+
+2) @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
+
+@AutoConfigureTestDatabase autoconfigures the H2 Database based on the configuration details provided in the application.properties file
+
+
+---------------------------------------------------------------------------------------------

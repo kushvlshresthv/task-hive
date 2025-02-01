@@ -16,11 +16,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(GenericController.class)
 @Import(SecurityConfiguration.class)
+
 public class GenericControllerTest {
     @Autowired
     MockMvc mvc;
 
-    //SecurityConfiguration has UserDetailsService that requires RegisterUserService dependency.
+    //SecurityConfiguration has UserDetailsService that requires AppUserService dependency.
     @MockBean
     AppUserService appUserService;
 

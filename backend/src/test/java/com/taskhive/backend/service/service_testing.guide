@@ -1,0 +1,6 @@
+1) @SpringBootTest(classes={Test.class})
+
+@Spring Boot Test is used to load a particular bean into the ApplicatonContext
+
+-----------------------------------------------------------------------------------------------
+

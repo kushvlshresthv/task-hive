@@ -1,0 +1,19 @@
+
+1) @WebMvcTest(GenericController.class)
+
+configures an Application context that contains the beans needed for testing a web container(such as SpringSecurity)
+
+It also configure MockMvc bean for executing the Test requests
+
+----------------------------------------------------------------------------------------------
+
+
+
+2) @Import(SecurityConfiguration.class)
+
+SecurityConfiguration.class contains various beans which configure the spring security to desired behavior such as disabling csrf
+
+@Import takes in a @Configuration class and adds the beans defined in the @Configuration into the Application context
+
+------------------------------------------------------------------------------------------------
+

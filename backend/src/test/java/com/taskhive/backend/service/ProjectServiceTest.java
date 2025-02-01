@@ -12,7 +12,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 
 import static org.mockito.Mockito.when;
 
+//@SpringBootTest is used to load a particular bean into the application context for the test
 @SpringBootTest(classes = {ProjectService.class})
+
 public class ProjectServiceTest {
     @MockBean
     ProjectRepository projectRepository;
@@ -30,7 +32,6 @@ public class ProjectServiceTest {
 
     @Test
     public void ProjectServiceTest_CreateProject_ReturnsCreatedProject() {
-
         when(projectRepository.save(project)).thenReturn(project);
         Project returnedProject = projectService.createProject(project);
         Assertions.assertThat(returnedProject).isNotNull();

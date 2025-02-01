@@ -33,17 +33,41 @@ public class InboxController {
     @Autowired
     InboxService inboxService;
 
+
+    //TODO: check whether the invite we are trying to create for a particular user already exists in the database
+
     @GetMapping("/createProjectInvite")
     public ResponseEntity<Response> createProjectInvite(@RequestHeader("pid") int pid, @RequestHeader("username") String username) {
-
-        //1) check if the user who sent the request owns the project with the given pid
         AppUser currentUser = appUserService.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
 
         List<Project> projects = currentUser.getOwnedProjects();
+        //1) check if the project with the give pid exists
+
         Project targetProject = projectService.loadProjectByPid(pid);
+
+        if (targetProject == null) {
+            return new ResponseEntity<Response>(new Response("project with the provided pid doesn't exist"), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        //2) check if the target user exists:
+        AppUser targetUser = appUserService.loadUserByUsername(username);
+
+        if (targetUser == null) {
+            return new ResponseEntity<Response>(new Response("this user doesn't exist"), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        //3) check if the target user and the current user have the same id
+        if (targetUser.getUid() == currentUser.getUid()) {
+            return new ResponseEntity<Response>(new Response("can't create an invite for the owner of this project"), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
 
         boolean isOwned = false;
 
+        if (projects.isEmpty()) {
+            return new ResponseEntity<Response>(new Response("this project isn't owned by you"), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        //4)  check if the user who sent the request owns the project with the given pid
         for (Project project : projects) {
             if (project.getPid() == targetProject.getPid()) {
                 isOwned = true;
@@ -56,16 +80,9 @@ public class InboxController {
         }
 
 
-        //2) check if the target user exists:
-        AppUser targetUser = appUserService.loadUserByUsername(username);
-
-        if (targetUser == null) {
-            return new ResponseEntity<Response>(new Response("this user doesn't exist"), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-
+        //5) create and save the inbox in the database
         String message = "@" + currentUser.getUsername() + " invited you to join project titled " + targetProject.getProjectName();
 
-        //3) create and save the inbox in the database
         Inbox inbox = new Inbox();
 
         inbox.setUser(targetUser);
@@ -75,7 +92,7 @@ public class InboxController {
 
         Inbox savedInbox = inboxService.saveInbox(inbox);
 
-        if (savedInbox.getInbox_id() < 0) {
+        if (savedInbox.getInbox_id() <= 0) {
             return new ResponseEntity<Response>(new Response("this project invitation could not be created"), HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
