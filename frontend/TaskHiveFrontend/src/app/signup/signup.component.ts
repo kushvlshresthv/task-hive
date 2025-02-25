@@ -12,7 +12,7 @@ import {
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { catchError, of } from 'rxjs';
 import { Router, RouterLink } from '@angular/router';
-import { Response } from '../model/response';
+import { Response } from '../GLOBAL_MODEL/response';
 
 @Component({
   selector: 'app-signup',
@@ -93,7 +93,7 @@ export class SignupComponent implements OnInit {
     };
     this.formData.reset();
     this.http
-      .post<Response>('http://localhost:8080/register', requestBody)
+      .post<Response<Object>>('http://localhost:8080/register', requestBody)
       .pipe(
         catchError((error: HttpErrorResponse) => {
           console.log('error message: ' + error.error.message);

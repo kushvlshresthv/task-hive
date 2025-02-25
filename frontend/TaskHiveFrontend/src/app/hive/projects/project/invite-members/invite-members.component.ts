@@ -6,9 +6,19 @@ import {
   Validators,
 } from '@angular/forms';
 import { checkUsernameAvailability } from './invite-members.validator';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpHeaders,
+} from '@angular/common/http';
 import { BACKEND_URL } from '../../../../global.constants';
-import { Response } from '../../../../model/response';
+import { Response } from '../../../../GLOBAL_MODEL/response';
+import { catchError, of } from 'rxjs';
+import {
+  activatePopup,
+  initializePopup,
+  Popup,
+} from '../../../../GLOBAL_MODEL/popup';
 @Component({
   selector: 'app-invite-members',
   standalone: true,
@@ -20,6 +30,8 @@ export class InviteMembersComponent {
   private checkUsernameAvailabilityInstance = inject(checkUsernameAvailability);
   @Input() pid!: number | null;
   private http = inject(HttpClient);
+  popup: Popup = initializePopup();
+
   form = new FormGroup({
     username: new FormControl('', {
       validators: Validators.required,
@@ -42,13 +54,21 @@ export class InviteMembersComponent {
     );
 
     this.http
-      .get<Response>(`${BACKEND_URL}/createProjectInvite`, {
+      .get<Response<Object>>(`${BACKEND_URL}/createProjectInvite`, {
         headers: httpHeader,
         withCredentials: true,
       })
+      .pipe(
+        catchError((errorObj: HttpErrorResponse) => {
+          this.popup = activatePopup(errorObj.error.message, 'error');
+          return of(null);
+        }),
+      )
       .subscribe({
         next: (response) => {
-          console.log(response.message);
+          if (response != null) {
+            this.popup = activatePopup(response.message, 'success');
+          }
         },
       });
   }

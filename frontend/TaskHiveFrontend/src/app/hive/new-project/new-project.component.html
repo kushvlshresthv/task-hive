@@ -10,7 +10,7 @@
 
 <!-- later add features to invite, and create section for managers and workers. roles, responsibility selection option while assigning the project -->
 
-<button (click)="openDialog()">New Project</button>
+<button (click)="openDialog()" class="new-project-button">New Project</button>
 
 <dialog (click)="onDiaglogClick($event)" #new_project_dialogue>
   <div class="dialog-container">
@@ -114,7 +114,7 @@
         }
       }
 
-      <div class="button-container">
+      <div class="submit-button-container">
         <button
           type="submit"
           [disabled]="formData.invalid"

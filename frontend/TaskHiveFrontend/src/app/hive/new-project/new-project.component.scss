@@ -1,5 +1,9 @@
 :host {
   border: 1px solid black;
+  flex-grow: 1;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
 }
 
 .dialog-container {
@@ -17,7 +21,7 @@ form {
 
 .date-container,
 .select-container,
-.button-container {
+.submit-button-container {
   display: flex;
   flex-direction: row;
   width: 100%;

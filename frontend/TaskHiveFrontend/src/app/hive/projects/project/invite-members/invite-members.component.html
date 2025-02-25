@@ -19,3 +19,9 @@
   }
   <button type="submit" [disabled]="this.form.invalid">Add</button>
 </form>
+
+<div class="popup">
+  @if (popup.state) {
+    <p>{{ popup.message }}</p>
+  }
+</div>

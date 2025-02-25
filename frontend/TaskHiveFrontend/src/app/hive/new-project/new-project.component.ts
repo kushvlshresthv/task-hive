@@ -15,7 +15,7 @@ import { Project } from './new-project.model';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { catchError, of } from 'rxjs';
 import { BACKEND_URL } from '../../global.constants';
-import { Response } from '../../model/response';
+import { Response } from '../../GLOBAL_MODEL/response';
 import {
   isFuture,
   isFinishDateLaterThanStartDate,
@@ -122,7 +122,7 @@ export class NewProjectComponent {
 
     this.formData.reset();
     this.http
-      .post<Response>(BACKEND_URL + '/createProject', newProject, {
+      .post<Response<Object>>(BACKEND_URL + '/createProject', newProject, {
         withCredentials: true,
       })
       .pipe(

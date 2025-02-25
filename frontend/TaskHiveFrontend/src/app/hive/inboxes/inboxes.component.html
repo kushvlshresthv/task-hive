@@ -1,0 +1,7 @@
+<button (click)="onInboxOpen()">Inbox</button>
+@if (inboxOpenFlag) {
+  @for (currentInbox of inboxes; track $index) {
+    <app-inbox [inbox]="currentInbox"></app-inbox>
+  }
+  <button (click)="onInboxClose()">close</button>
+}

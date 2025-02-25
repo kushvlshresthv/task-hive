@@ -13,7 +13,7 @@ import {
 import { Router, RouterLink } from '@angular/router';
 import { catchError, of } from 'rxjs';
 import { BACKEND_URL } from '../global.constants';
-import { Response } from '../model/response';
+import { Response } from '../GLOBAL_MODEL/response';
 import { checkUsernameFormat } from './login.validators';
 
 @Component({
@@ -54,7 +54,7 @@ export class LoginComponent implements OnInit {
 
     console.log('submitting request to: ' + BACKEND_URL + '/login');
     this.http
-      .get<Response>(BACKEND_URL + '/login', {
+      .get<Response<Object>>(BACKEND_URL + '/login', {
         headers: headers,
         withCredentials: true,
       })

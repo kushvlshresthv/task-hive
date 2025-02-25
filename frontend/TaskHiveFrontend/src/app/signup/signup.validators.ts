@@ -6,7 +6,7 @@ import {
   ValidationErrors,
 } from '@angular/forms';
 import { debounceTime, map, Observable, of } from 'rxjs';
-import { Response } from '../model/response';
+import { Response } from '../GLOBAL_MODEL/response';
 import { BACKEND_URL } from '../global.constants';
 
 export function checkIfSameValue(field1: string, field2: string) {
@@ -47,10 +47,9 @@ export class checkUsernameAvailability implements AsyncValidator {
     //then check if the username is available
     if (valid) {
       return this.http
-        .post<Response>(
-          `${BACKEND_URL}/checkUsernameAvailability`,
-          control.value,
-        )
+        .post<
+          Response<Object>
+        >(`${BACKEND_URL}/checkUsernameAvailability`, control.value)
         .pipe(
           debounceTime(1000),
           map((response) => {
