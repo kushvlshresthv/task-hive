@@ -98,6 +98,19 @@ public class InboxController {
 
         return new ResponseEntity<Response>(new Response("project invitation successfully created"), HttpStatus.OK);
     }
+
+
+    @GetMapping("/getInboxes")
+    public ResponseEntity<Response> getInbox() {
+        AppUser user = appUserService.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+
+        List<Inbox> inboxes = user.getInboxes();
+
+        Response response = new Response();
+        response.setMainBody(inboxes);
+
+        return new ResponseEntity<Response>(response, HttpStatus.OK);
+    }
 }
 
 

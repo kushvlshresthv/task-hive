@@ -1,0 +1,3 @@
+
+
+1) user_inbox database table has a one-one mapping with registered_users table where user_inbox stores the uid.
