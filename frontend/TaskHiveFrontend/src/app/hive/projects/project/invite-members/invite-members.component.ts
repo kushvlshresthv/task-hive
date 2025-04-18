@@ -73,3 +73,13 @@ export class InviteMembersComponent {
       });
   }
 }
+
+/*activatePopup
+ BACKGROUND_R ED
+
+ BACKGROUND_BLUE
+ 
+ BACKGROUND_YELLOW
+
+ //hello there, how are you doing all hise
+*/

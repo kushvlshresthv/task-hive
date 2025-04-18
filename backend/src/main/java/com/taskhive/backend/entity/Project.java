@@ -52,7 +52,7 @@ public class Project {
     @JsonIgnore
     AppUser user;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "project_members",
             joinColumns = {
                     @JoinColumn(name = "project_id", referencedColumnName = "pid")

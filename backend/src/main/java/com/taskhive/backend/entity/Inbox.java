@@ -21,7 +21,7 @@ public class Inbox {
     int inbox_id;
 
     //A Inbox is associated with a particular AppUser's uid which is stored in the 'uid' column of 'inbox' table
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "uid", referencedColumnName = "uid")
     @JsonIgnore
     AppUser user;

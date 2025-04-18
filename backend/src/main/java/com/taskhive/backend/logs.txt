@@ -4,7 +4,12 @@ GENERAL LOGS:
 
 
 
-GIT COMMIT TITLE: MAKING INBOXES
+
+
+
+
+GIT COMMIT TITLE: INTERMEDIATE COMMIT FOR MAKING INBOXES
+________________________________________________________
 
 1) created /getInboxes and /createProjectInvite
 
@@ -17,21 +22,35 @@ GIT COMMIT TITLE: MAKING INBOXES
 5) created a popup system to deliver the reuslt of /createInvite and styled with 'absolute' positioning(CSS)
 
 
+GIT COMMIT TITLE: MAKING INBOXES
+________________________________
+
+
+
 
 CHANGES:
+_________
 
 1) Response interface in the frontend change to include a generic parameter for the mainBody property
 
 
 
 
+
 NEXT TODO:
+__________
 
 1) manage frontend when there is no inbox available
 
-2) in inbox send the project name separately instead of direclty in the 'message' so they can be clicked and styled separately.
+2) in inbox send the project name separately instead of direclty in the 'message' so they can be clicked and styled separately. Do the same for 'username' so username can be clicked'.
 
-3) style the popup
+3) add the functionality to accept the project invite.
+
+4) write unit tests for InboxController
+
+5) in new project component, when a new project is created, success message isprinted in the console, use popup to fix this. (also probably move the css for popup in global)?
+
+
 
 
 
@@ -40,9 +59,16 @@ NEXT TODO:
 
 
 TODO:
+_____
 
 1) if you are logged in already, you cant access login/register page.
 
 2) if you send login/regster request from already login system, send back an error.
 
 3) /error page sent by the backend is currently authenticated, fix the Access Denied Exception
+
+4) When we create a project invite, it is not immediately added to 'my projects'. Before seing after sending the rest api request, if successful, also manually add the new project to the projects array that is being displayed.
+
+5) Try to handle other errors(if there are any) with popus
+
+6) implement have i been pawned
