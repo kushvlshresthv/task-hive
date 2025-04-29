@@ -11,7 +11,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { catchError, of } from 'rxjs';
+import { catchError, config, of } from 'rxjs';
 import { BACKEND_URL } from '../global.constants';
 import { Response } from '../GLOBAL_MODEL/response';
 import { checkUsernameFormat } from './login.validators';
@@ -70,5 +70,11 @@ export class LoginComponent implements OnInit {
           }
         },
       });
+  }
+
+  hello2 = "Hello";
+  public  hello() {
+    console.log("hello");
+
   }
 }

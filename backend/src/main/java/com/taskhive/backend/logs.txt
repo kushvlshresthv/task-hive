@@ -40,7 +40,7 @@ _________
 NEXT TODO:
 __________
 
-1) manage frontend when there is no inbox available
+DONE 1) manage frontend when there is no inbox available
 
 2) in inbox send the project name separately instead of direclty in the 'message' so they can be clicked and styled separately. Do the same for 'username' so username can be clicked'.
 

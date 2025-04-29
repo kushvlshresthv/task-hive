@@ -41,4 +41,3 @@ public class RegisterUserController {
         return new ResponseEntity<Response>(new Response("user could not be registered"), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
-
