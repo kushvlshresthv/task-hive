@@ -1,11 +1,9 @@
 <button (click)="onInboxOpen()">Inbox</button>
 @if (inboxOpenFlag) {
-  //loop through all the inboxes retrieved from the server and display
   @for (currentInbox of inboxes; track $index) {
     <app-inbox [inbox]="currentInbox"></app-inbox>
   } @empty {
-    //if empty display
-    <p>Inbox is currently empty</p>
+    <p class= "inbox_empty">Inbox is currently empty</p>
   }
   <button (click)="onInboxClose()">close</button>
 }

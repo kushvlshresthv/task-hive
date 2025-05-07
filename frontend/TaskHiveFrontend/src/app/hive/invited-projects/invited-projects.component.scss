@@ -1,0 +1,27 @@
+:host {
+  border: 1px solid black;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  width: 40vw;
+  min-height: 30;
+  border: 1px solid green;
+  gap: 20px;
+}
+
+.date-container,
+.select-container,
+.button-container {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.label {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}

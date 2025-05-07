@@ -27,6 +27,12 @@ export function checkIfSameValue(field1: string, field2: string) {
   providedIn: 'root',
 })
 
+
+
+
+//NOTE: the following could also be done with a function based validator by using inject() to get the HttpClient object
+
+
 //async validator which returns a null observable if the username is available
 export class checkUsernameAvailability implements AsyncValidator {
   constructor(private http: HttpClient) {}

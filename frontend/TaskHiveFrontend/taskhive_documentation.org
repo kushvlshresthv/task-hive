@@ -1,0 +1,100 @@
+#+TITLE:TaskHive Project Documentation
+
+
+
+* 1. Login Component
+
+** FRONTEND
+
+
+
+
+
+
+* 2. Create Project Invite
+
+
+** Frontend Request
+
+ 1) Frontend gets the username(after validation) and project id
+
+ 2) sends /createProjectInvite
+
+** Backend Processing
+
+*** 1) Validation:
+
+   fetch the project as well as the user who sent the request
+
+   A. Check if the project exists with the given pid exists
+
+   B. Check if the target user exists
+
+   C. Iterate through the projects(although already validated in the frontend) and the user that sent the request owns the project
+
+   D. check if the current user and the target user have the same uid
+
+   If any of the validation fails: respond with /INTERNAL_SERVER_ERROR/
+
+*** 2) Persistence: create the Inbox object with the target project
+
+   A. create the inbox object with the target project(contains uid, pid, project name, message, and invitation type)
+
+   B. store the target project with one many to one mapping with users
+
+   C. respond with /OK/
+
+** Frontend Response
+
+1) If the response is /INTERNAL_SERVER_ERROR/ then the error pipe operator is executed which causes a popup with error message
+
+2) If the response is /OK/ then the subscriber's next method is executed which causes a popup with success message
+
+
+** Database Table Schema
+
+CREATE TABLE inbox (
+  inbox_id INT NOT NULL AUTO_INCREMENT,
+  uid INT DEFAULT NULL,
+  pid INT DEFAULT NULL,
+  title CHAR(30) DEFAULT NULL,
+  project_name VARCHAR(100) DEFAULT NULL,
+  message TEXT DEFAULT NULL,
+  PRIMARY KEY (inbox_id),
+  KEY uid (uid)
+);
+
+
+* Display Inbox
+
+[frontend-files: inboxes.component and inbox.component]
+[backend-files: InboxController.java]
+
+** Frontend Request(opening the inbox, handled by inboxes.controller)
+
+1) set the inboxOpenFlag to true
+2) send /getInboxes request to the backend
+
+** Backend Processing
+
+1) load the current user
+2) get the inboxes of the current user
+3) attach the List<Inbox> to the response object and respond with /OK/
+
+** Frontend Response
+
+1) save the List<Inbox> into a variable
+2) since inboxOpenFlag is now set to true, the inbox.component is displayed in inboxes.component template
+3) inboxes.component's template iterates through all the Inbox object and calls inbox.component template
+4) inbox.component then display the Inbox object in the frontend
+
+
+** Frontend(closing the inbox)
+
+1) the inboxOpenFlag is set to false and the inbox.component is no longer rendered inside inboxes.component
+
+
+
+NEXT TODO:
+
+1. fix the css styling in no messages in the inbox

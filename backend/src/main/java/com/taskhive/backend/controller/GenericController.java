@@ -17,7 +17,7 @@ public class GenericController {
     public ResponseEntity<Response> isAuthenticated(HttpSession session) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (!authentication.getName().equals("anonymous") && !authentication.getName().equals("anonymousUser")) {
-            System.out.println(authentication.getName());
+            System.out.println("GenericController: " + authentication.getName());
             if (authentication.isAuthenticated()) {
                 return new ResponseEntity<Response>(new Response("true"), HttpStatus.ACCEPTED);
             }

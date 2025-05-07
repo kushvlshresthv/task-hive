@@ -72,3 +72,5 @@ _____
 5) Try to handle other errors(if there are any) with popus
 
 6) implement have i been pawned
+
+7) while logging in, only three attempts should be given for a particular username

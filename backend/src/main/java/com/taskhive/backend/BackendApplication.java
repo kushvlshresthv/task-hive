@@ -4,6 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
+//the subpackages under @SpringBootApplication is searched automatically
 //@EnableJpaRepositories(basePackages = {"com.taskhive.backend.repository"})
 //@EntityScan(basePackages = {"com.taskhive.backend.model"})
 

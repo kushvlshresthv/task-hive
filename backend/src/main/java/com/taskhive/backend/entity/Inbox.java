@@ -29,8 +29,11 @@ public class Inbox {
     @Column(name = "title")
     String title;
 
-    @Column(name = "message")
-    String message;
+    @Column(name = "initiator")
+    String initiator;
+
+    @Column(name = "project_name")
+    String projectName;
 
     @Column(name = "pid")
     int pid;

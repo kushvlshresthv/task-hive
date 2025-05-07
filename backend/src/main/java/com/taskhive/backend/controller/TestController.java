@@ -19,11 +19,11 @@ public class TestController {
     AppUserService appUserService;
 
     @GetMapping("/test")
-    public String getTest(HttpSession session) {
+    public String getTest(HttpSession session) throws Exception {
         AppUser appUser = appUserService.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
         System.out.println("/test is executed");
-        System.out.println(appUser.getJoinedProjects().get(0).getPid());
-        return "Hello from secured web page";
+        // System.out.println(appUser.getJoinedProjects().get(0).getPid());
+        throw new Exception();
     }
 
     @PostMapping("/test")

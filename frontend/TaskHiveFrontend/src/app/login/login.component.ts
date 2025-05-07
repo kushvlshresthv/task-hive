@@ -11,7 +11,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { catchError, config, of } from 'rxjs';
+import { catchError, config, of, Subscription } from 'rxjs';
 import { BACKEND_URL } from '../global.constants';
 import { Response } from '../GLOBAL_MODEL/response';
 import { checkUsernameFormat } from './login.validators';
@@ -24,8 +24,11 @@ import { checkUsernameFormat } from './login.validators';
   styleUrl: './login.component.scss',
 })
 export class LoginComponent implements OnInit {
-  router = inject(Router);
-  http = inject(HttpClient);
+
+
+  router =  inject(Router);
+  http   = inject(HttpClient);
+  subscription!: Subscription;
 
   formData = new FormGroup({
     username: new FormControl('', {
@@ -43,6 +46,11 @@ export class LoginComponent implements OnInit {
     this.password = this.formData.controls.password;
   }
 
+
+
+
+
+
   onSubmit() {
     const authenticationDetails = `${this.username.value}:${this.password.value}`;
 
@@ -53,7 +61,7 @@ export class LoginComponent implements OnInit {
     });
 
     console.log('submitting request to: ' + BACKEND_URL + '/login');
-    this.http
+    this.subscription = this.http
       .get<Response<Object>>(BACKEND_URL + '/login', {
         headers: headers,
         withCredentials: true,
@@ -72,9 +80,11 @@ export class LoginComponent implements OnInit {
       });
   }
 
-  hello2 = "Hello";
-  public  hello() {
-    console.log("hello");
 
+
+
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 }

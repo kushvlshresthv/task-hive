@@ -46,6 +46,9 @@ export class SignupComponent implements OnInit {
     }),
     username: new FormControl('', {
       validators: [Validators.required],
+
+     //NOTE: if we don't bind the 'this' keyword to the callback function passed to asyncValidators property, it won't be able to use instance/class specific properties such as HttpClient(which is injected in the class)
+
       asyncValidators: [
         this.checkUsernameAvailabilitInstance.validate.bind(
           this.checkUsernameAvailabilitInstance,
@@ -67,10 +70,16 @@ export class SignupComponent implements OnInit {
         }),
       },
       {
+
+        //NOTE: the following function call returns a function which accepts AbstractControl as argument
+
+        //the arguments 'password' and 'confirmPassword' will still be available to the returned function due to 'closure' property of JS
+
         asyncValidators: checkIfSameValue('password', 'confirmPassword'),
       },
     ),
   });
+
 
   ngOnInit(): void {
     this.firstName = this.formData.controls.name.controls.firstName;

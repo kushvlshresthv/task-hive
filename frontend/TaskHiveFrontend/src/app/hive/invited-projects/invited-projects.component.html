@@ -1,0 +1,66 @@
+<form>
+  <input
+    type="text"
+    placeholder="Project Name"
+    formControlName="projectName"
+    [value]="project.projectName"
+    [disabled]="true"
+  />
+
+  <textarea
+    placeholder="Project Description"
+    formControlName="projectDescription"
+    [value]="project.projectDescription"
+    [disabled]="true"
+  ></textarea>
+
+  <div class="select-container">
+    <select
+      name="projectType"
+      formControlName="projectType"
+      [value]="project.projectType"
+      disabled
+    >
+      <option value="">Select Project Type</option>
+      <option value="marketing">Marketing</option>
+      <option value="development">Development</option>
+      <option value="maintainence">Maintainence</option>
+      <option value="others">Others</option>
+    </select>
+    <select
+      name="priority"
+      formControlName="priority"
+      [value]="project.priority"
+      disabled
+    >
+      <option value="">Select Priority</option>
+      <option value="low priority">Low Priority</option>
+      <option value="medium priority">Medium Priority</option>
+      <option value="high priority">High Priority</option>
+    </select>
+  </div>
+
+  <div class="date-container">
+    <div class="label">
+      <label for="startDate">Start Date: </label>
+      <input
+        id="startDate"
+        type="date"
+        name="startDate"
+        [value]="project.startDate"
+        disabled
+      />
+    </div>
+
+    <div class="label">
+      <label for="finishDate">Finish Date: </label>
+      <input
+        id="fisnishDate"
+        type="date"
+        name="finishDate"
+        [value]="project.finishDate"
+        disabled
+      />
+    </div>
+  </div>
+</form>

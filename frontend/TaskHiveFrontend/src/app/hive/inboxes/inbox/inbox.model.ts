@@ -1,6 +1,7 @@
 export interface Inbox {
   inbox_id: string;
-  message: string;
+  initiator: string;
   title: string;
+  projectName:string;
   pid: string;
 }

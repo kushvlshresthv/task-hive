@@ -31,6 +31,7 @@ export class InboxesComponent {
       });
   }
 
+
   onInboxClose() {
     this.inboxOpenFlag = false;
   }

@@ -12,6 +12,7 @@ import com.taskhive.backend.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -53,18 +54,18 @@ public class InboxController {
         AppUser targetUser = appUserService.loadUserByUsername(username);
 
         if (targetUser == null) {
-            return new ResponseEntity<Response>(new Response("this user doesn't exist"), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<Response>(new Response("this user doesn't exist"), HttpStatus.NOT_FOUND);
         }
 
         //3) check if the target user and the current user have the same id
         if (targetUser.getUid() == currentUser.getUid()) {
-            return new ResponseEntity<Response>(new Response("can't create an invite for the owner of this project"), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<Response>(new Response("can't create an invite for the owner of this project"), HttpStatus.NOT_FOUND);
         }
 
         boolean isOwned = false;
 
         if (projects.isEmpty()) {
-            return new ResponseEntity<Response>(new Response("this project isn't owned by you"), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<Response>(new Response("this project isn't owned by you"), HttpStatus.NOT_FOUND);
         }
 
         //4)  check if the user who sent the request owns the project with the given pid
@@ -76,19 +77,18 @@ public class InboxController {
         }
 
         if (!isOwned) {
-            return new ResponseEntity<Response>(new Response("this project isn't owned by you"), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<Response>(new Response("this project isn't owned by you"), HttpStatus.NOT_FOUND);
         }
 
 
         //5) create and save the inbox in the database
-        String message = "@" + currentUser.getUsername() + " invited you to join project titled " + targetProject.getProjectName();
 
         Inbox inbox = new Inbox();
-
         inbox.setUser(targetUser);
-        inbox.setMessage(message);
+        inbox.setInitiator(currentUser.getUsername());
         inbox.setTitle(InboxInviteTitle.INVITATION);
         inbox.setPid(targetProject.getPid());
+        inbox.setProjectName(targetProject.getProjectName());
 
         Inbox savedInbox = inboxService.saveInbox(inbox);
 
@@ -101,18 +101,13 @@ public class InboxController {
 
 
     @GetMapping("/getInboxes")
-    public ResponseEntity<Response> getInbox() {
-        AppUser user = appUserService.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+    public ResponseEntity<Response> getInbox(Authentication authentication) {
+        AppUser user = appUserService.loadUserByUsername(authentication.getName());
 
         List<Inbox> inboxes = user.getInboxes();
-
         Response response = new Response();
         response.setMainBody(inboxes);
 
         return new ResponseEntity<Response>(response, HttpStatus.OK);
     }
 }
-
-
-
-

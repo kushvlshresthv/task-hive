@@ -2,6 +2,7 @@ package com.taskhive.backend.controller;
 
 import com.taskhive.backend.constants.GlobalConstants;
 import com.taskhive.backend.entity.AppUser;
+import com.taskhive.backend.entity.Inbox;
 import com.taskhive.backend.entity.Project;
 import com.taskhive.backend.response.Response;
 import com.taskhive.backend.service.AppUserService;
@@ -70,6 +71,44 @@ public class ProjectController {
         return new ResponseEntity<Response>(response, HttpStatus.OK);
     }
 
+
+    @GetMapping("getProjectById")
+    public ResponseEntity<Response> getProjectById(@RequestHeader int pid) {
+        //check if the user has been invited/owns the project
+        AppUser user = appUserService.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+
+        boolean flag = false;
+        //check through the owned project
+        List<Project> projets = user.getOwnedProjects();
+        for (Project projet : projets) {
+            if (projet.getPid() == pid) {
+                flag = true;
+            }
+        }
+
+
+        //check through the invited projects
+        List<Inbox> inboxes = user.getInboxes();
+        for (Inbox inbox : inboxes) {
+            if (inbox.getPid() == pid) {
+                flag = true;
+            }
+        }
+
+
+        Response response = new Response();
+        //if true return the project by fetching from ProjectService
+        if (flag) {
+            Project project = projectService.loadProjectByPid(pid);
+            response.setMainBody(project);
+            response.setMessage("Project found");
+            return new ResponseEntity<Response>(response, HttpStatus.OK);
+        }
+
+
+        response.setMessage("This project is not accessible to you");
+        return new ResponseEntity<Response>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 
     //the commented portion has been implemented in InboxController.java>createProjectInvite
 

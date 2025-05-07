@@ -1,8 +1,9 @@
 :host {
   display: flex;
   flex-direction: column;
-  border: 1px solid black;
+  border: 4px solid black;
   margin-bottom: 5px;
+  min-width:300px;    //setting the minimum width of the inbox so that that inboxes component is expanded in its container
 }
 
 .title,
@@ -20,4 +21,12 @@ table {
 td {
   border: 1px solid black;
   margin-bottom: 5px;
+}
+
+.routerLink {
+  color: blue;
+}
+
+.routerLink:hover {
+  cursor: pointer;
 }

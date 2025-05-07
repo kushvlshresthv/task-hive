@@ -1,9 +1,10 @@
 :host {
   border: 1px solid black;
-  flex-grow: 1;
+  // flex-grow: 1;
   display: flex;
   justify-content: flex-end;
   align-items: flex-start;
+  border:3px solid yellow;
 }
 
 .dialog-container {
