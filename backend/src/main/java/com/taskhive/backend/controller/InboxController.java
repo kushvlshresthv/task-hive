@@ -47,7 +47,7 @@ public class InboxController {
         Project targetProject = projectService.loadProjectByPid(pid);
 
         if (targetProject == null) {
-            return new ResponseEntity<Response>(new Response("project with the provided pid doesn't exist"), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<Response>(new Response("target project with the provided pid doesn't exist"), HttpStatus.NOT_FOUND);
         }
 
         //2) check if the target user exists:

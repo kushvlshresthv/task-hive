@@ -40,15 +40,36 @@ _________
 NEXT TODO:
 __________
 
-DONE 1) manage frontend when there is no inbox available
+DONE :: manage frontend when there is no inbox available
 
-2) in inbox send the project name separately instead of direclty in the 'message' so they can be clicked and styled separately. Do the same for 'username' so username can be clicked'.
+DONE :: in inbox send the project name separately instead of direclty in the 'message' so they can be clicked and styled separately. Do the same for 'username' so username can be clicked'.
 
-3) add the functionality to accept the project invite.
+TODO :: add the functionality to accept the project invite.
 
-4) write unit tests for InboxController
+DONE :: write unit tests for InboxController (handling all error cases(while creating inbox))
 
-5) in new project component, when a new project is created, success message isprinted in the console, use popup to fix this. (also probably move the css for popup in global)?
+TODO :: in new project component, when a new project is created, success message isprinted in the console, use popup to fix this. (also probably move the css for popup in global)?
+
+
+DONE :: write unit tests for getProjectById()
+
+DONE :: move from print statements to logger
+
+implement accept project
+
+1. backend endpoint, accept/invitation/pid
+2. verify that the invitation is for the user
+3. verify that the user isn't already joined
+4. verify that the project isn't owned by the user
+5. add the project to joinedProject variable and update the database
+
+
+
+then impelement the /joinedProjects page
+
+7) /TODO: check whether the invite we are trying to create for a particular user already exists in the database
+
+
 
 
 

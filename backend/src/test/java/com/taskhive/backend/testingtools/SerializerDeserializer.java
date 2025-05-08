@@ -5,6 +5,11 @@ import com.taskhive.backend.response.Response;
 
 public class SerializerDeserializer {
 
+
+    //this static method takes 'string' format of Response.java, and reconstructos an objects of Response.java
+
+    //only invoke this method if the passed string(argument) is serialized version of Response.java
+
     public static Response deserialize(String response) {
         try {
             ObjectMapper mapper = new ObjectMapper();

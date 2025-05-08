@@ -31,7 +31,7 @@ public class ProjectRepositoryTest {
 
     @BeforeEach
     public void init() {
-        user = AppUser.builder().email("ikus shalstha@gmail.com").password("nopass").confirmPassword("nopass").firstName("firstName").lastName("lastName").username("newuser").build();
+        user = AppUser.builder().email("email@gmail.com").password("nopass").confirmPassword("nopass").firstName("firstName").lastName("lastName").username("newuser").build();
 
         project = Project.builder().projectName("name").projectDescription("description").startDate(LocalDate.now()).finishDate(LocalDate.of(2025, 2, 12)).priority("high").projectType("business").user(user).build();
 

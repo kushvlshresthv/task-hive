@@ -3,6 +3,7 @@ package com.taskhive.backend.service;
 
 import com.taskhive.backend.entity.AppUser;
 import com.taskhive.backend.repository.AppUserRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest(classes = {AppUserService.class})
+@Slf4j
 public class AppUserServiceTest {
     AppUser user = AppUser.builder().email("ikushalstha@gmail.com").password("nopass").confirmPassword("nopass").firstName("firstName").lastName("lastName").username("newuser").build();
 
@@ -29,7 +31,7 @@ public class AppUserServiceTest {
 
     @Test
     public void RegisterUserService_SaveNewUser_ReturnsSavedUser() {
-        System.out.println(appUserRepository.getClass().getName());
+        log.info(appUserRepository.getClass().getName());
         AppUser savedUser = appUserService.saveNewUser(user);
         Assertions.assertThat(savedUser).isNotNull();
     }

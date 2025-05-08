@@ -8,6 +8,7 @@ import com.taskhive.backend.response.Response;
 import com.taskhive.backend.service.AppUserService;
 import com.taskhive.backend.service.ProjectService;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +29,7 @@ import java.util.List;
 
 @CrossOrigin(origins = GlobalConstants.FRONTEND_URL, allowCredentials = "true", allowedHeaders = "*", exposedHeaders = "*")
 
+@Slf4j
 @RestController
 public class ProjectController {
     @Autowired
@@ -51,7 +53,8 @@ public class ProjectController {
         Project createdProject = projectService.createProject(project);
 
         if (createdProject.getPid() < 0) {
-            System.out.println("something went wrong_______________");
+
+            log.info("something went wrong...");
             return new ResponseEntity<Response>(new Response("project could not be saved in the database"), HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
@@ -79,22 +82,26 @@ public class ProjectController {
 
         boolean flag = false;
         //check through the owned project
-        List<Project> projets = user.getOwnedProjects();
-        for (Project projet : projets) {
-            if (projet.getPid() == pid) {
-                flag = true;
+        List<Project> projects = user.getOwnedProjects();
+
+        if (projects != null) {
+            for (Project project : projects) {
+                if (project.getPid() == pid) {
+                    flag = true;
+                }
             }
         }
 
 
         //check through the invited projects
         List<Inbox> inboxes = user.getInboxes();
-        for (Inbox inbox : inboxes) {
-            if (inbox.getPid() == pid) {
-                flag = true;
+        if (inboxes != null) {
+            for (Inbox inbox : inboxes) {
+                if (inbox.getPid() == pid) {
+                    flag = true;
+                }
             }
         }
-
 
         Response response = new Response();
         //if true return the project by fetching from ProjectService
@@ -107,7 +114,7 @@ public class ProjectController {
 
 
         response.setMessage("This project is not accessible to you");
-        return new ResponseEntity<Response>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<Response>(response, HttpStatus.NOT_FOUND);
     }
 
     //the commented portion has been implemented in InboxController.java>createProjectInvite

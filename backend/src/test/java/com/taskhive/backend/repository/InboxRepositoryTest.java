@@ -27,9 +27,9 @@ public class InboxRepositoryTest {
 
     @BeforeEach
     public void init() {
-        user = AppUser.builder().email("ikus shalstha@gmail.com").password("nopass").confirmPassword("nopass").firstName("firstName").lastName("lastName").username("newuser").build();
+        user = AppUser.builder().email("email@gmail.com").password("nopass").confirmPassword("nopass").firstName("firstName").lastName("lastName").username("newuser").build();
 
-        inbox = Inbox.builder().user(user).pid(9).title("INVITATION").message("inbox has been created").build();
+        inbox = Inbox.builder().user(user).pid(9).title("INVITATION").build();
     }
 
     @Test
@@ -38,5 +38,6 @@ public class InboxRepositoryTest {
         Assertions.assertThat(savedInbox).isNotNull();
         Assertions.assertThat(savedInbox.getInbox_id()).isGreaterThan(0);
         Assertions.assertThat(savedInbox.getUser().getUid()).isGreaterThan(0);
+        Assertions.assertThat(savedInbox.getPid()).isEqualTo(9);
     }
 }
