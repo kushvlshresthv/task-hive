@@ -1,1 +1,7 @@
 <app-header></app-header> <router-outlet></router-outlet>
+
+<div [class]="'globalPopup '+ popup.popupBy ">
+  @if (popup.state) {
+    <p>{{popup.message}}</p>
+  }
+</div>

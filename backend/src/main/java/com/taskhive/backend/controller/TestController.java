@@ -24,16 +24,14 @@ public class TestController {
     public String getTest(HttpSession session) throws Exception {
         AppUser appUser = appUserService.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
         log.info("/test is executed");
-        throw new Exception();
+        throw new Exception("exception from /test");
     }
 
     @PostMapping("/test")
     public String getTest2(HttpSession session) {
         AppUser appUser = appUserService.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
         log.info("/test is executed");
-        log.info(String.valueOf(appUser.getJoinedProjects().get(0).getPid())));
+        log.info(String.valueOf(appUser.getJoinedProjects().get(0).getPid()));
         return "Hello from secured web page";
     }
-
-
 }

@@ -2,16 +2,21 @@
 
 
 
-* 1. Login Component
+* 1. /login
 
-** FRONTEND
-
-
+** Frontend Request
 
 
 
 
-* 2. Create Project Invite
+
+
+
+
+
+
+
+* 2. /createProjectInvite
 
 
 ** Frontend Request

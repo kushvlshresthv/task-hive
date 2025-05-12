@@ -15,6 +15,7 @@ import { catchError, config, of, Subscription } from 'rxjs';
 import { BACKEND_URL } from '../global.constants';
 import { Response } from '../GLOBAL_MODEL/response';
 import { checkUsernameFormat } from './login.validators';
+import { AppComponent } from '../app.component';
 
 @Component({
   selector: 'app-login',
@@ -24,11 +25,10 @@ import { checkUsernameFormat } from './login.validators';
   styleUrl: './login.component.scss',
 })
 export class LoginComponent implements OnInit {
-
-
-  router =  inject(Router);
-  http   = inject(HttpClient);
+  router = inject(Router);
+  http = inject(HttpClient);
   subscription!: Subscription;
+  popup = AppComponent.globalPopup;
 
   formData = new FormGroup({
     username: new FormControl('', {
@@ -46,11 +46,6 @@ export class LoginComponent implements OnInit {
     this.password = this.formData.controls.password;
   }
 
-
-
-
-
-
   onSubmit() {
     const authenticationDetails = `${this.username.value}:${this.password.value}`;
 
@@ -66,23 +61,19 @@ export class LoginComponent implements OnInit {
         headers: headers,
         withCredentials: true,
       })
-      .pipe(
-        catchError((error: HttpErrorResponse) => {
-          return of(null);
-        }),
-      )
       .subscribe({
         next: (response) => {
-          if (response != null) {
-            this.router.navigateByUrl('/hive');
-          }
+          console.log('LOG: ' + response.message);
+          this.popup.activatePopup(response.message, 'success');
+          this.router.navigateByUrl('/hive');
+        },
+        error: (error) => {
+          console.log(error.error.message);
+          this.popup.activatePopup(error.error.message, 'error');
+          this.router.navigateByUrl('/login');
         },
       });
   }
-
-
-
-
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();

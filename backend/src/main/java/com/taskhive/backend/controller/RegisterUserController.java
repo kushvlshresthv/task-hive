@@ -33,12 +33,14 @@ public class RegisterUserController {
                 return new ResponseEntity<Response>(new Response("server side validation failed"), HttpStatus.UNPROCESSABLE_ENTITY);
             }
 
-            AppUser registeredUser = appUserService.saveNewUser(user);
-
-            if (registeredUser.getUid() > 0) {
-                log.info("user with the username: " + user.getUsername() + " has been registered successfully");
-                return new ResponseEntity<Response>(new Response("user registered successfully"), HttpStatus.CREATED);
-            }
-            return new ResponseEntity<Response>(new Response("user could not be registered"), HttpStatus.INTERNAL_SERVER_ERROR);
         }
+       
+        AppUser registeredUser = appUserService.saveNewUser(user);
+
+        if (registeredUser.getUid() > 0) {
+            log.info("user with the username: " + user.getUsername() + " has been registered successfully");
+            return new ResponseEntity<Response>(new Response("user registered successfully"), HttpStatus.CREATED);
+        }
+        return new ResponseEntity<Response>(new Response("user could not be registered"), HttpStatus.INTERNAL_SERVER_ERROR);
     }
+}

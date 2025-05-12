@@ -1,37 +1,18 @@
 //popupBy property is for styling based on what created the popup(error or success)
-export interface Popup {
-  state: boolean;
-  message: string;
-  popupBy?: string;
-  popupActiveTime: number;
-}
+export class Popup {
+  state:boolean = false;
+  message: string = "" ;
+  popupBy?: string = "";
+  popupActiveTime: number = 0;
 
-//activates a popup for a particular time based on the message, what caused the popup and the popup active time.
+  activatePopup(message: string, popup_by: string, popupActiveTimeInMs = 2000  ): void {
+    this.state = true;
+    this.message = message;
+    this.popupBy = popup_by;  //for styling purposes
+    this.popupActiveTime = popupActiveTimeInMs;
 
-export function activatePopup(
-  message: string,
-  popup_by: string,
-  popupActiveTimeInMs = 2000, //default popup active time
-): Popup {
-  const popup = {
-    state: true,
-    message: message,
-    popupBy: popup_by,
-    popupActiveTime: popupActiveTimeInMs,
-  };
-
-  setTimeout(() => {
-    popup.state = false;
-  }, popupActiveTimeInMs);
-
-  return popup;
-}
-
-export function initializePopup(): Popup {
-  return {
-    state: false,
-    message: '',
-    popupBy: '',
-    popupActiveTime: 0,
-  };
+    setTimeout(()=> {
+      this.state = false;
+    }, popupActiveTimeInMs)
+  }
 }

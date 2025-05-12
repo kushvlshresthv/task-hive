@@ -1,6 +1,7 @@
 package com.taskhive.backend.controller;
 
 import com.taskhive.backend.constants.GlobalConstants;
+import com.taskhive.backend.constants.InboxInviteTitle;
 import com.taskhive.backend.entity.AppUser;
 import com.taskhive.backend.entity.Inbox;
 import com.taskhive.backend.entity.Project;
@@ -92,12 +93,11 @@ public class ProjectController {
             }
         }
 
-
         //check through the invited projects
         List<Inbox> inboxes = user.getInboxes();
         if (inboxes != null) {
             for (Inbox inbox : inboxes) {
-                if (inbox.getPid() == pid) {
+                if (inbox.getTitle().equals(InboxInviteTitle.INVITATION) && inbox.getPid() == pid) {
                     flag = true;
                 }
             }

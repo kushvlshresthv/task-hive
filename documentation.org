@@ -1,1 +1,183 @@
+#+TITLE:TaskHive Project Documentation
 
+
+
+* 1. /login
+
+** Frontend Request (/login.component.ts/)
+
+1) Data is taken from the user and validations are performed with angular
+
+2) The username:password with base64 is generated in the AUTHORIZATION header
+
+3) request sent to /login in the backend
+
+** Backend Processing (/LoginController/)
+
+1) /login uses spring security's default validation with custom UserDetailsService to validate the user data as follows:
+
+   a. When we add httpBasic() to SecurityFilterChain, BasicAuthenticationFilter is executed for every request
+
+   b. BAF's doFilterInternal() method is called which creates the Authentication object from request object's AUTHORIZATION HEADER.
+
+   c. If successful, The AuthenticationManager then calls a suitable AuthenticationProvider's authenticate() method by passsing the authentication object
+
+   d. By default DaoAuthenticationProvider object is used which has a password encoder as well as UserDetailsService assigned to it.
+
+   e. The project has a DatabaseUserDetailsService configured in SecurityConfig which is injected into DAO AP
+
+   f. The project also has DelegatePasswordEncoder configured in SecurityConfig which is injected into DAO AP
+
+   g. The authenticate() method of DAO AP then calls retrieveUser() method which passes the username
+
+   h. The retrieveUser() method then uses the DatabaseUserDetailsService to query the database, get the user with the provided username, and returns the UserDetails object which has database queried password in it.
+
+   i. The authenticate() method then calls additionalAuthenticationChecks() method which acceps the UserDetails instance(which contains db queries password) and Authentication object(which contains AUTHORIZATION header passoword) and then compares the two.
+
+   j. The additionalAuthenticationChecks() then calls the PasswordEncoder's match() method to compare if the two passwords are the same.
+
+   k. If the match is successful, it creates a sucessful authentication object and sends it back to the authenticate() method which then sends it to the AuthenticationManager
+
+   l. The Provider manager then gets the successful Authentication object, erases Credentials and then returns the result to doFilterInternal() method.
+
+   m. doFilterInternal() then creates a SecurityContext, adds the Authentication object to the SC, and sets the SC in SecurityContextHolderStrategy
+
+   n. The SecurityContext is persisted via SecurityContextRepository.
+
+
+
+2)  By default, SecurityContextRepository stores the SecurityContext in the Request object itself which is lost after the request is processed. Hence, the project also has a SecurityContextRepository configured in SecurityConfiguration.java which stores the SecurityContext in HttpSession object.
+
+
+*NOTE: DelegatePasswordEncoder's > matches() gets the {id} from the password fetched from the database, selects a particular PasswordEncoder based on that id from the Map object which is passed to its constructor during instantiation where it stores all its passwords and then again calls the matches() in the fetched PasswordEncoder*
+
+
+** Frontend Response
+
+1) If the request is not an Http Error, the user is redirected to /hive
+
+2) If the request is an error
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+* 2. /createProjectInvite
+
+
+** Frontend Request
+
+ 1) Frontend gets the username(after validation) and project id
+
+ 2) sends /createProjectInvite
+
+** Backend Processing
+
+*** 1) Validation:
+
+   fetch the project as well as the user who sent the request
+
+   A. Check if the project exists with the given pid exists
+
+   B. Check if the target user exists
+
+   C. Iterate through the projects(although already validated in the frontend) and the user that sent the request owns the project
+
+   D. check if the current user and the target user have the same uid
+
+   If any of the validation fails: respond with /INTERNAL_SERVER_ERROR/
+
+*** 2) Persistence: create the Inbox object with the target project
+
+   A. create the inbox object with the target project(contains uid, pid, project name, message, and invitation type)
+
+   B. store the target project with one many to one mapping with users
+
+   C. respond with /OK/
+
+** Frontend Response
+
+1) If the response is /INTERNAL_SERVER_ERROR/ then the error pipe operator is executed which causes a popup with error message
+
+2) If the response is /OK/ then the subscriber's next method is executed which causes a popup with success message
+
+
+** Database Table Schema
+
+CREATE TABLE inbox (
+  inbox_id INT NOT NULL AUTO_INCREMENT,
+  uid INT DEFAULT NULL,
+  pid INT DEFAULT NULL,
+  title CHAR(30) DEFAULT NULL,
+  project_name VARCHAR(100) DEFAULT NULL,
+  message TEXT DEFAULT NULL,
+  PRIMARY KEY (inbox_id),
+  KEY uid (uid)
+);
+
+
+
+
+
+
+* /getInboxes
+
+[frontend-files: inboxes.component and inbox.component]
+[backend-files: InboxController.java]
+
+** Frontend Request(opening the inbox, handled by inboxes.controller)
+
+1) set the inboxOpenFlag to true
+2) send /getInboxes request to the backend
+
+** Backend Processing
+
+1) load the current user
+2) get the inboxes of the current user
+3) attach the List<Inbox> to the response object and respond with /OK/
+
+** Frontend Response
+
+1) save the List<Inbox> into a variable
+2) since inboxOpenFlag is now set to true, the inbox.component is displayed in inboxes.component template
+3) inboxes.component's template iterates through all the Inbox object and calls inbox.component template
+4) inbox.component then display the Inbox object in the frontend
+
+
+** Frontend(closing the inbox)
+
+1) the inboxOpenFlag is set to false and the inbox.component is no longer rendered inside inboxes.component
+
+
+
+
+
+
+
+
+* /getProjectById
+
+** Frontend Request (used by: /invited-projects.component.html/ )
+
+1) send the request to /getProjectById with 'pid' in the header
+
+** Backend Processing (/ProjectController/)
+
+1) get the AppUser object who sent the request, check whether the given pid is an Owned Project or Invited Project
+
+2) if yes, then sent HTTP.OK
+
+3) If no, then setn HTTP.NOT_FOUND
+
+** Frontend Processing
+
+1) based on the http status, take the appropriate action

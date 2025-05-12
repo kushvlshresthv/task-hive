@@ -1,0 +1,25 @@
+
+.globalPopup {
+  position: absolute;
+  background-color: red;
+
+  //top: 50%; left: 50%; — This positions the top-left corner of the popup at the center of the screen.
+  top: 80%;
+  left: 50%;
+
+  // transform: translate(-50%, -50%); — This shifts the element back by 50% of its own width and height, effectively centering the popup itself on the screen
+
+  transform: translate(-50%, -50%);
+}
+
+.globalPopup > p {
+  padding: 20px;
+}
+
+.globalPopup.success {
+  background-color: green;
+}
+
+.globalPopup.error {
+  background-color: red;
+}

@@ -14,11 +14,7 @@ import {
 import { BACKEND_URL } from '../../../../global.constants';
 import { Response } from '../../../../GLOBAL_MODEL/response';
 import { catchError, of } from 'rxjs';
-import {
-  activatePopup,
-  initializePopup,
-  Popup,
-} from '../../../../GLOBAL_MODEL/popup';
+import { AppComponent } from '../../../../app.component';
 @Component({
   selector: 'app-invite-members',
   standalone: true,
@@ -30,7 +26,7 @@ export class InviteMembersComponent {
   private checkUsernameAvailabilityInstance = inject(checkUsernameAvailability);
   @Input() pid!: number | null;
   private http = inject(HttpClient);
-  popup: Popup = initializePopup();
+  popup = AppComponent.globalPopup;
 
   form = new FormGroup({
     username: new FormControl('', {
@@ -60,17 +56,16 @@ export class InviteMembersComponent {
       })
       .pipe(
         catchError((errorObj: HttpErrorResponse) => {
-          this.popup = activatePopup(errorObj.error.message, 'error');
+          this.popup.activatePopup(errorObj.error.message, 'error');
           return of(null);
         }),
       )
       .subscribe({
         next: (response) => {
           if (response != null) {
-            this.popup = activatePopup(response.message, 'success');
+            this.popup.activatePopup(response.message, 'success');
           }
         },
       });
   }
-  //hello there
 }

@@ -25,15 +25,14 @@
       </li>
 
       <!-- username validation fail message -->
-      @if (username.touched && username.dirty) {
-        @if (username.errors?.["required"]) {
-          <p class="fieldError">Username is required</p>
-        } @else if (username.errors?.["usernameImproperFormat"]) {
-          <p class="fieldError">
-            Username must not have any spaces or special symbols
-          </p>
-        }
-      }
+      @if (username.touched && username.dirty) { @if
+      (username.errors?.["required"]) {
+      <p class="fieldError">Username is required</p>
+      } @else if (username.errors?.["usernameImproperFormat"]) {
+      <p class="fieldError">
+        Username must not have any spaces or special symbols
+      </p>
+      } }
 
       <!-- password control -->
       <li class="password">
@@ -49,11 +48,10 @@
       </li>
 
       <!-- password validation fail message -->
-      @if (password.touched && password.dirty) {
-        @if (password.errors?.["required"]) {
-          <p class="fieldError">Username is required</p>
-        }
-      }
+      @if (password.touched && password.dirty) { @if
+      (password.errors?.["required"]) {
+      <p class="fieldError">Username is required</p>
+      } }
 
       <li class="submitButton">
         <button type="submit" [disabled]="formData.invalid">Submit</button>
