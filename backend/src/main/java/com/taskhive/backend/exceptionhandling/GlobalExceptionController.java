@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class GlobalExceptionController {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> globalExceptionHandler(Exception ex) {
-        log.error("exception caught: " + ex.getMessage());
+        log.error("exception caught by GloablExceptoinController: " + ex.getMessage());
         return ResponseEntity.status(HttpStatus.OK).body(ex.getMessage());
     }
 }

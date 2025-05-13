@@ -48,6 +48,7 @@ public class ProjectController {
 
         //server side validations:
         if (errors.hasErrors()) {
+            log.info("server side validation failed while creating a new project");
             return new ResponseEntity<Response>(new Response("server side validation failed"), HttpStatus.INTERNAL_SERVER_ERROR);
         }
 

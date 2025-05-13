@@ -110,15 +110,14 @@ export class NewProjectComponent {
   }
 
   onSubmit() {
-    const newProject: Project = {
-      pid: null,
-      projectName: this.projectName.value,
-      projectDescription: this.projectDescription.value,
-      startDate: this.startDate.value,
-      finishDate: this.finishDate.value,
-      priority: this.priority.value,
-      projectType: this.projectType.value,
-    };
+    const newProject = new Project();
+    newProject.projectName = this.projectName.value;
+    newProject.projectDescription = this.projectDescription.value;
+    newProject.startDate = this.startDate.value;
+    newProject.finishDate = this.finishDate.value;
+    newProject.priority = this.priority.value;
+    newProject.projectType = this.projectType.value;
+    newProject.status = 'PLANNED';
 
     this.formData.reset();
     this.http

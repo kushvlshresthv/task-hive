@@ -1,8 +1,10 @@
 package com.taskhive.backend.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.taskhive.backend.constants.ProjectStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,6 +25,7 @@ public class Project {
 
     @NotNull
     @Column(name = "project_name")
+    @Size(min = 1, max = 50)
     String projectName;
 
     @Column(name = "project_description")
@@ -38,10 +41,15 @@ public class Project {
 
     @NotNull
     @Column(name = "project_type")
+    @Size(min = 1, max = 20)
     String projectType;
 
     @NotNull
     String priority;
+
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    ProjectStatus status;
 
     //@JsonIgnore because we don't want to send the 'user' object back when returning the project
 

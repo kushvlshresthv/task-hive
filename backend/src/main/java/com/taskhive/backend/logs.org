@@ -33,14 +33,14 @@ then impelement the /joinedProjects page
 
 * TODO ::  check whether the invite we are trying to create for a particular user already exists in the database
 
-* TODO :: write documentation for /login and /getProjectById
+* DONE :: write documentation for /login and /getProjectById
 
 * TODO :: look into backend exception handling, fix it, and learn how it works
 
 
+* TODO ::add 'status' field in the Project object and integrate with frontend as well
 
-
-
+* TODO:: look into enum data type in database table
 
 
 

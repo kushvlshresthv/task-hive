@@ -25,3 +25,19 @@ form {
   flex-direction: column;
   gap: 10px;
 }
+
+.responseButton {
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+}
+
+.accept {
+  flex-grow: 1;
+  background-color: green;
+}
+
+.reject {
+  flex-grow: 1;
+  background-color: red;
+}

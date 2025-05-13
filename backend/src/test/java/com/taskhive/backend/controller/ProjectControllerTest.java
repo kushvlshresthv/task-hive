@@ -3,6 +3,8 @@ package com.taskhive.backend.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.taskhive.backend.config.SecurityConfiguration;
+import com.taskhive.backend.constants.InboxInviteTitle;
+import com.taskhive.backend.constants.ProjectStatus;
 import com.taskhive.backend.entity.AppUser;
 import com.taskhive.backend.entity.Inbox;
 import com.taskhive.backend.entity.Project;
@@ -50,7 +52,7 @@ public class ProjectControllerTest {
     public void init() {
         user = AppUser.builder().email("ikusshalstha@gmail.com").password("nopass").confirmPassword("nopass").firstName("firstName").lastName("lastName").username("newuser").uid(1001).build();
 
-        project = Project.builder().projectName("new").projectDescription("description").startDate(LocalDate.now()).finishDate(LocalDate.of(2025, 2, 12)).priority("high").projectType("business").build();
+        project = Project.builder().projectName("new").projectDescription("description").startDate(LocalDate.now()).finishDate(LocalDate.of(2025, 2, 12)).priority("high").projectType("business").status(ProjectStatus.PLANNED).build();
 
         Mockito.when(projectService.createProject(project)).thenReturn(project);
     }
@@ -117,7 +119,7 @@ public class ProjectControllerTest {
     @Test
     @WithMockUser(username = "TestUser")
     public void ProjectControllerTest_GetProjectById_Returns_HTTPOK_2() throws Exception {
-        Inbox inbox = Inbox.builder().pid(1).build();
+        Inbox inbox = Inbox.builder().pid(1).title(InboxInviteTitle.INVITATION).build();
 
         user.setInboxes(List.of(inbox));
 
