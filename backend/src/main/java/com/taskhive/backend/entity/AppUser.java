@@ -36,7 +36,6 @@ public class AppUser {
     @CheckUsernameAvailability
     String username;
 
-
     @NotEmpty
     @Email
     @Column(name = "email")
@@ -55,7 +54,17 @@ public class AppUser {
     @JsonIgnore
     List<Project> ownedProjects;
 
-    @ManyToMany(mappedBy = "joinedUsers", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST, targetEntity = Project.class)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @JoinTable(name = "project_members",
+            joinColumns = {
+                    @JoinColumn(name = "user_id", referencedColumnName = "uid")
+
+            },
+
+            inverseJoinColumns = {
+                    @JoinColumn(name = "project_id", referencedColumnName = "pid")
+            }
+    )
     @JsonIgnore
     List<Project> joinedProjects;
 

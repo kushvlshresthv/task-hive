@@ -1,5 +1,6 @@
 package com.taskhive.backend.repository;
 
+import com.taskhive.backend.constants.InboxInviteTitle;
 import com.taskhive.backend.entity.AppUser;
 import com.taskhive.backend.entity.Inbox;
 import lombok.extern.java.Log;
@@ -29,7 +30,7 @@ public class InboxRepositoryTest {
     public void init() {
         user = AppUser.builder().email("email@gmail.com").password("nopass").confirmPassword("nopass").firstName("firstName").lastName("lastName").username("newuser").build();
 
-        inbox = Inbox.builder().user(user).pid(9).title("INVITATION").build();
+        inbox = Inbox.builder().user(user).pid(9).title(InboxInviteTitle.INVITATION).build();
     }
 
     @Test

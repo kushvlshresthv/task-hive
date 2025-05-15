@@ -24,3 +24,47 @@ form {
   flex-direction: column;
   gap: 10px;
 }
+
+.pair {
+  display:flex;
+  justify-content:space-between;
+}
+
+.pair input {
+  border: 1px solid blue;
+  max-width: 80px;
+  min-width:1px;
+  width: auto;
+}
+
+.PLANNED {
+  background-color : skyblue;
+}
+
+.COMPLETED {
+  background-color: white;
+}
+
+.ONHOLD {
+  background-color: white;
+}
+
+.IN_PROGRESS {
+  background-color: white;
+}
+
+.CANCELLED {
+  background-color: white;
+}
+
+.OVERDUE {
+  background-color: white;
+}
+
+.REVIEWED {
+  background-color: white;
+}
+
+.FAILED {
+  background-color: white;
+}

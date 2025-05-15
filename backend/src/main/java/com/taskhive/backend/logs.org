@@ -1,3 +1,6 @@
+* TODO :: remove the invite from the inbox as well
+* TDOO :: when i am in an invited projet page, i can't open another invited project page
+
 NEXT TODO:
 __________
 
@@ -14,9 +17,6 @@ __________
 
 * DONE :: write unit tests for getProjectById()
 
-* DONE :: move from print statements to logger
-
-
 * TODO :: fix the css styling in no messages in the inbox
 
 implement accept project
@@ -31,6 +31,9 @@ implement accept project
 then impelement the /joinedProjects page
 
 
+* DONE :: move from print statements to logger
+
+
 * TODO ::  check whether the invite we are trying to create for a particular user already exists in the database
 
 * DONE :: write documentation for /login and /getProjectById
@@ -38,9 +41,16 @@ then impelement the /joinedProjects page
 * TODO :: look into backend exception handling, fix it, and learn how it works
 
 
-* TODO ::add 'status' field in the Project object and integrate with frontend as well
+* DONE ::add 'status' field in the Project object and integrate with frontend as well
 
 * TODO:: look into enum data type in database table
+
+* TODO :: /createProject  when project is created, create a popup
+
+* TODO :: write test case for AppUserRepository(update method) and /acceptProjectInvite and /rejectProjectInvite
+
+
+
 
 
 

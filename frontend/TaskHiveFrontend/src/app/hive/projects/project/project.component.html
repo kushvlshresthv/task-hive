@@ -65,4 +65,18 @@
   </div>
 </form>
 
-<app-invite-members [pid]="this.project.pid"></app-invite-members>
+<br>
+<div class="pair">
+  <app-invite-members [pid]="this.project.pid"></app-invite-members>
+
+  <input
+    id="status"
+    type="text"
+    name="status"
+    [value]="project.status"
+    disabled
+    [class]="project.status"
+  />
+
+</div>
+

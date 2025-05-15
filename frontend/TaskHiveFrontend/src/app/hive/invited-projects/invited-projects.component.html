@@ -64,12 +64,25 @@
     </div>
   </div>
 
+  <div
+    id="status"
+    type="text"
+    name="status"
+    disabled
+    [class]="project.status"
+  >
+    {{project.status ? project.status.charAt(0) + project.status.slice(1).toLowerCase() : ""}}
+    <!-- renders the project status in proper format -->
+  </div>
+
+
+
+</form>
   <div class="responseButton">
-    <button class="accept" routerLink="acceptProjectInvite"
+    <button class="accept"
     (click)="onAccept()">Accept</button>
 
-    <button class="reject" routerLink="rejectProjectInvite"
+    <button class="reject"
     (click)="onReject()">Reject</button>
 
   </div>
-</form>

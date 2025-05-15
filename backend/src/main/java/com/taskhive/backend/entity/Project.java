@@ -55,22 +55,13 @@ public class Project {
 
     //@JsonIgnore will omit the 'user' property from the response body
 
-    @ManyToOne(targetEntity = AppUser.class, fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "uid", referencedColumnName = "uid", nullable = false)
     @JsonIgnore
     AppUser user;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(name = "project_members",
-            joinColumns = {
-                    @JoinColumn(name = "project_id", referencedColumnName = "pid")
-
-            },
-
-            inverseJoinColumns = {
-                    @JoinColumn(name = "user_id", referencedColumnName = "uid")
-            }
-    )
+    @ManyToMany(mappedBy = "joinedProjects", fetch = FetchType.LAZY)
     @JsonIgnore
     List<AppUser> joinedUsers;
 }
+

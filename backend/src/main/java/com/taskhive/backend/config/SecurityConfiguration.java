@@ -25,7 +25,7 @@ public class SecurityConfiguration {
 
         http.authorizeHttpRequests((config) -> {
             config.requestMatchers("/register", "/checkUsernameAvailability", "/isAuthenticated", "/favicon.ico", "/test").permitAll();
-            config.requestMatchers("/login", "/test1", "/createProject", "/projects", "/addUserToProject", "/createProjectInvite", "/getInboxes", "getProjectById").authenticated();
+            config.requestMatchers("/login", "/test1", "/createProject", "/projects", "/addUserToProject", "/createProjectInvite", "/getInboxes", "getProjectById", "acceptProjectInvite", "/api/**").authenticated();
         });
 
         http.httpBasic(config -> {

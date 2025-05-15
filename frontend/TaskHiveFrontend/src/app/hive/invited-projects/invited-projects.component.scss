@@ -34,10 +34,50 @@ form {
 
 .accept {
   flex-grow: 1;
-  background-color: green;
+  background-color: lightgreen;
 }
 
 .reject {
   flex-grow: 1;
-  background-color: red;
+  background-color: palevioletred;
+}
+
+#status {
+  width: fit-content;
+  border: 1px solid black;
+  padding: 4px;
+
+}
+
+
+.PLANNED {
+  background-color : skyblue;
+}
+
+.COMPLETED {
+  background-color: white;
+}
+
+.ONHOLD {
+  background-color: white;
+}
+
+.IN_PROGRESS {
+  background-color: white;
+}
+
+.CANCELLED {
+  background-color: white;
+}
+
+.OVERDUE {
+  background-color: white;
+}
+
+.REVIEWED {
+  background-color: white;
+}
+
+.FAILED {
+  background-color: white;
 }

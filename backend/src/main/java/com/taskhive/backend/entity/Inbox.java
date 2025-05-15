@@ -1,6 +1,7 @@
 package com.taskhive.backend.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.taskhive.backend.constants.InboxInviteTitle;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,7 +28,8 @@ public class Inbox {
     AppUser user;
 
     @Column(name = "title")
-    String title;
+    @Enumerated(EnumType.STRING)
+    InboxInviteTitle title;
 
     @Column(name = "initiator")
     String initiator;

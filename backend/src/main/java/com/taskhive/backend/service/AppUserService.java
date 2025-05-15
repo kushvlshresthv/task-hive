@@ -23,4 +23,8 @@ public class AppUserService {
     public AppUser loadUserByUsername(String username) {
         return appUserRepository.findByUsername(username);
     }
+
+    public AppUser update(AppUser user) {
+        return appUserRepository.save(user);
+    }
 }
