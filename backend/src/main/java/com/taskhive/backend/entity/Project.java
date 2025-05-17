@@ -5,15 +5,14 @@ import com.taskhive.backend.constants.ProjectStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
+@EqualsAndHashCode
 @Builder
 @AllArgsConstructor
 @Entity(name = "projects")
@@ -55,7 +54,7 @@ public class Project {
 
     //@JsonIgnore will omit the 'user' property from the response body
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "uid", referencedColumnName = "uid", nullable = false)
     @JsonIgnore
     AppUser user;

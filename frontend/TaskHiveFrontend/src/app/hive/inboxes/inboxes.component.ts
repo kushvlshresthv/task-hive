@@ -4,6 +4,7 @@ import { BACKEND_URL } from '../../global.constants';
 import { Inbox } from './inbox/inbox.model';
 import { Response } from '../../GLOBAL_MODEL/response';
 import { InboxComponent } from './inbox/inbox.component';
+import { InboxesService } from './inboxes.service';
 
 @Component({
   selector: 'app-inboxes',
@@ -14,8 +15,11 @@ import { InboxComponent } from './inbox/inbox.component';
 })
 export class InboxesComponent {
   http = inject(HttpClient);
-  inboxes!: Inbox[];
   inboxOpenFlag = false;
+  inboxes!:Inbox[];
+
+  constructor(private inboxesService:InboxesService) {
+  }
 
   onInboxOpen() {
     this.inboxOpenFlag = true;
@@ -25,8 +29,9 @@ export class InboxesComponent {
       })
       .subscribe({
         next: (response) => {
-          this.inboxes = response.mainBody;
-          console.log(this.inboxes);
+          this.inboxesService.setInboxes(response.mainBody);
+          this.inboxes = this.inboxesService.getInboxes();
+          console.log(this.inboxesService.getInboxes());
         },
       });
   }

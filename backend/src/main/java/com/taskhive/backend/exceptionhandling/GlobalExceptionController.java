@@ -14,7 +14,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class GlobalExceptionController {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Response> globalExceptionHandler(Exception ex) {
-        log.info("exception caught by GloablExceptoinController: " + ex.getMessage());
+        log.info("exception caught by GloablExceptoinController: " + ex.toString());
+        ex.printStackTrace();
         Response response = new Response();
         return ResponseEntity.badRequest().body(response);
     }

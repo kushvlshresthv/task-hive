@@ -37,7 +37,7 @@ public class InboxRepositoryTest {
     public void InboxRepository_Save_ReturnsSavedInbox() {
         Inbox savedInbox = inboxRepository.save(inbox);
         Assertions.assertThat(savedInbox).isNotNull();
-        Assertions.assertThat(savedInbox.getInbox_id()).isGreaterThan(0);
+        Assertions.assertThat(savedInbox.getInboxId()).isGreaterThan(0);
         Assertions.assertThat(savedInbox.getUser().getUid()).isGreaterThan(0);
         Assertions.assertThat(savedInbox.getPid()).isEqualTo(9);
     }

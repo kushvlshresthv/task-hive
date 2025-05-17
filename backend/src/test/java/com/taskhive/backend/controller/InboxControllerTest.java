@@ -141,7 +141,7 @@ public class InboxControllerTest {
         log.info("result: " + response.getMessage());
     }
 
-    //tests the condition when the Inbox could not be saved to the database and inbox_id <=0
+    //tests the condition when the Inbox could not be saved to the database and inboxId <=0
     @Test
     @WithMockUser(username = "TestUser")
     public void InboxController_CreateProjectInvite_Returns_Project_Could_Not_Be_Saved() throws Exception {
@@ -150,7 +150,7 @@ public class InboxControllerTest {
         Mockito.when(appUserService.loadUserByUsername("anotherTestUser")).thenReturn(anotherTestUser);
 
         //saveInbox returns Inbox object with id = 0 which triggers InternalServerError
-        Inbox inbox = Inbox.builder().inbox_id(0).build();
+        Inbox inbox = Inbox.builder().inboxId(0).build();
         Mockito.when(inboxService.saveInbox(Mockito.any())).thenReturn(inbox);
 
         //user with the username "antherTestUser" and project with pid = 1 has been configured for the current user.
@@ -174,7 +174,7 @@ public class InboxControllerTest {
 
         Mockito.when(appUserService.loadUserByUsername("anotherTestUser")).thenReturn(anotherTestUser);
 
-        Inbox inbox = Inbox.builder().inbox_id(1).build();
+        Inbox inbox = Inbox.builder().inboxId(1).build();
         Mockito.when(inboxService.saveInbox(Mockito.any())).thenReturn(inbox);
 
         //user with the username "antherTestUser" and project with pid = 1 has been configured for the current user.

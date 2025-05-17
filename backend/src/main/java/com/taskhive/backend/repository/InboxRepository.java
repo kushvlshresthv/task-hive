@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface InboxRepository extends CrudRepository<Inbox, Integer> {
+    public Inbox findByInboxId(int inboxId);
 }

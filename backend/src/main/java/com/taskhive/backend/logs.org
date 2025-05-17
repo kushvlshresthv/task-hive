@@ -1,5 +1,13 @@
-* TODO :: remove the invite from the inbox as well
+* DONE :: remove the invite from the inbox as well
+
 * TDOO :: when i am in an invited projet page, i can't open another invited project page
+
+* TODO :: after accepting the project, emtpy project template is being displayed
+
+* TODO :: fix the accepting invite, the invite disappearing in Inboxes
+
+* TDOD :: even after accepting project, it says, this project is not accessible to you
+
 
 NEXT TODO:
 __________
@@ -47,7 +55,7 @@ then impelement the /joinedProjects page
 
 * TODO :: /createProject  when project is created, create a popup
 
-* TODO :: write test case for AppUserRepository(update method) and /acceptProjectInvite and /rejectProjectInvite
+* TODO :: write test case for AppUserService(update method) and InboxService(delete method) and /acceptProjectInvite and /rejectProjectInvite
 
 
 

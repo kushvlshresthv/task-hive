@@ -1,3 +1,5 @@
+
+@if(project.pid) {
 <form>
   <input
     type="text"
@@ -81,8 +83,10 @@
   <div class="responseButton">
     <button class="accept"
     (click)="onAccept()">Accept</button>
-
     <button class="reject"
     (click)="onReject()">Reject</button>
-
   </div>
+}
+@else {
+<p>The invited project is not accessible to you at the moment..</p>
+  }

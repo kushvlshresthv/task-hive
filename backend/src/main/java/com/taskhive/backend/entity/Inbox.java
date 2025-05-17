@@ -3,26 +3,23 @@ package com.taskhive.backend.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.taskhive.backend.constants.InboxInviteTitle;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
+@EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity(name = "user_inbox")
 @Builder
 public class Inbox {
-
-
     @Id
     @Column(name = "inbox_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int inbox_id;
+    int inboxId;
 
     //A Inbox is associated with a particular AppUser's uid which is stored in the 'uid' column of 'inbox' table
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "uid", referencedColumnName = "uid")
     @JsonIgnore
     AppUser user;
@@ -39,5 +36,4 @@ public class Inbox {
 
     @Column(name = "pid")
     int pid;
-
 }

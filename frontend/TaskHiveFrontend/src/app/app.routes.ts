@@ -35,7 +35,7 @@ export const routes: Routes = [
       },
 
       {
-          path: 'invitedProjects/:pid',
+          path: 'invitedProjects/:inboxId/:pid',
           component: InvitedProjectsComponent,
       },
     ],

@@ -13,4 +13,9 @@ public class InboxService {
     public Inbox saveInbox(Inbox inbox) {
         return inboxRepository.save(inbox);
     }
+
+    public Inbox getInboxById(int id) {
+        return inboxRepository.findByInboxId(id);
+    }
+
 }

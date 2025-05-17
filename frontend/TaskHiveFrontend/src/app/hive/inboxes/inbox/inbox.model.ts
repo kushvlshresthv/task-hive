@@ -1,5 +1,5 @@
 export interface Inbox {
-  inbox_id: string;
+  inboxId: string;
   initiator: string;
   title: string;
   projectName:string;

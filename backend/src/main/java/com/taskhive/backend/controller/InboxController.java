@@ -9,6 +9,7 @@ import com.taskhive.backend.response.Response;
 import com.taskhive.backend.service.AppUserService;
 import com.taskhive.backend.service.InboxService;
 import com.taskhive.backend.service.ProjectService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @CrossOrigin(origins = GlobalConstants.FRONTEND_URL, allowCredentials = "true", allowedHeaders = "*", exposedHeaders = "*")
-
+@Slf4j
 @RestController
 public class InboxController {
     @Autowired
@@ -38,7 +39,7 @@ public class InboxController {
     //TODO: check whether the invite we are trying to create for a particular user already exists in the database
 
     @GetMapping("/createProjectInvite")
-    public ResponseEntity<Response> createProjectInvite(@RequestHeader("pid") int pid, @RequestHeader("username") String username) {
+    public ResponseEntity<Response> createProjectInvite(@RequestHeader int pid, @RequestHeader String username) {
         AppUser currentUser = appUserService.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
 
         List<Project> projects = currentUser.getOwnedProjects();
@@ -92,10 +93,10 @@ public class InboxController {
 
         Inbox savedInbox = inboxService.saveInbox(inbox);
 
-        if (savedInbox.getInbox_id() <= 0) {
+        if (savedInbox.getInboxId() <= 0) {
             return new ResponseEntity<Response>(new Response("this project invitation could not be created"), HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
+        log.info("Project invitation created for project: " + targetProject.getProjectName() + " from user " + currentUser.getUsername() + "for " + targetUser.getUsername());
         return new ResponseEntity<Response>(new Response("project invitation successfully created"), HttpStatus.OK);
     }
 
