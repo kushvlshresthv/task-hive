@@ -42,9 +42,7 @@ public class InboxController {
     public ResponseEntity<Response> createProjectInvite(@RequestHeader int pid, @RequestHeader String username) {
         AppUser currentUser = appUserService.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
 
-        List<Project> projects = currentUser.getOwnedProjects();
         //1) check if the project with the give pid exists
-
         Project targetProject = projectService.loadProjectByPid(pid);
 
         if (targetProject == null) {
@@ -63,14 +61,16 @@ public class InboxController {
             return new ResponseEntity<Response>(new Response("can't create an invite for the owner of this project"), HttpStatus.NOT_FOUND);
         }
 
+
+        List<Project> currentUserOwnedProjects = currentUser.getOwnedProjects();
         boolean isOwned = false;
 
-        if (projects.isEmpty()) {
+        if (currentUserOwnedProjects.isEmpty()) {
             return new ResponseEntity<Response>(new Response("this project isn't owned by you"), HttpStatus.NOT_FOUND);
         }
 
         //4)  check if the user who sent the request owns the project with the given pid
-        for (Project project : projects) {
+        for (Project project : currentUserOwnedProjects) {
             if (project.getPid() == targetProject.getPid()) {
                 isOwned = true;
                 break;
@@ -81,9 +81,25 @@ public class InboxController {
             return new ResponseEntity<Response>(new Response("this project isn't owned by you"), HttpStatus.NOT_FOUND);
         }
 
+        //5) check if the project has already been joined by the targetUser
+        List<Project> targetUserJoinedProjects = targetUser.getJoinedProjects();
+        for (Project project : targetUserJoinedProjects) {
+            if (project.getPid() == pid) {
+                return new ResponseEntity<>(new Response("Project already joined"), HttpStatus.CONFLICT);
+            }
+        }
 
-        //5) create and save the inbox in the database
 
+        //7 check if the project invite is already present in the targetUser's invite
+        List<Inbox> targetUserInboxes = targetUser.getInboxes();
+        for (Inbox inbox : targetUserInboxes) {
+            if (inbox.getPid() == pid && inbox.getTitle() == InboxInviteTitle.INVITATION && inbox.getInitiator().equals(currentUser.getUsername())) {
+                return new ResponseEntity<>(new Response("Project invite already sent"), HttpStatus.CONFLICT);
+            }
+        }
+
+
+        //8) create and save the inbox in the database
         Inbox inbox = new Inbox();
         inbox.setUser(targetUser);
         inbox.setInitiator(currentUser.getUsername());

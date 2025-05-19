@@ -92,4 +92,10 @@ public class ProjectInviteController {
 
         return null;
     }
+
+    @GetMapping("/test")
+    public ResponseEntity<Response> test(Authentication authentication) {
+        return new ResponseEntity<>(new Response("test"), HttpStatus.OK);
+    }
 }
+

@@ -94,6 +94,12 @@
 
    D. check if the current user and the target user have the same uid
 
+   E. get the joinedProjects of the targetUser and see if the project is already there
+
+   F. get the inboxes of the target and see if the project invite already exists there
+
+*TODO: if a feature is implemented such that two people can own the same project, we will also have to check the ownedProject for the targetUser*
+
    If any of the validation fails: respond with /INTERNAL_SERVER_ERROR/
 
 *** 2) Persistence: create the Inbox object with the target project

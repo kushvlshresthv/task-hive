@@ -1,22 +1,26 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal, WritableSignal } from '@angular/core';
 import { Inbox } from './inbox/inbox.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class InboxesService {
-  inboxes: Inbox[] = [];
+  private inboxes = signal<Inbox[]>([]);
 
-  getInboxes():Inbox[] {
+  getInboxes():WritableSignal<Inbox[]> {
     return this.inboxes;
   }
 
   setInboxes(inboxes: Inbox[]) {
-    this.inboxes = [...inboxes];
+    this.inboxes.set([...inboxes]);
   }
 
   addInbox(inbox:Inbox) {
-    this.inboxes = [...this.inboxes, inbox];
+    this.inboxes.set([...this.inboxes(), inbox]);
+  }
+
+  deleteInbox(inboxId:string) {
+    this.inboxes.set(this.inboxes().filter(inbox=>inbox.inboxId != inboxId));
   }
 
 }

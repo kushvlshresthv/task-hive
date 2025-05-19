@@ -3,7 +3,7 @@ import { Project } from '../new-project/new-project.model';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { BACKEND_URL } from '../../global.constants';
 import { Response } from '../../GLOBAL_MODEL/response';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AppComponent } from '../../app.component';
 import { Inbox } from '../inboxes/inbox/inbox.model';
@@ -23,34 +23,39 @@ export class InvitedProjectsComponent implements OnInit, OnDestroy {
   project = new Project();
 
   http = inject(HttpClient);
-  pid = input.required<string>();
+  pid!:string;
   subscription?: Subscription;
-  inboxId = input.required<string>();
+  inboxId!:string;
 
-  constructor(private inboxesService:InboxesService) {
+  constructor(private inboxesService:InboxesService, private route: ActivatedRoute) {
   }
 
   ngOnInit(): void {
-    console.log(this.pid());
+    this.route.paramMap.subscribe({
+      next: (params) => {
+        this.pid = params.get("pid")!;
+        this.inboxId = params.get("inboxId")!;
+        console.log(this.pid);
+        const reqHeaders = new HttpHeaders({
+          pid: this.pid,
+        });
 
-    const reqHeaders = new HttpHeaders({
-      pid: this.pid(),
-    });
-
-    this.http
-      .get<Response<Project>>(`${BACKEND_URL}/getProjectById`, {
-        headers: reqHeaders,
-        withCredentials: true,
-      })
-      .subscribe({
-        next: (response) => {
-          this.project = response.mainBody;
-          AppComponent.globalPopup.activatePopup(response.message, "success");
-        },
-        error: (error: HttpErrorResponse) => {
-          AppComponent.globalPopup.activatePopup(error.error.message, "error");
-        }
-      });
+        this.http
+          .get<Response<Project>>(`${BACKEND_URL}/getProjectById`, {
+            headers: reqHeaders,
+            withCredentials: true,
+          })
+          .subscribe({
+            next: (response) => {
+              this.project = response.mainBody;
+              AppComponent.globalPopup.activatePopup(response.message, "success");
+            },
+            error: (error: HttpErrorResponse) => {
+              AppComponent.globalPopup.activatePopup(error.error.message, "error");
+            }
+          });
+      }
+    })
   }
 
 
@@ -60,11 +65,11 @@ export class InvitedProjectsComponent implements OnInit, OnDestroy {
   onAccept() {
     console.log("on accept called");
     const headers = new HttpHeaders({
-      "pid": this.pid() + "",
-      "inboxId": this.inboxId() + "",
+      "pid": this.pid + "",
+      "inboxId": this.inboxId + "",
     });
 
-    this.subscription = this.http.get<Response<Object>>(`${BACKEND_URL}/api/invitedProjects/acceptProjectInvite`, {
+    this.subscription = this.http.get<Response<Object>>(`${BACKEND_URL}/api/invitedProjects/test`, {
       withCredentials: true,
       headers: headers,
     }).subscribe({
@@ -75,16 +80,9 @@ export class InvitedProjectsComponent implements OnInit, OnDestroy {
         console.log(error);
       },
       complete:()=> {
-        console.log(this.inboxesService.getInboxes());
-        this.inboxesService.getInboxes().filter(inbox=>inbox.inboxId != this.inboxId());
-
-        // const inboxes = this.inboxesService.getInboxes();
-        // for (let i = inboxes.length - 1; i >= 0; i--) {
-        //   if (inboxes[i].inboxId === this.inboxId()) {
-        //     inboxes.splice(i, 1);
-        //   }
-        // }
-        // console.log("complete() is run");
+        console.log(this.inboxesService.getInboxes()());
+        this.inboxesService.deleteInbox(this.inboxId);
+        console.log("complete() is run");
       }
     });
   }
@@ -92,7 +90,7 @@ export class InvitedProjectsComponent implements OnInit, OnDestroy {
 
   onReject() {
     const headers = new HttpHeaders({
-      "pid": this.pid() + "",
+      "pid": this.pid + "",
     });
 
     this.subscription = this.http.get<Response<Object>>(`${BACKEND_URL}/rejectProjectinvite`, {

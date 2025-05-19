@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, inject } from '@angular/core';
+import { Component, effect, inject } from '@angular/core';
 import { BACKEND_URL } from '../../global.constants';
 import { Inbox } from './inbox/inbox.model';
 import { Response } from '../../GLOBAL_MODEL/response';
@@ -19,6 +19,9 @@ export class InboxesComponent {
   inboxes!:Inbox[];
 
   constructor(private inboxesService:InboxesService) {
+    effect(()=> {
+      this.inboxes = inboxesService.getInboxes()();
+    })
   }
 
   onInboxOpen() {
@@ -30,12 +33,9 @@ export class InboxesComponent {
       .subscribe({
         next: (response) => {
           this.inboxesService.setInboxes(response.mainBody);
-          this.inboxes = this.inboxesService.getInboxes();
-          console.log(this.inboxesService.getInboxes());
         },
       });
   }
-
 
   onInboxClose() {
     this.inboxOpenFlag = false;
