@@ -16,20 +16,26 @@ public class AppUserRepositoryTests {
     @Autowired
     AppUserRepository appUserRepository;
 
-    AppUser user = AppUser.builder().email("ikus shalstha@gmail.com").password("nopass").confirmPassword("nopass").firstName("firstName").lastName("lastName").username("newuser").build();
+    AppUser user = AppUser.builder().email("ikushalstha@gmail.com").password("nopass").confirmPassword("nopass").firstName("firstName").lastName("lastName").username("newuser").build();
 
     @Test
     public void RegisterUserRepository_Save_ReturnsSavedUser() {
-        AppUser savedUser = appUserRepository.save(user);
+        appUserRepository.save(user);
+        Assertions.assertThat(appUserRepository.count()).isEqualTo(1);
+        AppUser savedUser = appUserRepository.findByUsername(user.getUsername());
         Assertions.assertThat(savedUser).isNotNull();
         Assertions.assertThat(savedUser.getUid()).isGreaterThan(0);
+        Assertions.assertThat(savedUser).isEqualTo(user);
     }
 
     @Test
     public void RegisterUserRepository_FindByUsername_ReturnsUser() {
-        AppUser savedUser = appUserRepository.save(user);
-        AppUser user = appUserRepository.findByUsername("newuser");
-        Assertions.assertThat(user).isNotNull();
-        Assertions.assertThat(user.getUsername()).isEqualTo("newuser");
+        appUserRepository.save(user);
+
+        Assertions.assertThat(appUserRepository.count()).isEqualTo(1);
+        AppUser savedUser = appUserRepository.findByUsername(user.getUsername());
+        Assertions.assertThat(savedUser).isNotNull();
+        Assertions.assertThat(savedUser.getUid()).isGreaterThan(0);
+        Assertions.assertThat(savedUser).isEqualTo(user);
     }
 }

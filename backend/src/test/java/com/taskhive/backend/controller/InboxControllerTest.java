@@ -1,10 +1,12 @@
 package com.taskhive.backend.controller;
 
 import com.taskhive.backend.config.SecurityConfiguration;
+import com.taskhive.backend.constants.InboxInviteTitle;
 import com.taskhive.backend.entity.AppUser;
 import com.taskhive.backend.entity.Inbox;
 import com.taskhive.backend.entity.Project;
 import com.taskhive.backend.response.Response;
+import com.taskhive.backend.response.ResponseMessage;
 import com.taskhive.backend.service.AppUserService;
 import com.taskhive.backend.service.InboxService;
 import com.taskhive.backend.service.ProjectService;
@@ -57,8 +59,9 @@ public class InboxControllerTest {
         Project testProject2 = Project.builder().pid(2).build();
         testOwnedProjects.add(testProject);
 
-        testUser = AppUser.builder().uid(100).ownedProjects(testOwnedProjects).build();
-        testUser2 = AppUser.builder().uid(200).build();
+        testUser = AppUser.builder().uid(100).username("TestUser").ownedProjects(testOwnedProjects).build();
+
+        testUser2 = AppUser.builder().uid(200).username("TestUser2").build();
 
         Mockito.when(appUserService.loadUserByUsername("TestUser")).thenReturn(testUser);
         Mockito.when(appUserService.loadUserByUsername("TestUser2")).thenReturn(testUser2);
@@ -68,27 +71,39 @@ public class InboxControllerTest {
     }
 
 
-    //tests that the user which sends the request is the owner of the project
+    //1) tests whether the project with given pid exists
     @Test
     @WithMockUser(username = "TestUser")
-    public void InboxController_CreateProjectInvite_Returns_Project_Not_Owned_By_You() throws Exception {
+    public void InboxController_CreateProjectInvite_Returns_TargetProject_Does_Not_Exist() throws Exception {
 
-        //request is being sent with username TestUser which has project with pid = 1 as its owned project.
-
-        MvcResult result = mockMvc.perform(get("/createProjectInvite").header("pid", 2).header("username", "TestUser2")).andExpect(status().isNotFound()).andReturn();
+        //project with pid = 3 has not been configured in the mock environment
+        MvcResult result = mockMvc.perform(get("/createProjectInvite").header("pid", 3).header("username", "TestUser2")).andExpect(status().isNotFound()).andReturn();
 
         Response response = SerializerDeserializer.deserialize(result.getResponse().getContentAsString());
 
         Assertions.assertThat(response).isNotNull();
         Assertions.assertThat(response.getMessage()).isNotNull();
-
-
-        log.info("attempting to create a project invite without owning the project");
-        log.info("result: " + response.getMessage());
+        Assertions.assertThat(response.getMessage()).isEqualTo(ResponseMessage.TARGET_PROJECT_NOT_FOUND.getMessage());
     }
 
 
-    //tests that the owner of the project(who sends invite) is not the same user who receives the invite
+    //2) tests whether the target user with the provided username exists
+    @Test
+    @WithMockUser(username = "TestUser")
+    public void InboxController_CreateProjectInvite_Returns_TargetUser_Does_Not_Exist() throws Exception {
+        //user with the username "NoSuchUser" has not been configured in the mock environment
+        //NOTE: TestUser ie the User that sends the request has pid = 1 as its owned project
+        MvcResult result = mockMvc.perform(get("/createProjectInvite").header("pid", 1).header("username", "NoSuchUser")).andExpect(status().isNotFound()).andReturn();
+
+        Response response = SerializerDeserializer.deserialize(result.getResponse().getContentAsString());
+
+        Assertions.assertThat(response).isNotNull();
+        Assertions.assertThat(response.getMessage()).isNotNull();
+        Assertions.assertThat(response.getMessage()).isEqualTo(ResponseMessage.TARGET_USER_NOT_FOUND.getMessage());
+    }
+
+
+    //3) tests what happens when user for whom invite is created is also the owner of the project
     @Test
     @WithMockUser(username = "TestUser")
     public void InboxController_CreateProjectInvite_Returns_Cant_Create_Invite_For_Owned_Project() throws Exception {
@@ -102,91 +117,111 @@ public class InboxControllerTest {
 
         Assertions.assertThat(response).isNotNull();
         Assertions.assertThat(response.getMessage()).isNotNull();
-
-        log.info("attempting to create a project invite for an owned project ");
-        log.info("result: " + response.getMessage());
+        Assertions.assertThat(response.getMessage()).isEqualTo(ResponseMessage.CANNOT_INVITE_OWNER.getMessage());
     }
 
-    //tests whether the target user with the provided username exists
+
+    //3) tests the case when the user who creates the request does not own the project
     @Test
     @WithMockUser(username = "TestUser")
-    public void InboxController_CreateProjectInvite_Returns_TargetUser_Does_Not_Exist() throws Exception {
-        //user with the username "NoSuchUser" has not been configured in the mock environment
-        MvcResult result = mockMvc.perform(get("/createProjectInvite").header("pid", 1).header("username", "NoSuchUser")).andExpect(status().isNotFound()).andReturn();
+    public void InboxController_CreateProjectInvite_Returns_Project_Not_Owned_By_You() throws Exception {
+
+        //request is being sent with username TestUser which has project with pid = 1 as its owned project.
+
+        MvcResult result = mockMvc.perform(get("/createProjectInvite").header("pid", 2).header("username", "TestUser2")).andExpect(status().isNotFound()).andReturn();
 
         Response response = SerializerDeserializer.deserialize(result.getResponse().getContentAsString());
 
         Assertions.assertThat(response).isNotNull();
         Assertions.assertThat(response.getMessage()).isNotNull();
-
-        log.info("attempting to create a project invite for a user which does not exist");
-        log.info("result: " + response.getMessage());
+        Assertions.assertThat(response.getMessage()).isEqualTo(ResponseMessage.PROJECT_NOT_OWNED_BY_CURRENT_USER.getMessage())
+        ;
     }
 
+    //5) test the case in which project has already been joined by the targetUser
 
-    //tests whether the project with given pid exists
     @Test
     @WithMockUser(username = "TestUser")
-    public void InboxController_CreateProjectInvite_Returns_TargetProject_Does_Not_Exist() throws Exception {
+    public void InboxController_CreateProjectInvite_Returns_Project_Already_Joined() throws Exception {
+        List<Project> targetJoinedProjects = testUser.getOwnedProjects();
+        testUser2.setJoinedProjects(targetJoinedProjects);
 
-        //project with pid = 2 has not been configured in the mock environment
-        MvcResult result = mockMvc.perform(get("/createProjectInvite").header("pid", 3).header("username", "TestUser2")).andExpect(status().isNotFound()).andReturn();
+        //request is being sent with username TestUser which has project with pid = 1 as its owned project.
+
+        MvcResult result = mockMvc.perform(get("/createProjectInvite").header("pid", 1).header("username", "TestUser2")).andExpect(status().isConflict()).andReturn();
 
         Response response = SerializerDeserializer.deserialize(result.getResponse().getContentAsString());
 
         Assertions.assertThat(response).isNotNull();
         Assertions.assertThat(response.getMessage()).isNotNull();
-
-        log.info("attempting to create a project invite for a project which does not exist");
-        log.info("result: " + response.getMessage());
+        Assertions.assertThat(response.getMessage()).isEqualTo(ResponseMessage.PROJECT_ALREADY_JOINED.getMessage())
+        ;
     }
 
-    //tests the condition when the Inbox could not be saved to the database and inboxId <=0
+    //6) tests whether the invite is already present in the targetUser's invite
+
+    @Test
+    @WithMockUser(username = "TestUser")
+    public void InboxController_CreateProjectInvite_Project_Invite_Already_Sent() throws Exception {
+
+        Inbox inbox = Inbox.builder().pid(1).title(InboxInviteTitle.INVITATION).initiator("TestUser").pid(1).build();
+        testUser2.setInboxes(List.of(inbox));
+
+        //request is being sent with username TestUser which has project with pid = 1 as its owned project.
+        MvcResult result = mockMvc.perform(get("/createProjectInvite").header("pid", 1).header("username", "TestUser2")).andExpect(status().isConflict()).andReturn();
+
+        Response response = SerializerDeserializer.deserialize(result.getResponse().getContentAsString());
+
+        Assertions.assertThat(response).isNotNull();
+        Assertions.assertThat(response.getMessage()).isNotNull();
+        Assertions.assertThat(response.getMessage()).isEqualTo(ResponseMessage.PROJECT_INVITE_ALREADY_SENT.getMessage())
+        ;
+    }
+
+
+    //7) tests the condition when the Inbox could not be saved to the database and inboxId <=0
     @Test
     @WithMockUser(username = "TestUser")
     public void InboxController_CreateProjectInvite_Returns_Project_Could_Not_Be_Saved() throws Exception {
-        AppUser anotherTestUser = AppUser.builder().uid(200).build();
+        AppUser testUser3 = AppUser.builder().uid(300).build();
 
-        Mockito.when(appUserService.loadUserByUsername("anotherTestUser")).thenReturn(anotherTestUser);
+        Mockito.when(appUserService.loadUserByUsername("testUser3")).thenReturn(testUser3);
 
         //saveInbox returns Inbox object with id = 0 which triggers InternalServerError
         Inbox inbox = Inbox.builder().inboxId(0).build();
         Mockito.when(inboxService.saveInbox(Mockito.any())).thenReturn(inbox);
 
         //user with the username "antherTestUser" and project with pid = 1 has been configured for the current user.
-
-        MvcResult result = mockMvc.perform(get("/createProjectInvite").header("pid", 1).header("username", "anotherTestUser")).andExpect(status().isInternalServerError()).andReturn();
+        MvcResult result = mockMvc.perform(get("/createProjectInvite").header("pid", 1).header("username", "testUser3")).andExpect(status().isInternalServerError()).andReturn();
 
         Response response = SerializerDeserializer.deserialize(result.getResponse().getContentAsString());
 
         Assertions.assertThat(response).isNotNull();
         Assertions.assertThat(response.getMessage()).isNotNull();
-        log.info("inbox failed to be stored in the database");
+        Assertions.assertThat(response.getMessage()).isEqualTo(ResponseMessage.PROJECT_INVITATION_CREATION_FAILED.getMessage());
     }
 
 
-    //tests the success case
-
+    //8)tests the success case
     @Test
     @WithMockUser(username = "TestUser")
     public void InboxController_CreateProjectInvite_Returns_OK() throws Exception {
-        AppUser anotherTestUser = AppUser.builder().uid(200).build();
+        AppUser testUser3 = AppUser.builder().uid(300).build();
 
-        Mockito.when(appUserService.loadUserByUsername("anotherTestUser")).thenReturn(anotherTestUser);
+        Mockito.when(appUserService.loadUserByUsername("testUser3")).thenReturn(testUser3);
 
         Inbox inbox = Inbox.builder().inboxId(1).build();
         Mockito.when(inboxService.saveInbox(Mockito.any())).thenReturn(inbox);
 
         //user with the username "antherTestUser" and project with pid = 1 has been configured for the current user.
 
-        MvcResult result = mockMvc.perform(get("/createProjectInvite").header("pid", 1).header("username", "anotherTestUser")).andExpect(status().isOk()).andReturn();
+        //NOTE: TestUser ie the user that sends the request has pid = 1 as its owned project
+        MvcResult result = mockMvc.perform(get("/createProjectInvite").header("pid", 1).header("username", "testUser3")).andExpect(status().isOk()).andReturn();
 
         Response response = SerializerDeserializer.deserialize(result.getResponse().getContentAsString());
 
         Assertions.assertThat(response).isNotNull();
         Assertions.assertThat(response.getMessage()).isNotNull();
-
-        log.info("attempting to create a successful project invite");
-        log.info("result: " + response.getMessage());
+        Assertions.assertThat(response.getMessage()).isEqualTo(ResponseMessage.PROJECT_INVITATION_SUCCESS.getMessage());
     }
 }

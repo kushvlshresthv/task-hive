@@ -69,7 +69,7 @@ export class InvitedProjectsComponent implements OnInit, OnDestroy {
       "inboxId": this.inboxId + "",
     });
 
-    this.subscription = this.http.get<Response<Object>>(`${BACKEND_URL}/api/invitedProjects/test`, {
+    this.subscription = this.http.get<Response<Object>>(`${BACKEND_URL}/api/invitedProjects/acceptProjectInvite`, {
       withCredentials: true,
       headers: headers,
     }).subscribe({

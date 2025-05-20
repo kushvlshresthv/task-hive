@@ -6,6 +6,7 @@ import com.taskhive.backend.entity.AppUser;
 import com.taskhive.backend.entity.Inbox;
 import com.taskhive.backend.entity.Project;
 import com.taskhive.backend.response.Response;
+import com.taskhive.backend.response.ResponseMessage;
 import com.taskhive.backend.service.AppUserService;
 import com.taskhive.backend.service.InboxService;
 import com.taskhive.backend.service.ProjectService;
@@ -46,27 +47,28 @@ public class InboxController {
         Project targetProject = projectService.loadProjectByPid(pid);
 
         if (targetProject == null) {
-            return new ResponseEntity<Response>(new Response("target project with the provided pid doesn't exist"), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<Response>(new Response(ResponseMessage.TARGET_PROJECT_NOT_FOUND), HttpStatus.NOT_FOUND);
         }
 
         //2) check if the target user exists:
         AppUser targetUser = appUserService.loadUserByUsername(username);
 
         if (targetUser == null) {
-            return new ResponseEntity<Response>(new Response("this user doesn't exist"), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<Response>(new Response(ResponseMessage.TARGET_USER_NOT_FOUND),
+                    HttpStatus.NOT_FOUND);
         }
 
         //3) check if the target user and the current user have the same id
         if (targetUser.getUid() == currentUser.getUid()) {
-            return new ResponseEntity<Response>(new Response("can't create an invite for the owner of this project"), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<Response>(new Response(ResponseMessage.CANNOT_INVITE_OWNER), HttpStatus.NOT_FOUND);
         }
 
 
         List<Project> currentUserOwnedProjects = currentUser.getOwnedProjects();
         boolean isOwned = false;
 
-        if (currentUserOwnedProjects.isEmpty()) {
-            return new ResponseEntity<Response>(new Response("this project isn't owned by you"), HttpStatus.NOT_FOUND);
+        if (currentUserOwnedProjects == null || currentUserOwnedProjects.isEmpty()) {
+            return new ResponseEntity<Response>(new Response(ResponseMessage.PROJECT_NOT_OWNED_BY_CURRENT_USER), HttpStatus.NOT_FOUND);
         }
 
         //4)  check if the user who sent the request owns the project with the given pid
@@ -78,23 +80,29 @@ public class InboxController {
         }
 
         if (!isOwned) {
-            return new ResponseEntity<Response>(new Response("this project isn't owned by you"), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<Response>(new Response(ResponseMessage.PROJECT_NOT_OWNED_BY_CURRENT_USER), HttpStatus.NOT_FOUND);
         }
 
         //5) check if the project has already been joined by the targetUser
         List<Project> targetUserJoinedProjects = targetUser.getJoinedProjects();
-        for (Project project : targetUserJoinedProjects) {
-            if (project.getPid() == pid) {
-                return new ResponseEntity<>(new Response("Project already joined"), HttpStatus.CONFLICT);
+
+        if (targetUserJoinedProjects != null) {
+            for (Project project : targetUserJoinedProjects) {
+                if (project.getPid() == pid) {
+                    return new ResponseEntity<>(new Response(ResponseMessage.PROJECT_ALREADY_JOINED), HttpStatus.CONFLICT);
+                }
             }
         }
 
 
         //7 check if the project invite is already present in the targetUser's invite
         List<Inbox> targetUserInboxes = targetUser.getInboxes();
-        for (Inbox inbox : targetUserInboxes) {
-            if (inbox.getPid() == pid && inbox.getTitle() == InboxInviteTitle.INVITATION && inbox.getInitiator().equals(currentUser.getUsername())) {
-                return new ResponseEntity<>(new Response("Project invite already sent"), HttpStatus.CONFLICT);
+
+        if (targetUserInboxes != null) {
+            for (Inbox inbox : targetUserInboxes) {
+                if (inbox.getPid() == pid && inbox.getTitle() == InboxInviteTitle.INVITATION && inbox.getInitiator().equals(currentUser.getUsername())) {
+                    return new ResponseEntity<>(new Response(ResponseMessage.PROJECT_INVITE_ALREADY_SENT), HttpStatus.CONFLICT);
+                }
             }
         }
 
@@ -110,10 +118,10 @@ public class InboxController {
         Inbox savedInbox = inboxService.saveInbox(inbox);
 
         if (savedInbox.getInboxId() <= 0) {
-            return new ResponseEntity<Response>(new Response("this project invitation could not be created"), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<Response>(new Response(ResponseMessage.PROJECT_INVITATION_CREATION_FAILED), HttpStatus.INTERNAL_SERVER_ERROR);
         }
         log.info("Project invitation created for project: " + targetProject.getProjectName() + " from user " + currentUser.getUsername() + "for " + targetUser.getUsername());
-        return new ResponseEntity<Response>(new Response("project invitation successfully created"), HttpStatus.OK);
+        return new ResponseEntity<Response>(new Response(ResponseMessage.PROJECT_INVITATION_SUCCESS), HttpStatus.OK);
     }
 
 
@@ -122,7 +130,7 @@ public class InboxController {
         AppUser user = appUserService.loadUserByUsername(authentication.getName());
 
         List<Inbox> inboxes = user.getInboxes();
-        Response response = new Response();
+        Response response = new Response(ResponseMessage.INBOXES_FETCH_SUCCESS);
         response.setMainBody(inboxes);
 
         return new ResponseEntity<Response>(response, HttpStatus.OK);

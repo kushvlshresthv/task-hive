@@ -17,6 +17,7 @@ public class GlobalExceptionController {
         log.info("exception caught by GloablExceptoinController: " + ex.toString());
         ex.printStackTrace();
         Response response = new Response();
+        response.setMessage("exception caught by GloablExceptoinController ");
         return ResponseEntity.badRequest().body(response);
     }
 

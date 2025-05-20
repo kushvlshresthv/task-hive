@@ -1,16 +1,19 @@
+
+* TODO :: in project information box, show whether the project is joined, not joined, or owned
+
 * DONE :: remove the invite from the inbox as well
 
-* TDOO :: when i am in an invited projet page, i can't open another invited project page
+* DONE :: when i am in an invited projet page, i can't open another invited project page
 
 * TODO :: after accepting the project, emtpy project template is being displayed
 
-* TODO :: fix the accepting invite, the invite disappearing in Inboxes
+* DONE :: fix the accepting invite, the invite disappearing in Inboxes
 
 * TODD :: even after accepting project, it says, this project is not accessible to you
 
-* TODO :: write test cases for modified /createProjectInvite
+* DONE :: write test cases for modified /createProjectInvite
 
-* OKAY :: improve repository test cases
+* DONE :: improve repository test cases
 
 * TODO :: reuse project.component in invited component as well
 
@@ -18,7 +21,8 @@
 
 * TODO :: write documentation for /acceptProjectInvite
 
-* TODO :: after acceptin project in the frontend, it should disappear from the inbox
+* DONE :: after accepting project in the frontend, it should disappear from the inbox
+
 
 
 NEXT TODO:
