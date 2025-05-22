@@ -2,7 +2,7 @@ import { Routes } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';
 import { HiveComponent } from './hive/hive.component';
-import { isAuthenticated } from './app.guards';
+import { invitedProjectsGuard, isAuthenticated } from './app.guards';
 import { ErrorComponent } from './error/error.component';
 import { InvitedProjectsComponent } from './hive/invited-projects/invited-projects.component';
 import { ProjectsComponent } from './hive/projects/projects.component';
@@ -35,8 +35,9 @@ export const routes: Routes = [
       },
 
       {
-          path: 'invitedProjects/:inboxId/:pid',
+          path: 'invitedProjects',
           component: InvitedProjectsComponent,
+          canActivate: [invitedProjectsGuard],
       },
     ],
   },

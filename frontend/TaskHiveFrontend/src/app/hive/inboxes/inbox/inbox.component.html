@@ -5,6 +5,7 @@
   </tr>
   <tr class="message">
     <td>message</td>
-    <td> &#64;{{inbox.initiator}} invited your to project <span class="routerLink" [routerLink]="'/hive/invitedProjects/' +this.inbox.inboxId+'/'+ this.inbox.pid">{{inbox.projectName}}</span></td>
+    <td> &#64;{{inbox.initiator}} invited your to project <span class="routerLink"><a [routerLink]="['/hive/invitedProjects']"
+   [queryParams]="{ inboxId: this.inbox.inboxId, pid: this.inbox.pid }">{{inbox.projectName}}</a></span></td>
   </tr>
 </table>

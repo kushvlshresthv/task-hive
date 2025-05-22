@@ -31,10 +31,10 @@ export class InvitedProjectsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.route.paramMap.subscribe({
+    this.route.queryParams.subscribe({
       next: (params) => {
-        this.pid = params.get("pid")!;
-        this.inboxId = params.get("inboxId")!;
+        this.pid = params["pid"];
+        this.inboxId = params["inboxId"]!;
         console.log(this.pid);
         const reqHeaders = new HttpHeaders({
           pid: this.pid,
