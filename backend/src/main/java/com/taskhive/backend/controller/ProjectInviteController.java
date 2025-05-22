@@ -91,14 +91,14 @@ public class ProjectInviteController {
             }
         }
 
-        //2) check if the inbox exists in the database for the current user
+        //2, 3) check if the inbox exists in the database for the current user
         Inbox inbox = inboxService.getInboxById(Integer.parseInt(inboxId));
         if (inbox == null || inbox.getUser() == null || inbox.getUser().getUid() != user.getUid()) {
             return new ResponseEntity<>(new Response(ResponseMessage.INBOX_DOES_NOT_EXIST), HttpStatus.NOT_ACCEPTABLE);
         }
 
-        //3 check if the pid in the inbox is the same as in the header
-        //4 check if the inbox is an invitation
+        //4 check if the pid in the inbox is the same as in the header
+        //5 check if the inbox is an invitation
         if (inbox.getTitle() == InboxInviteTitle.INVITATION && inbox.getPid() == Integer.parseInt(pid)) {
             inboxService.deleteInbox(inbox);
             return new ResponseEntity<>(new Response(ResponseMessage.INBOX_INVITATION_DELETED), HttpStatus.OK);

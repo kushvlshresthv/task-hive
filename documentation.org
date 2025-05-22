@@ -267,3 +267,5 @@ CREATE TABLE inbox (
 1) if HTTP.OK, redirect to /hive/joinedProjects with a popup
 
 2) if HTTP.ERROR, display the error message with a popup and remain in the same page
+
+NOTE: same thing for /rejectProjectInvite without the 'point 6' and in 'point 7' delete the inbox with inboxService

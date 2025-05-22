@@ -20,13 +20,15 @@
 
 * TODO :: reuse project.component in invited component as well
 
-* TODO :: write test case for AppUserService(update method) and InboxService(delete method) and /acceptProjectInvite and /rejectProjectInvite
+* TODO :: write test case for AppUserService(update method) and InboxService(delete method)
 
-* TODO :: write documentation for /acceptProjectInvite
+* TODO :: write test cases for /acceptProjectInvite and /rejectProjectInvite
+
+* DONE :: write documentation for /acceptProjectInvite and /rejectProjectInvite
 
 * DONE :: after accepting project in the frontend, it should disappear from the inbox
 
-* TODO :: move /invitedProjects to query parameters instead of using paths for inbox id and pid
+* DONE :: move /invitedProjects to query parameters instead of using paths for inbox id and pid
 
 
 
@@ -111,6 +113,9 @@ _____
 
 10) Features to track the status of the tasks
 
+11) Figure out how to load Inbox automatically without actually loading the page or closing-opening the inbox(may be give a refresh button for the inbox?)
+
+12) Add a way to display the inbox message numbers with 'red' background
 
 
 * LOGS:
