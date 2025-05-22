@@ -1,15 +1,18 @@
+* TODO :: fix the test cases for /getProjectById(now splitted into /getOwnedProjectById and /getInvitedProjectById)
 
 * TODO :: in project information box, show whether the project is joined, not joined, or owned
+
+* TODO :: when the project has been accepted/rejected, the initiator has to be notified as well
 
 * DONE :: remove the invite from the inbox as well
 
 * DONE :: when i am in an invited projet page, i can't open another invited project page
 
-* TODO :: after accepting the project, emtpy project template is being displayed
+* DONE :: after accepting the project, emtpy project template is being displayed, FIX: just redirect to another route after accepting the project
 
 * DONE :: fix the accepting invite, the invite disappearing in Inboxes
 
-* TODD :: even after accepting project, it says, this project is not accessible to you
+* DONE :: even after accepting project, it says, this project is not accessible to you, FIX: fine because, it is not longer an 'invted project'
 
 * DONE :: write test cases for modified /createProjectInvite
 
@@ -22,6 +25,8 @@
 * TODO :: write documentation for /acceptProjectInvite
 
 * DONE :: after accepting project in the frontend, it should disappear from the inbox
+
+* TODO :: move /invitedProjects to query parameters instead of using paths for inbox id and pid
 
 
 
@@ -71,8 +76,9 @@ then impelement the /joinedProjects page
 
 * TODO :: /createProject  when project is created, create a popup
 
+* TODO :: manage the http session in both backend and frontend
 
-
+* TODO :: change the deprecated @MockBean annotations
 
 
 
@@ -95,3 +101,18 @@ _____
 6) implement have i been pawned
 
 7) while logging in, only three attempts should be given for a particular username
+
+
+
+
+8) Display the users in the project,
+
+9) Feature to assign tasks
+
+10) Features to track the status of the tasks
+
+
+
+* LOGS:
+
+1) separated /getProjectById to /getOwnedProjectById and /getInvitedProjectById because to verify whether the project is an invite, we also need to verify the inbox id

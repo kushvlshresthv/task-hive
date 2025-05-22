@@ -18,4 +18,8 @@ public class InboxService {
         return inboxRepository.findByInboxId(id);
     }
 
+    public void deleteInbox(Inbox inbox) {
+        inboxRepository.delete(inbox);
+    }
+
 }

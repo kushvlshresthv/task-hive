@@ -6,6 +6,7 @@ import com.taskhive.backend.entity.AppUser;
 import com.taskhive.backend.entity.Inbox;
 import com.taskhive.backend.entity.Project;
 import com.taskhive.backend.response.Response;
+import com.taskhive.backend.response.ResponseMessage;
 import com.taskhive.backend.service.AppUserService;
 import com.taskhive.backend.service.ProjectService;
 import jakarta.validation.Valid;
@@ -13,14 +14,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
-
-
 
 /*
 /createProject gets the user from the SecurityContextHolder and adds the user to the Project saves the Project in the database
@@ -76,96 +75,46 @@ public class ProjectController {
         return new ResponseEntity<Response>(response, HttpStatus.OK);
     }
 
-
-    @GetMapping("getProjectById")
-    public ResponseEntity<Response> getProjectById(@RequestHeader int pid) {
-        //check if the user has been invited/owns the project
+    //only returns the owned Project
+    @GetMapping("getOwnedProjectById")
+    public ResponseEntity<Response> getOwnedProjectById(@RequestHeader int pid) {
+        //check if the user has been owned project with the given pid
         AppUser user = appUserService.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
 
-        boolean flag = false;
         //check through the owned project
         List<Project> projects = user.getOwnedProjects();
 
         if (projects != null) {
             for (Project project : projects) {
                 if (project.getPid() == pid) {
-                    flag = true;
+                    Response response = new Response();
+                    response.setMainBody(project);
+                    response.setMessage(ResponseMessage.PROJECT_FOUND);
+                    return new ResponseEntity<Response>(response, HttpStatus.OK);
                 }
             }
         }
+        return new ResponseEntity<>(new Response(ResponseMessage.PROJECT_NOT_FOUND), HttpStatus.NOT_FOUND);
+    }
+
+    //only returns the invited projects
+    @GetMapping("/getInvitedProjectById")
+    public ResponseEntity<Response> getInvitedProjectById(@RequestHeader String pid, @RequestHeader String inboxId, Authentication authentication) {
+        AppUser user = appUserService.loadUserByUsername(authentication.getName());
 
         //check through the invited projects
         List<Inbox> inboxes = user.getInboxes();
         if (inboxes != null) {
             for (Inbox inbox : inboxes) {
-                if (inbox.getTitle().equals(InboxInviteTitle.INVITATION) && inbox.getPid() == pid) {
-                    flag = true;
+                if (inbox.getPid() == Integer.parseInt(pid) && inbox.getInboxId() == Integer.parseInt(inboxId) && inbox.getTitle().equals(InboxInviteTitle.INVITATION)) {
+
+                    Project project = projectService.loadProjectByPid(inbox.getPid());
+                    Response response = new Response(project, ResponseMessage.PROJECT_FOUND);
+                    return new ResponseEntity<>(response, HttpStatus.OK);
                 }
             }
         }
 
-        Response response = new Response();
-        //if true return the project by fetching from ProjectService
-        if (flag) {
-            Project project = projectService.loadProjectByPid(pid);
-            response.setMainBody(project);
-            response.setMessage("Project found");
-            return new ResponseEntity<Response>(response, HttpStatus.OK);
-        }
-
-
-        response.setMessage("This project is not accessible to you");
-        return new ResponseEntity<Response>(response, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(new Response(ResponseMessage.PROJECT_NOT_FOUND), HttpStatus.NOT_FOUND);
     }
-
-    //the commented portion has been implemented in InboxController.java>createProjectInvite
-
-
-    //takes username and pid from the frontend and adds the user as a member to the given project after checking that this was invoked by a user which owns the project
-//    @PostMapping("/addUserToProject")
-//    public ResponseEntity<Response> addUserToProject(@RequestBody ReqBody reqBody) {
-//        AppUser user = appUserService.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
-//
-//        List<Project> projects = user.getOwnedProjects();
-//        Project targetProject = projectService.loadProjectByPid(reqBody.pid);
-//
-//        boolean isOwned = false;
-//        for (Project project : projects) {
-//            if (project.getPid() == targetProject.getPid()) {
-//                isOwned = true;
-//                break;
-//            }
-//        }
-//
-//        if (!isOwned) {
-//            return new ResponseEntity<Response>(new Response("this project isn't owned by you"), HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
-//
-//
-//        //check if the target error exists
-//        AppUser targetUser = appUserService.loadUserByUsername(reqBody.username);
-//
-//        if (targetUser == null) {
-//            return new ResponseEntity<Response>(new Response("this user doesn't exist"), HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
-//
-//        targetProject.getJoinedUsers().add(targetUser);
-//
-//        Project savedProject = projectService.saveProject(targetProject);
-//        if (savedProject.getPid() > 0) {
-//            return new ResponseEntity<Response>(new Response("user added to the project successfully"), HttpStatus.OK);
-//        }
-//
-//        return new ResponseEntity<Response>(new Response("something went wrong"), HttpStatus.INTERNAL_SERVER_ERROR);
-//
-//    }
 }
-
-/// /this class is for request body for /addUserToProject
-//@NoArgsConstructor
-//@Data
-//@AllArgsConstructor
-//class ReqBody {
-//    String username;
-//    int pid;
-//}

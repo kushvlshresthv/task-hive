@@ -1,5 +1,6 @@
 package com.taskhive.backend.config;
 
+import com.taskhive.backend.exceptionhandling.CustomAccessDeniedHandler;
 import com.taskhive.backend.exceptionhandling.CustomBasicAuthenticationEntryPoint;
 import com.taskhive.backend.user_details_service.DatabaseUserDetailsService;
 import org.springframework.context.annotation.Bean;
@@ -25,12 +26,16 @@ public class SecurityConfiguration {
 
         http.authorizeHttpRequests((config) -> {
             config.requestMatchers("/register", "/checkUsernameAvailability", "/isAuthenticated", "/favicon.ico", "/test/**").permitAll();
-            config.requestMatchers("/login", "/test1", "/createProject", "/projects", "/addUserToProject", "/createProjectInvite", "/getInboxes", "getProjectById", "acceptProjectInvite", "/api/**").authenticated();
+            config.requestMatchers("/login", "/test1", "/createProject", "/projects", "/addUserToProject", "/createProjectInvite", "/getInboxes", "getOwnedProjectById", "getInvitedProjectById", "acceptProjectInvite", "/api/**").authenticated();
         });
 
         http.httpBasic(config -> {
             config.securityContextRepository(new DelegatingSecurityContextRepository(new HttpSessionSecurityContextRepository(), new RequestAttributeSecurityContextRepository()));
             config.authenticationEntryPoint(new CustomBasicAuthenticationEntryPoint());
+        });
+
+        http.exceptionHandling(config -> {
+            config.accessDeniedHandler(new CustomAccessDeniedHandler());
         });
 
         http.securityContext((config) -> {

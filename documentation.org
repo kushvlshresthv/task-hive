@@ -170,20 +170,100 @@ CREATE TABLE inbox (
 
 
 
-* /getProjectById
+* /getOwnedProjectById
 
-** Frontend Request (used by: /invited-projects.component.html/ )
+** Frontend Request (used by: not used by anything yet)
 
-1) send the request to /getProjectById with 'pid' in the header
+1) send the request to /getOwnedProjectById with 'pid' in the header
 
-** Backend Processing (/ProjectController/)
+** Backend Processing ()
 
-1) get the AppUser object who sent the request, check whether the given pid is an Owned Project or Invited Project
+1) get the AppUser object who sent the request, check whether the given pid is an Owned Project
 
-2) if yes, then sent HTTP.OK
+2) if yes, then send HTTP.OK
 
-3) If no, then setn HTTP.NOT_FOUND
+3) If no, then send HTTP.NOT_FOUND
 
 ** Frontend Processing
 
 1) based on the http status, take the appropriate action
+
+
+
+
+
+
+
+* /getInvitedProjectById
+
+** Frontend Request(used by: invited-project.component.html)
+
+1) send the request to /getInvitedProjectById with 'pid' and 'inboxId' in the header
+
+** Backend Processing (ProjectController)
+
+1) get the AppUser object of the user who sent the request, check whether:
+
+   a. given pid is an invited project
+
+   b. given pid is within the given inboxId
+
+   c. given inboxId is an INVITATION
+
+2) If yes, then send HTTP.OK
+
+3) If no, then send HTTP.NOT_FOUND
+
+
+** Frontend Processing
+
+1) based on the http status, take the appropriate action
+
+
+
+
+
+
+
+* /invitedProject/acceptProjectInvite
+
+
+** Frontend Processing (invited-projects.component.ts)
+
+1) get the pid and inboxId from the url path
+
+2) when the 'accept' button is clicked for hte invitedProject, send request /api/invitedProject/acceptProjectInvite
+
+
+** Backend Processing(ProjectInviteController)
+
+1) Load the current 'user' by their username from the authentication object.
+
+2) Check if the 'user' has already joined the project identified by `pid`. If so, return a `PROJECT_ALREADY_JOINED` response.
+
+3) Retrieve the 'inbox' by `inboxId' and validate that the 'inbox' exists and belongs to the current user
+
+4) Validate that the 'inbox' pid is the same as the 'pid' and the title of the 'inbox' is INVITATION provided by the frontend. If any of these fails, return ERROR_OCCURED
+
+
+5) Retrieve the 'targetProject' based on the 'pid'. Validate that the project status is not 'COMPLETED'. If false, return INBOX INVITATION EXPIRED
+
+6) if the status is not 'COMPLETED':
+
+   a) Add the 'targetProject' to the user's list of joined projects.
+
+   b) Remove the invitation 'inbox' from the user's inboxes
+
+   c) Update the user in the database
+
+  and then return INBOX_INVITATION_ACCEPTED with HTTP.OK
+
+7) /update() user just uses the projectRepository.save()/ method. AppUser also owns the @ManyToMany relationship with 'joinedProjects' and has CascadeType.PERSIST. So, 'joinedProjects' is automatically updated in the database.
+
+   Furthermore, AppUser has orphanRemove=true for 'inboxes'. Hence, the detached inbox is automatically removed from the database
+
+** Frontend Processing
+
+1) if HTTP.OK, redirect to /hive/joinedProjects with a popup
+
+2) if HTTP.ERROR, display the error message with a popup and remain in the same page

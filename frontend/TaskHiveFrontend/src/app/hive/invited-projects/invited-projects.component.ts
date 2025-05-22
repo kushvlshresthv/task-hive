@@ -1,4 +1,5 @@
-import { Component, inject, input, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, input, OnDestroy, OnInit  } from '@angular/core';
+import {Router} from '@angular/router';
 import { Project } from '../new-project/new-project.model';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { BACKEND_URL } from '../../global.constants';
@@ -6,7 +7,6 @@ import { Response } from '../../GLOBAL_MODEL/response';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AppComponent } from '../../app.component';
-import { Inbox } from '../inboxes/inbox/inbox.model';
 import { InboxesService } from '../inboxes/inboxes.service';
 
 @Component({
@@ -27,7 +27,7 @@ export class InvitedProjectsComponent implements OnInit, OnDestroy {
   subscription?: Subscription;
   inboxId!:string;
 
-  constructor(private inboxesService:InboxesService, private route: ActivatedRoute) {
+  constructor(private router: Router, private inboxesService:InboxesService, private route: ActivatedRoute) {
   }
 
   ngOnInit(): void {
@@ -38,10 +38,11 @@ export class InvitedProjectsComponent implements OnInit, OnDestroy {
         console.log(this.pid);
         const reqHeaders = new HttpHeaders({
           pid: this.pid,
+          inboxId : this.inboxId,
         });
 
         this.http
-          .get<Response<Project>>(`${BACKEND_URL}/getProjectById`, {
+          .get<Response<Project>>(`${BACKEND_URL}/getInvitedProjectById`, {
             headers: reqHeaders,
             withCredentials: true,
           })
@@ -59,11 +60,7 @@ export class InvitedProjectsComponent implements OnInit, OnDestroy {
   }
 
 
-
-
-
   onAccept() {
-    console.log("on accept called");
     const headers = new HttpHeaders({
       "pid": this.pid + "",
       "inboxId": this.inboxId + "",
@@ -74,15 +71,16 @@ export class InvitedProjectsComponent implements OnInit, OnDestroy {
       headers: headers,
     }).subscribe({
       next:(response)=> {
-        console.log(response);
+        AppComponent.globalPopup.activatePopup(response.message, "success");
+         this.router.navigate(['/hive/joinedProjects'], {
+          relativeTo: null,
+        });
       },
       error:(error)=> {
-        console.log(error);
+        AppComponent.globalPopup.activatePopup(error.error.message, "error")
       },
       complete:()=> {
-        console.log(this.inboxesService.getInboxes()());
         this.inboxesService.deleteInbox(this.inboxId);
-        console.log("complete() is run");
       }
     });
   }
@@ -91,17 +89,29 @@ export class InvitedProjectsComponent implements OnInit, OnDestroy {
   onReject() {
     const headers = new HttpHeaders({
       "pid": this.pid + "",
+      "inboxId":this.inboxId+"",
     });
 
-    this.subscription = this.http.get<Response<Object>>(`${BACKEND_URL}/rejectProjectinvite`, {
+    this.subscription = this.http.get<Response<Object>>(`${BACKEND_URL}/api/invitedProjects/rejectProjectInvite`, {
       withCredentials: true,
       headers: headers,
-    }).subscribe();
-
-
+    }).subscribe({
+      next:(response)=> {
+        console.log(response);
+      },
+      error:(error)=> {
+        console.log(error);
+      },
+      complete:()=> {
+        this.inboxesService.deleteInbox(this.inboxId);
+        this.router.navigate(['/hive/projects'], {
+          relativeTo: null,
+        });
+      }
+    });
   }
 
   ngOnDestroy() {
-    this.subscription?.unsubscribe()
+    this.subscription?.unsubscribe();
   }
 }
