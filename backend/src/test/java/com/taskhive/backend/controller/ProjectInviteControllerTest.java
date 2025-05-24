@@ -91,22 +91,6 @@ public class ProjectInviteControllerTest {
         Mockito.when(appUserService.loadUserByUsername("TestUser")).thenReturn(testUser);
 
         Mockito.when(inboxService.getInboxById(TEST_USER_INBOX_ID)).thenReturn(inbox);
-
-
-        //for test2:
-        Mockito.when(inboxService.getInboxById(INBOX_ID_NOT_PRESENT_IN_DB)).thenReturn(null);
-
-
-        //for test3:
-        //configuring an inbox for 'testUser2'
-        testUser2 = AppUser.builder().uid(200).username("TestUser2").build();
-        Inbox inbox2 = Inbox.builder().user(testUser2).build();
-        Mockito.when(inboxService.getInboxById(INBOX_ID_FOR_ANOTHER_USER)).thenReturn(inbox2);
-
-
-        //for test6:
-        //setting PID to a project with status = COMPLETED
-        Mockito.when(projectService.loadProjectByPid(PID)).thenReturn(project);
     }
 
     //1) this tests when a user invokes accepts invite in an alrady joined project
@@ -126,6 +110,10 @@ public class ProjectInviteControllerTest {
     @Test
     @WithMockUser(username = "TestUser")
     public void AcceptProjectInvite_Returns_INBOX_DOES_NOT_EXIST_1() throws Exception {
+
+        //setup for test2:
+        Mockito.when(inboxService.getInboxById(INBOX_ID_NOT_PRESENT_IN_DB)).thenReturn(null);
+
         MvcResult result = mockMvc.perform(get("/api/invitedProjects/acceptProjectInvite").header("pid", PROJECT_ID_NOT_JOINED_BY_TEST_USER).header("inboxId", INBOX_ID_NOT_PRESENT_IN_DB)).andExpect(status().isNotAcceptable()).andReturn();
 
         Response response = SerializerDeserializer.deserialize(result.getResponse().getContentAsString());
@@ -142,6 +130,11 @@ public class ProjectInviteControllerTest {
     @Test
     @WithMockUser(username = "TestUser")
     public void AcceptProjectInvite_Returns_INBOX_DOES_NOT_EXIST_2() throws Exception {
+        //setup for test3:
+        //configuring an inbox for 'testUser2'
+        testUser2 = AppUser.builder().uid(200).username("TestUser2").build();
+        Inbox inbox2 = Inbox.builder().user(testUser2).build();
+        Mockito.when(inboxService.getInboxById(INBOX_ID_FOR_ANOTHER_USER)).thenReturn(inbox2);
 
         MvcResult result = mockMvc.perform(get("/api/invitedProjects/acceptProjectInvite").header("pid", PROJECT_ID_NOT_JOINED_BY_TEST_USER).header("inboxId", INBOX_ID_FOR_ANOTHER_USER)).andExpect(status().isNotAcceptable()).andReturn();
 
@@ -192,7 +185,11 @@ public class ProjectInviteControllerTest {
     @Test
     @WithMockUser(username = "TestUser")
     public void AcceptProjectInvite_Returns_INBOX_INVITATION_EXPIRED() throws Exception {
+        //setup test6:
+        //setting PID to a project with status = COMPLETED
+        Mockito.when(projectService.loadProjectByPid(PID)).thenReturn(project);
         project.setStatus(ProjectStatus.COMPLETED);
+
         MvcResult result = mockMvc.perform(get("/api/invitedProjects/acceptProjectInvite").header("pid", PID).header("inboxId", TEST_USER_INBOX_ID)).andExpect(status().isNotAcceptable()).andReturn();
 
         Response response = SerializerDeserializer.deserialize(result.getResponse().getContentAsString());
@@ -206,7 +203,9 @@ public class ProjectInviteControllerTest {
     @Test
     @WithMockUser(username = "TestUser")
     public void AcceptProjectInvite_Returns_INBOX_INVITATION_ACCEPTED() throws Exception {
-
+        //setup for test 7
+        Mockito.when(projectService.loadProjectByPid(PID)).thenReturn(project);
+        project.setStatus(ProjectStatus.PLANNED);
 
         MvcResult result = mockMvc.perform(get("/api/invitedProjects/acceptProjectInvite").header("pid", PID).header("inboxId", TEST_USER_INBOX_ID)).andExpect(status().isOk()).andReturn();
 

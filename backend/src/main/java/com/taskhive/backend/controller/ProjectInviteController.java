@@ -70,7 +70,14 @@ public class ProjectInviteController {
                 user.getInboxes().remove(inbox);
                 appUserService.update(user);
 
+                //create an inbox for the initiator
+                AppUser initiator = appUserService.loadUserByUsername(inbox.getInitiator());
+                Inbox inboxForInitiator = Inbox.builder().user
+                        (initiator).title(InboxInviteTitle.PROJECT_ACCEPTED).initiator(user.getUsername()).projectName(targetProject.getProjectName()).build();
+                inboxService.saveInbox(inboxForInitiator);
+
                 log.info("Project invitation accepted for user: " + user.getUsername() + "with pid: " + pid);
+
                 return new ResponseEntity<>(new Response(ResponseMessage.INBOX_INVITATION_ACCEPTED), HttpStatus.OK);
             }
             return new ResponseEntity<>(new Response(ResponseMessage.INBOX_INVITATION_EXPIRED), HttpStatus.NOT_ACCEPTABLE);
@@ -101,6 +108,17 @@ public class ProjectInviteController {
         //5 check if the inbox is an invitation
         if (inbox.getTitle() == InboxInviteTitle.INVITATION && inbox.getPid() == Integer.parseInt(pid)) {
             inboxService.deleteInbox(inbox);
+
+            //create an inbox for the initiator
+            Project targetProject = projectService.loadProjectByPid(Integer.parseInt(pid));
+            AppUser initiator = appUserService.loadUserByUsername(inbox.getInitiator());
+            Inbox inboxForInitiator = Inbox.builder().user
+                    (initiator).title(InboxInviteTitle.PROJECT_REJECTED).initiator(user.getUsername()).projectName(targetProject.getProjectName()).build();
+            inboxService.saveInbox(inboxForInitiator);
+
+
+            log.info("Project invitation rejected by user: " + user.getUsername() + "with pid: " + pid);
+
             return new ResponseEntity<>(new Response(ResponseMessage.INBOX_INVITATION_DELETED), HttpStatus.OK);
         }
         return new ResponseEntity<>(new Response(ResponseMessage.ERROR_OCCURED), HttpStatus.INTERNAL_SERVER_ERROR);

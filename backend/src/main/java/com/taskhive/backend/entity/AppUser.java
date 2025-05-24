@@ -71,5 +71,6 @@ public class AppUser {
     //Inbox is associated with a particular 'AppUser' which is tracked by the 'user' property of Inbox.java
     @OneToMany(mappedBy = "user", orphanRemoval = true)
     @JsonIgnore
+    @OrderBy("createdDate DESC")
     List<Inbox> inboxes;
 }

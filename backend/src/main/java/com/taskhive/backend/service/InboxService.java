@@ -22,4 +22,8 @@ public class InboxService {
         inboxRepository.delete(inbox);
     }
 
+//    public Inbox loadInboxByIdOrderByCreatedDateDesc(int id) {
+//        return inboxRepository.findByInboxIdOrderByCreatedDateDesc(id);
+//    }
+
 }

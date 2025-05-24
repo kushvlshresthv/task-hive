@@ -2,5 +2,7 @@ package com.taskhive.backend.constants;
 
 public enum InboxInviteTitle {
     INVITATION,
-    MESSAGE;
+    MESSAGE,
+    PROJECT_ACCEPTED,
+    PROJECT_REJECTED,
 }

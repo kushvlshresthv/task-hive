@@ -2,7 +2,10 @@
 
 * TODO :: in project information box, show whether the project is joined, not joined, or owned
 
-* TODO :: when the project has been accepted/rejected, the initiator has to be notified as well
+* DONE :: when the project has been accepted/rejected, the initiator has to be notified as well
+
+
+* TODO :: create a refresh button for inbox in the frontend
 
 * DONE :: remove the invite from the inbox as well
 
@@ -69,7 +72,7 @@ then impelement the /joinedProjects page
 
 * DONE :: write documentation for /login and /getProjectById
 
-* TODO :: look into backend exception handling, fix it, and learn how it works
+* DONE :: look into backend exception handling, fix it, and learn how it works
 
 
 * DONE ::add 'status' field in the Project object and integrate with frontend as well
@@ -117,6 +120,7 @@ _____
 
 12) Add a way to display the inbox message numbers with 'red' background
 
+13) implement search box for projects
 
 * LOGS:
 

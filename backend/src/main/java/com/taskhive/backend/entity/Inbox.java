@@ -5,6 +5,8 @@ import com.taskhive.backend.constants.InboxInviteTitle;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @EqualsAndHashCode
@@ -36,4 +38,14 @@ public class Inbox {
 
     @Column(name = "pid")
     int pid;
+
+    @Column(name = "created_date", nullable = false, updatable = false)
+    private LocalDateTime createdDate;
+
+    @PrePersist
+    protected void onCreate() {
+        if (createdDate == null) {
+            createdDate = LocalDateTime.now();
+        }
+    }
 }

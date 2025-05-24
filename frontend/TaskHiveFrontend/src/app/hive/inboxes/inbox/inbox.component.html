@@ -3,9 +3,43 @@
     <td>title</td>
     <td>{{ inbox.title }}</td>
   </tr>
+
+@switch(inbox.title) {
+
+  @case('INVITATION') {
+    <tr class="message">
+      <td>message</td>
+      <td> &#64;{{inbox.initiator}} invited you to join project <span class="routerLink"><a [routerLink]="['/hive/invitedProjects']"
+    [queryParams]="{ inboxId: this.inbox.inboxId, pid: this.inbox.pid }">{{inbox.projectName}}</a></span></td>
+    </tr>
+  }
+
+
+  @case('PROJECT_ACCEPTED') {
   <tr class="message">
     <td>message</td>
-    <td> &#64;{{inbox.initiator}} invited your to project <span class="routerLink"><a [routerLink]="['/hive/invitedProjects']"
-   [queryParams]="{ inboxId: this.inbox.inboxId, pid: this.inbox.pid }">{{inbox.projectName}}</a></span></td>
+    <td>&#64;{{inbox.initiator}} accepted your project invite to join {{inbox.projectName}}</td>
+  </tr>
+  }
+
+
+  @case('PROJECT_REJECTED') {
+  <tr class="message">
+    <td>message</td>
+    <td>&#64;{{inbox.initiator}} rejected your project invite to join {{inbox.projectName}}</td>
+  </tr>
+  }
+}
+
+
+  <tr class="time">
+    <td>Time</td>
+    <td>{{inbox.createdDate.getTime() | date: 'shortTime' }}</td>
+  </tr>
+
+
+  <tr class="date">
+    <td>Date</td>
+    <td>{{inbox.createdDate | date: 'shortDate' }}</td>
   </tr>
 </table>

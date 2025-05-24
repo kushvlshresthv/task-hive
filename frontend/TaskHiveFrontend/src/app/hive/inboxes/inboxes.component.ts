@@ -5,6 +5,7 @@ import { Inbox } from './inbox/inbox.model';
 import { Response } from '../../GLOBAL_MODEL/response';
 import { InboxComponent } from './inbox/inbox.component';
 import { InboxesService } from './inboxes.service';
+import { map } from 'rxjs';
 
 @Component({
   selector: 'app-inboxes',
@@ -29,7 +30,10 @@ export class InboxesComponent {
     this.http
       .get<Response<Inbox[]>>(`${BACKEND_URL}/getInboxes`, {
         withCredentials: true,
-      })
+      }).pipe(map((response)=> {
+        response.mainBody.forEach((inbox)=>{inbox.createdDate=new Date(inbox.createdDate)});
+        return response;
+      }))
       .subscribe({
         next: (response) => {
           this.inboxesService.setInboxes(response.mainBody);

@@ -7,4 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface InboxRepository extends JpaRepository<Inbox, Integer> {
     public Inbox findByInboxId(int inboxId);
+
+//    public Inbox findByInboxIdOrderByCreatedDateDesc(int inboxId);
 }
