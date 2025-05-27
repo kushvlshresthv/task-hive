@@ -119,10 +119,16 @@ public class ProjectController {
         return new ResponseEntity<>(new Response(ResponseMessage.PROJECT_NOT_FOUND), HttpStatus.NOT_FOUND);
     }
 
-    @GetMapping("/getInvitedProjects")
-    public ResponseEntity<Response> getInvitedProjects() {
+    @GetMapping("/getJoinedProjects")
+    public ResponseEntity<Response> getInvitedProjects(Authentication authentication) {
+        AppUser user = appUserService.loadUserByUsername(authentication.getName());
 
-        return null;
+        List<Project> projects = user.getJoinedProjects();
+
+        Response response = new Response();
+        response.setMainBody(projects);
+        response.setMessage("Projects:");
+
+        return new ResponseEntity<Response>(response, HttpStatus.OK);
     }
-
 }

@@ -33,6 +33,10 @@ export const routes: Routes = [
         path: 'projects',
         component: ProjectsComponent,
       },
+      {
+        path: 'joinedProjects',
+        component: ProjectsComponent,
+      },
 
       {
           path: 'invitedProjects',
