@@ -31,6 +31,7 @@ import java.util.List;
 
 @Slf4j
 @RestController
+@RequestMapping("/api")
 public class ProjectController {
     @Autowired
     ProjectService projectService;
@@ -117,4 +118,11 @@ public class ProjectController {
 
         return new ResponseEntity<>(new Response(ResponseMessage.PROJECT_NOT_FOUND), HttpStatus.NOT_FOUND);
     }
+
+    @GetMapping("/getInvitedProjects")
+    public ResponseEntity<Response> getInvitedProjects() {
+
+        return null;
+    }
+
 }

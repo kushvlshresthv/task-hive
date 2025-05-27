@@ -61,7 +61,7 @@ public class ProjectControllerTest {
     @Test
     @WithMockUser
     public void ProjectControllerTest_CreateProject_Return_HTTP_OK() throws Exception {
-        mvc.perform(post("/createProject").contentType("application/json").content(jsonToString(project))).andExpect(status().isOk());
+        mvc.perform(post("/api/createProject").contentType("application/json").content(jsonToString(project))).andExpect(status().isOk());
     }
 
     //Test with invalid Project Data
@@ -69,7 +69,7 @@ public class ProjectControllerTest {
     @WithMockUser
     public void ProjectControllerTest_CreateProject_Return_HTTP_INTERNAL_SERVER_ERROR() throws Exception {
         project.setProjectName(null);
-        mvc.perform(post("/createProject").contentType("application/json").content(jsonToString(project))).andExpect(status().isInternalServerError());
+        mvc.perform(post("/api/createProject").contentType("application/json").content(jsonToString(project))).andExpect(status().isInternalServerError());
     }
 
     //Test when ProjectService returns an invalid saved Project object
@@ -79,7 +79,7 @@ public class ProjectControllerTest {
     public void ProjectControllerTest_Create_Project_Return_HTTP_INTERNAL_SERVER_ERRORR() throws Exception {
         Project invalidProject = Project.builder().pid(-1).build();
         Mockito.when(projectService.createProject(project)).thenReturn(invalidProject);
-        mvc.perform(post("/createProject").contentType("application/json").content(jsonToString(project))).andExpect(status().isInternalServerError());
+        mvc.perform(post("/api/createProject").contentType("application/json").content(jsonToString(project))).andExpect(status().isInternalServerError());
 
     }
 
@@ -87,7 +87,7 @@ public class ProjectControllerTest {
     @WithMockUser(username = "username")
     public void ProjectControllerTest_GetProjects_Returns_HTTPOK() throws Exception {
         Mockito.when(appUserService.loadUserByUsername("username")).thenReturn(user);
-        mvc.perform(get("/projects").contentType("application/json")).andExpect(status().isOk());
+        mvc.perform(get("/api/projects").contentType("application/json")).andExpect(status().isOk());
     }
 
 
@@ -107,7 +107,7 @@ public class ProjectControllerTest {
 
         Mockito.when(appUserService.loadUserByUsername("TestUser")).thenReturn(user);
 
-        MvcResult result = mvc.perform(get("/getProjectById").header("pid", 1).contentType("application/json")).andExpect(status().isOk()).andReturn();
+        MvcResult result = mvc.perform(get("/api/getProjectById").header("pid", 1).contentType("application/json")).andExpect(status().isOk()).andReturn();
 
         Response response = SerializerDeserializer.deserialize(result.getResponse().getContentAsString());
 
@@ -125,7 +125,7 @@ public class ProjectControllerTest {
 
         Mockito.when(appUserService.loadUserByUsername("TestUser")).thenReturn(user);
 
-        MvcResult result = mvc.perform(get("/getProjectById").header("pid", 1).contentType("application/json")).andExpect(status().isOk()).andReturn();
+        MvcResult result = mvc.perform(get("/api/getProjectById").header("pid", 1).contentType("application/json")).andExpect(status().isOk()).andReturn();
 
         Response response = SerializerDeserializer.deserialize(result.getResponse().getContentAsString());
 
@@ -139,7 +139,7 @@ public class ProjectControllerTest {
     public void ProjectControllerTest_GetProjectById_Returns_HTTP_NOT_FOUND() throws Exception {
         Mockito.when(appUserService.loadUserByUsername("TestUser")).thenReturn(user);
 
-        MvcResult result = mvc.perform(get("/getProjectById").header("pid", 1).contentType("application/json")).andExpect(status().isNotFound()).andReturn();
+        MvcResult result = mvc.perform(get("/api/getProjectById").header("pid", 1).contentType("application/json")).andExpect(status().isNotFound()).andReturn();
 
         Response response = SerializerDeserializer.deserialize(result.getResponse().getContentAsString());
 

@@ -121,7 +121,7 @@ export class NewProjectComponent {
 
     this.formData.reset();
     this.http
-      .post<Response<Object>>(BACKEND_URL + '/createProject', newProject, {
+      .post<Response<Object>>(BACKEND_URL + '/api/createProject', newProject, {
         withCredentials: true,
       })
       .pipe(

@@ -21,7 +21,7 @@ export class ProjectsComponent implements OnInit {
   projects!: Project[] | null;
   ngOnInit(): void {
     this.http
-      .get<Response>(`${BACKEND_URL}/projects`, {
+      .get<Response>(`${BACKEND_URL}/api/projects`, {
         withCredentials: true,
       })
       .subscribe({

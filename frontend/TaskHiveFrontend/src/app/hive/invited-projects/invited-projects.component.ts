@@ -42,7 +42,7 @@ export class InvitedProjectsComponent implements OnInit, OnDestroy {
         });
 
         this.http
-          .get<Response<Project>>(`${BACKEND_URL}/getInvitedProjectById`, {
+          .get<Response<Project>>(`${BACKEND_URL}/api/getInvitedProjectById`, {
             headers: reqHeaders,
             withCredentials: true,
           })

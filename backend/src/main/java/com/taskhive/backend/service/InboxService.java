@@ -17,7 +17,7 @@ public class InboxService {
     public Inbox getInboxById(int id) {
         return inboxRepository.findByInboxId(id);
     }
-
+   
     public void deleteInbox(Inbox inbox) {
         inboxRepository.delete(inbox);
     }

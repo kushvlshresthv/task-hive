@@ -224,9 +224,9 @@ CREATE TABLE inbox (
 
 
 
-
 * /invitedProject/acceptProjectInvite
 
+NOTE: the Inbox is for the request sender, the inbox is removed from the database regardless of the response status(ie OK or ERROR)
 
 ** Frontend Processing (invited-projects.component.ts)
 
@@ -245,8 +245,7 @@ CREATE TABLE inbox (
 
 4) Validate that the 'inbox' pid is the same as the 'pid' and the title of the 'inbox' is INVITATION provided by the frontend. If any of these fails, return ERROR_OCCURED
 
-
-5) Retrieve the 'targetProject' based on the 'pid'. Validate that the project status is not 'COMPLETED'. If false, return INBOX INVITATION EXPIRED
+5) Retrieve the 'targetProject' based on the 'pid'. First check whether the 'targetProject' exists and then Validate that the project status is not 'COMPLETED'. If false, return INBOX INVITATION INVALID
 
 6) if the status is not 'COMPLETED':
 
@@ -256,7 +255,7 @@ CREATE TABLE inbox (
 
    c) Update the user in the database
 
-  and then return INBOX_INVITATION_ACCEPTED with HTTP.OK
+   and then return INBOX_INVITATION_ACCEPTED with HTTP.OK
 
 7) /update() user just uses the projectRepository.save()/ method. AppUser also owns the @ManyToMany relationship with 'joinedProjects' and has CascadeType.PERSIST. So, 'joinedProjects' is automatically updated in the database.
 
