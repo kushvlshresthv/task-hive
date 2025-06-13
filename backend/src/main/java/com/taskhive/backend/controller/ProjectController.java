@@ -24,7 +24,7 @@ import java.util.List;
 /*
 /createProject gets the user from the SecurityContextHolder and adds the user to the Project saves the Project in the database
 
-/projects gets the User from the SecurityContextHolder and gets the Projects from that User database
+/projects gets he User from the SecurityContextHolder and gets the Projects from that User database
  */
 
 @CrossOrigin(origins = GlobalConstants.FRONTEND_URL, allowCredentials = "true", allowedHeaders = "*", exposedHeaders = "*")

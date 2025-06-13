@@ -7,6 +7,7 @@ import { ErrorComponent } from './error/error.component';
 import { InvitedProjectsComponent } from './hive/invited-projects/invited-projects.component';
 import { ProjectsComponent } from './hive/projects/projects.component';
 import { TestComponent } from './test/test.component';
+import { ChatComponent } from './hive/chat/chat.component';
 
 export const routes: Routes = [
   {
@@ -42,6 +43,11 @@ export const routes: Routes = [
           path: 'invitedProjects',
           component: InvitedProjectsComponent,
           canActivate: [invitedProjectsGuard],
+      },
+
+      {
+          path: 'chat',
+          component: ChatComponent,
       },
     ],
   },

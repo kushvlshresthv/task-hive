@@ -67,8 +67,13 @@
 
 <br>
 <div class="pair">
-  <app-invite-members [pid]="this.project.pid"></app-invite-members>
 
+  <!-- renders the 'invite a user' text box -->
+  @if(currentPath == "projects") {
+   <app-invite-members [pid]="this.project.pid"></app-invite-members>
+  }
+
+  <!-- renders the project status -->
   <input
     id="status"
     type="text"

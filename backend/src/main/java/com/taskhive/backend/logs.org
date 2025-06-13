@@ -1,4 +1,5 @@
-* TODO :: fix the test cases for /getProjectById(now splitted into /getOwnedProjectById and /getInvitedProjectById)
+* TODO :: when clicked a project in /projects, open /projects/project with query parameters of 'pid'. This route should contain the information abuot projects, and list of joined users, and ability for the owner to assigned task
+
 
 * TODO :: in project information box, show whether the project is joined, not joined, or owned
 
@@ -62,7 +63,7 @@ implement accept project
 5. add the project to joinedProject variable and update the database
 
 
-then impelement the /joinedProjects page
+* DONE then impelement the /joinedProjects page
 
 
 * DONE :: move from print statements to logger
@@ -85,9 +86,13 @@ then impelement the /joinedProjects page
 
 * TODO :: change the deprecated @MockBean annotations
 
+* TODO :: write the unit tests for the following:
 
+1. extra methods in service and repositories
 
+2. /getOwnedProjectById and /getInvitedProjectById (came by dividing /getProjects ProjectController)
 
+3. /getJoinedProjects
 
 
 TODO:
